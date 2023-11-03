@@ -5,10 +5,13 @@ import 'package:web_app/data/api_client/profile_service.dart';
 import 'package:web_app/domain/entity/connection.dart';
 import 'package:web_app/internal/app_components.dart';
 import 'package:web_app/presentation/router/app_router.dart';
+import 'package:web_app/presentation/widgets/custom_dialog.dart';
 
 @RoutePage()
 class CommandPage extends StatefulWidget {
-  CommandPage({super.key,});
+  CommandPage({
+    super.key,
+  });
 
   final ProfileService profileService = AppComponents().profileService;
   final TextEditingController urlController = TextEditingController();
@@ -58,53 +61,63 @@ class _CommandPageState extends State<CommandPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          TextField(
-                            textAlign: TextAlign.start,
-                            controller: widget.nameController,
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onBackground,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Название',
+                          Container(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            height: 82,
+                            child: ElevatedButton(
+                              style: theme.filledButtonTheme.style?.copyWith(
+                                fixedSize: const MaterialStatePropertyAll(
+                                  Size.fromHeight(50),
+                                ),
+                              ),
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (_) {
+                                    return CustomDialog(
+                                      title: 'Are you sure?',
+                                      onOk: () => context.router.pop(),
+                                      onCancel: () => context.router.pop(),
+                                      okText: 'Restart',
+                                    );
+                                  },
+                                );
+                                context.router.pop();
+                              },
+                              child: const Center(
+                                child: Text('db restart'),
+                              ),
                             ),
                           ),
-                          const SizedBox(
-                            height: 16,
-                          ),
-                          TextField(
-                            textAlign: TextAlign.start,
-                            controller: widget.urlController,
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onBackground,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Url',
+                          Container(
+                            padding: const EdgeInsets.symmetric(vertical: 16),
+                            height: 82,
+                            child: ElevatedButton(
+                              style: theme.filledButtonTheme.style?.copyWith(
+                                fixedSize: const MaterialStatePropertyAll(
+                                  Size.fromHeight(50),
+                                ),
+                              ),
+                              onPressed: () {
+                                showDialog(
+                                  context: context,
+                                  builder: (_) {
+                                    return CustomDialog(
+                                      title: 'Are you sure?',
+                                      onOk: () => context.router.pop(),
+                                      onCancel: () => context.router.pop(),
+                                      okText: 'Reboot',
+                                    );
+                                  },
+                                );
+                                context.router.pop();
+                              },
+                              child: const Center(
+                                child: Text('db reboot'),
+                              ),
                             ),
                           ),
                         ],
-                      ),
-                    ),
-                  ),
-                  const Spacer(),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    height: 82,
-                    child: ElevatedButton(
-                      style: theme.filledButtonTheme.style?.copyWith(
-                        fixedSize: const MaterialStatePropertyAll(
-                          Size.fromHeight(50),
-                        ),
-                      ),
-                      onPressed: () {
-                        widget.onPressed();
-                        context.router.pop();
-                      },
-                      child: const Center(
-                        child: Text('Сохранить'),
                       ),
                     ),
                   ),

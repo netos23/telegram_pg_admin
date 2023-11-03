@@ -110,7 +110,7 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
                         context.router.pop();
                       },
                       child: const Center(
-                        child: Text('Сохранить'),
+                        child: Text('Edit'),
                       ),
                     ),
                   ),

@@ -1,6 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_telegram_web_app/flutter_telegram_web_app.dart';
 import 'package:web_app/data/api_client/profile_service.dart';
 import 'package:web_app/domain/entity/connection.dart';
 import 'package:web_app/internal/app_components.dart';
@@ -23,7 +24,8 @@ class AddConnectionPage extends StatefulWidget {
         request: Connection(
           name: nameController.text,
           url: urlController.text,
-        ),
+          tgUserId: WebAppUser().id.toString(),
+      ),
       );
     } on DioException catch (error) {
       throw Exception(
@@ -99,7 +101,7 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
                         context.router.pop();
                       },
                       child: const Center(
-                        child: Text('Сохранить'),
+                        child: Text('Save'),
                       ),
                     ),
                   ),

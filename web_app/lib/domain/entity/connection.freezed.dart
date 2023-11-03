@@ -22,6 +22,9 @@ Connection _$ConnectionFromJson(Map<String, dynamic> json) {
 mixin _$Connection {
   String get name => throw _privateConstructorUsedError;
   int? get id => throw _privateConstructorUsedError;
+  @JsonKey(name: 'tg_user_id')
+  String? get tgUserId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'api_key')
   String? get apikey => throw _privateConstructorUsedError;
   String? get url => throw _privateConstructorUsedError;
 
@@ -37,7 +40,12 @@ abstract class $ConnectionCopyWith<$Res> {
           Connection value, $Res Function(Connection) then) =
       _$ConnectionCopyWithImpl<$Res, Connection>;
   @useResult
-  $Res call({String name, int? id, String? apikey, String? url});
+  $Res call(
+      {String name,
+      int? id,
+      @JsonKey(name: 'tg_user_id') String? tgUserId,
+      @JsonKey(name: 'api_key') String? apikey,
+      String? url});
 }
 
 /// @nodoc
@@ -55,6 +63,7 @@ class _$ConnectionCopyWithImpl<$Res, $Val extends Connection>
   $Res call({
     Object? name = null,
     Object? id = freezed,
+    Object? tgUserId = freezed,
     Object? apikey = freezed,
     Object? url = freezed,
   }) {
@@ -67,6 +76,10 @@ class _$ConnectionCopyWithImpl<$Res, $Val extends Connection>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
+      tgUserId: freezed == tgUserId
+          ? _value.tgUserId
+          : tgUserId // ignore: cast_nullable_to_non_nullable
+              as String?,
       apikey: freezed == apikey
           ? _value.apikey
           : apikey // ignore: cast_nullable_to_non_nullable
@@ -87,7 +100,12 @@ abstract class _$$ConnectionImplCopyWith<$Res>
       __$$ConnectionImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, int? id, String? apikey, String? url});
+  $Res call(
+      {String name,
+      int? id,
+      @JsonKey(name: 'tg_user_id') String? tgUserId,
+      @JsonKey(name: 'api_key') String? apikey,
+      String? url});
 }
 
 /// @nodoc
@@ -103,6 +121,7 @@ class __$$ConnectionImplCopyWithImpl<$Res>
   $Res call({
     Object? name = null,
     Object? id = freezed,
+    Object? tgUserId = freezed,
     Object? apikey = freezed,
     Object? url = freezed,
   }) {
@@ -115,6 +134,10 @@ class __$$ConnectionImplCopyWithImpl<$Res>
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int?,
+      tgUserId: freezed == tgUserId
+          ? _value.tgUserId
+          : tgUserId // ignore: cast_nullable_to_non_nullable
+              as String?,
       apikey: freezed == apikey
           ? _value.apikey
           : apikey // ignore: cast_nullable_to_non_nullable
@@ -130,7 +153,12 @@ class __$$ConnectionImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$ConnectionImpl implements _Connection {
-  _$ConnectionImpl({required this.name, this.id, this.apikey, this.url});
+  _$ConnectionImpl(
+      {required this.name,
+      this.id,
+      @JsonKey(name: 'tg_user_id') this.tgUserId,
+      @JsonKey(name: 'api_key') this.apikey,
+      this.url});
 
   factory _$ConnectionImpl.fromJson(Map<String, dynamic> json) =>
       _$$ConnectionImplFromJson(json);
@@ -140,13 +168,17 @@ class _$ConnectionImpl implements _Connection {
   @override
   final int? id;
   @override
+  @JsonKey(name: 'tg_user_id')
+  final String? tgUserId;
+  @override
+  @JsonKey(name: 'api_key')
   final String? apikey;
   @override
   final String? url;
 
   @override
   String toString() {
-    return 'Connection(name: $name, id: $id, apikey: $apikey, url: $url)';
+    return 'Connection(name: $name, id: $id, tgUserId: $tgUserId, apikey: $apikey, url: $url)';
   }
 
   @override
@@ -156,13 +188,15 @@ class _$ConnectionImpl implements _Connection {
             other is _$ConnectionImpl &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.id, id) || other.id == id) &&
+            (identical(other.tgUserId, tgUserId) ||
+                other.tgUserId == tgUserId) &&
             (identical(other.apikey, apikey) || other.apikey == apikey) &&
             (identical(other.url, url) || other.url == url));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, name, id, apikey, url);
+  int get hashCode => Object.hash(runtimeType, name, id, tgUserId, apikey, url);
 
   @JsonKey(ignore: true)
   @override
@@ -182,7 +216,8 @@ abstract class _Connection implements Connection {
   factory _Connection(
       {required final String name,
       final int? id,
-      final String? apikey,
+      @JsonKey(name: 'tg_user_id') final String? tgUserId,
+      @JsonKey(name: 'api_key') final String? apikey,
       final String? url}) = _$ConnectionImpl;
 
   factory _Connection.fromJson(Map<String, dynamic> json) =
@@ -193,6 +228,10 @@ abstract class _Connection implements Connection {
   @override
   int? get id;
   @override
+  @JsonKey(name: 'tg_user_id')
+  String? get tgUserId;
+  @override
+  @JsonKey(name: 'api_key')
   String? get apikey;
   @override
   String? get url;

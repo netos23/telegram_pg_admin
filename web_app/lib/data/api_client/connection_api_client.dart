@@ -1,6 +1,7 @@
 import 'package:web_app/domain/entity/connection.dart';
 
 class ConnectionApiClient {
+
   Future<List<Connection>> getConnections() async {
     var timestamp = DateTime.now().millisecondsSinceEpoch;
     return [
