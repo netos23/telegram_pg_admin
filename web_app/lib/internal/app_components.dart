@@ -23,6 +23,6 @@ class AppComponents {
       ..receiveTimeout = timeout
       ..sendTimeout = timeout;
     dio.interceptors.add(PrettyDioLogger());
-    dio.interceptors.add(TelegramTokenInterceptor(dio: dio),);
+    dio.interceptors.add(TelegramTokenInterceptor(),);
   }
 }
