@@ -10,7 +10,8 @@ _$ConnectionImpl _$$ConnectionImplFromJson(Map<String, dynamic> json) =>
     _$ConnectionImpl(
       name: json['name'] as String,
       id: json['id'] as int?,
-      apikey: json['apikey'] as String?,
+      tgUserId: json['tg_user_id'] as String?,
+      apikey: json['api_key'] as String?,
       url: json['url'] as String?,
     );
 
@@ -18,6 +19,7 @@ Map<String, dynamic> _$$ConnectionImplToJson(_$ConnectionImpl instance) =>
     <String, dynamic>{
       'name': instance.name,
       'id': instance.id,
-      'apikey': instance.apikey,
+      'tg_user_id': instance.tgUserId,
+      'api_key': instance.apikey,
       'url': instance.url,
     };

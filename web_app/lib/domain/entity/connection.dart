@@ -9,6 +9,9 @@ class Connection with _$Connection {
   factory Connection({
     required String name,
     int? id,
+    @JsonKey(name: 'tg_user_id')
+    String? tgUserId,
+    @JsonKey(name: 'api_key')
     String? apikey,
     String? url,
   }) = _Connection;

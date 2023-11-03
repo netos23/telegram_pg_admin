@@ -1,31 +1,31 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_telegram_web_app/flutter_telegram_web_app.dart';
 import 'package:web_app/data/api_client/profile_service.dart';
 import 'package:web_app/domain/entity/connection.dart';
 import 'package:web_app/internal/app_components.dart';
 
 @RoutePage()
-class AddConnectionPage extends StatefulWidget {
-  AddConnectionPage({super.key});
+class EditConnectionPage extends StatefulWidget {
+  EditConnectionPage({super.key, required this.connection});
 
-  ProfileService profileService = AppComponents().profileService;
-
-  TextEditingController urlController = TextEditingController();
-  TextEditingController nameController = TextEditingController();
+  final ProfileService profileService = AppComponents().profileService;
+  final Connection connection;
+  final TextEditingController urlController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
 
   @override
-  State<AddConnectionPage> createState() => _AddConnectionPageState();
+  State<EditConnectionPage> createState() => _EditConnectionPageState();
+
+
 
   Future<void> onPressed() async {
     try {
-      final result = await profileService.createApikey(
+      final result = await profileService.patchConnection(
         request: Connection(
           name: nameController.text,
           url: urlController.text,
-          tgUserId: WebAppUser().id.toString(),
-      ),
+        ),
       );
     } on DioException catch (error) {
       throw Exception(
@@ -35,7 +35,16 @@ class AddConnectionPage extends StatefulWidget {
   }
 }
 
-class _AddConnectionPageState extends State<AddConnectionPage> {
+class _EditConnectionPageState extends State<EditConnectionPage> {
+
+  @override
+  void initState() {
+    super.initState();
+    widget.urlController.text = widget.connection.url ?? '';
+    widget.nameController.text = widget.connection.name ?? '';
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -101,7 +110,7 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
                         context.router.pop();
                       },
                       child: const Center(
-                        child: Text('Save'),
+                        child: Text('Edit'),
                       ),
                     ),
                   ),

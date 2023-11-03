@@ -1,8 +1,10 @@
 import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:web_app/data/api_client/dashboard_api_client.dart';
 import 'package:web_app/domain/entity/dashboard.dart';
 import 'package:web_app/presentation/page/dashboard_page/widgets/dashboard.dart';
+import 'package:web_app/presentation/router/app_router.dart';
 
 @RoutePage()
 class DashboardPage extends StatefulWidget {
@@ -14,7 +16,7 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPage> {
   late final Future<List<Dashboard>> _dashFeature =
-  DashBoardApiClient().getDashboards();
+      DashBoardApiClient().getDashboards();
 
   @override
   Widget build(BuildContext context) {
@@ -37,8 +39,8 @@ class _DashboardPageState extends State<DashboardPage> {
           }
           return GridView.builder(
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 400,
-              mainAxisExtent: 300,
+              maxCrossAxisExtent: 500,
+              mainAxisExtent: 400,
             ),
             itemCount: dashboards.length,
             itemBuilder: (context, index) {
@@ -50,6 +52,10 @@ class _DashboardPageState extends State<DashboardPage> {
             },
           );
         },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => context.router.replace(CommandRoute()),
+        child: Icon(Icons.code),
       ),
     );
   }

@@ -23,10 +23,28 @@ abstract class _$AppRouter extends RootStackRouter {
         child: AddConnectionPage(key: args.key),
       );
     },
+    CommandRoute.name: (routeData) {
+      final args = routeData.argsAs<CommandRouteArgs>(
+          orElse: () => const CommandRouteArgs());
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: CommandPage(key: args.key),
+      );
+    },
     DashboardRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const DashboardPage(),
+      );
+    },
+    EditConnectionRoute.name: (routeData) {
+      final args = routeData.argsAs<EditConnectionRouteArgs>();
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: EditConnectionPage(
+          key: args.key,
+          connection: args.connection,
+        ),
       );
     },
     MainRoute.name: (routeData) {
@@ -70,6 +88,35 @@ class AddConnectionRouteArgs {
 }
 
 /// generated route for
+/// [CommandPage]
+class CommandRoute extends PageRouteInfo<CommandRouteArgs> {
+  CommandRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
+          CommandRoute.name,
+          args: CommandRouteArgs(key: key),
+          initialChildren: children,
+        );
+
+  static const String name = 'CommandRoute';
+
+  static const PageInfo<CommandRouteArgs> page =
+      PageInfo<CommandRouteArgs>(name);
+}
+
+class CommandRouteArgs {
+  const CommandRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'CommandRouteArgs{key: $key}';
+  }
+}
+
+/// generated route for
 /// [DashboardPage]
 class DashboardRoute extends PageRouteInfo<void> {
   const DashboardRoute({List<PageRouteInfo>? children})
@@ -81,6 +128,44 @@ class DashboardRoute extends PageRouteInfo<void> {
   static const String name = 'DashboardRoute';
 
   static const PageInfo<void> page = PageInfo<void>(name);
+}
+
+/// generated route for
+/// [EditConnectionPage]
+class EditConnectionRoute extends PageRouteInfo<EditConnectionRouteArgs> {
+  EditConnectionRoute({
+    Key? key,
+    required Connection connection,
+    List<PageRouteInfo>? children,
+  }) : super(
+          EditConnectionRoute.name,
+          args: EditConnectionRouteArgs(
+            key: key,
+            connection: connection,
+          ),
+          initialChildren: children,
+        );
+
+  static const String name = 'EditConnectionRoute';
+
+  static const PageInfo<EditConnectionRouteArgs> page =
+      PageInfo<EditConnectionRouteArgs>(name);
+}
+
+class EditConnectionRouteArgs {
+  const EditConnectionRouteArgs({
+    this.key,
+    required this.connection,
+  });
+
+  final Key? key;
+
+  final Connection connection;
+
+  @override
+  String toString() {
+    return 'EditConnectionRouteArgs{key: $key, connection: $connection}';
+  }
 }
 
 /// generated route for

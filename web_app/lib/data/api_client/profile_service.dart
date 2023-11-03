@@ -14,4 +14,9 @@ abstract class ProfileService {
   Future<Connection> createApikey({
     @Body() required Connection request,
   });
+
+  @POST('/patch/')
+  Future<Connection> patchConnection({
+    @Body() required Connection request,
+  });
 }
