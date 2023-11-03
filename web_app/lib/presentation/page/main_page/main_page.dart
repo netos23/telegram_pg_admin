@@ -1,55 +1,55 @@
-import 'package:auto_route/annotations.dart';
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:rxdart/rxdart.dart';
 import 'package:web_app/data/api_client/dashboard_api_client.dart';
+import 'package:web_app/domain/entity/connection.dart';
 import 'package:web_app/domain/entity/dashboard.dart';
-import 'package:web_app/presentation/page/main_page/widgets/dashboard.dart';
+import 'package:web_app/presentation/router/app_router.dart';
 
 @RoutePage()
 class MainPage extends StatefulWidget {
-  const MainPage({super.key});
+  MainPage({super.key});
+
+  final BehaviorSubject<List<Connection>> connectionController =
+      BehaviorSubject.seeded([]);
 
   @override
   State<MainPage> createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
-  late Future<List<Dashboard>> _dashFeature =
-      DashBoardApiClient().getDashboards();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: FutureBuilder(
-        future: _dashFeature,
-        builder: (context, snapshot) {
-          final dashboards = snapshot.data;
-          final error = snapshot.error;
-
-          if (error != null) {
-            return Center(
-              child: Text('Errror: $error'),
-            );
-          }
-          if (dashboards == null) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          return GridView.builder(
-            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 400,
-              mainAxisExtent: 300,
+      body: SingleChildScrollView(
+        child: Center(
+          child: SizedBox(
+            width: 600,
+            child: SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(32.0),
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: 20,
+                  itemBuilder: (context, index) {
+                    return const Card(
+                      child: Padding(
+                        padding: EdgeInsets.all(16),
+                        child: Text('А вот и лето'),
+                      ),
+                    );
+                  },
+                ),
+              ),
             ),
-            itemCount: dashboards.length,
-            itemBuilder: (context, index) {
-              final dashboard = dashboards[index];
-
-              return DashboardWidget(
-                dashboard: dashboard,
-              );
-            },
-          );
-        },
+          ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => context.router.push(AddConnectionRoute()),
+        child: const Icon(Icons.add),
       ),
     );
   }
