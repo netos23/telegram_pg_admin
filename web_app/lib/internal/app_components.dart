@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_telegram_web_app/flutter_telegram_web_app.dart';
+import 'package:flutter_telegram_web_app/flutter_telegram_web_app.dart' as tg;
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
+import 'package:web_app/data/api_client/api_client.dart';
 import 'package:web_app/data/api_client/profile_service.dart';
+import 'package:web_app/domain/api_manager.dart';
 import 'package:web_app/domain/telegram_token_interceptor.dart';
 import 'package:web_app/presentation/router/app_router.dart';
 
@@ -14,13 +16,16 @@ class AppComponents {
 
   AppComponents._internal();
 
-  final TelegramBackButton backButton = BackButton;
-  final TelegramMainButton mainButton = MainButton;
+  final tg.TelegramBackButton backButton = tg.BackButton;
+  final tg.TelegramMainButton mainButton = tg.MainButton;
   final Dio dio = Dio();
 
   AppRouter appRouter = AppRouter();
 
-  late final ProfileService profileService = ProfileService(dio);
+
+  late final ApiClient apiClient = ApiClient(profileService: ProfileService(dio));
+  late final ApiManager apiManager = ApiManager(apiClient: apiClient);
+
 
   Future<void> init() async {
     dio.options
@@ -33,7 +38,7 @@ class AppComponents {
       TelegramTokenInterceptor(),
     );
 
-    backButton.onClick(JsVoidCallback(() {
+    backButton.onClick(tg.JsVoidCallback(() {
       appRouter.pop();
     }));
   }

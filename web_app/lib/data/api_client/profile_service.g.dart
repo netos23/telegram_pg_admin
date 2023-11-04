@@ -43,7 +43,7 @@ class _ProfileService implements ProfileService {
   }
 
   @override
-  Future<Connection> patchConnection({required Connection request}) async {
+  Future<Connection> execCommand({required Command request}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -57,12 +57,37 @@ class _ProfileService implements ProfileService {
     )
             .compose(
               _dio.options,
-              '/patch/',
+              '/exec/',
               queryParameters: queryParameters,
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = Connection.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<List<Connection>> getConnections({required String tgUserId}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final Map<String, dynamic>? _data = null;
+    final _result = await _dio
+        .fetch<List<dynamic>>(_setStreamType<List<Connection>>(Options(
+      method: 'GET',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/list_keys/',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    var value = _result.data!
+        .map((dynamic i) => Connection.fromJson(i as Map<String, dynamic>))
+        .toList();
     return value;
   }
 

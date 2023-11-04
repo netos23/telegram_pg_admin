@@ -6,6 +6,8 @@ import 'package:web_app/domain/entity/dashboard.dart';
 import 'package:web_app/internal/app_components.dart';
 import 'package:web_app/presentation/page/dashboard_page/widgets/dashboard.dart';
 import 'package:web_app/presentation/router/app_router.dart';
+import 'package:flutter_telegram_web_app/flutter_telegram_web_app.dart' as tg;
+
 
 @RoutePage()
 class DashboardPage extends StatefulWidget {
@@ -22,13 +24,17 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   void initState() {
     super.initState();
-    AppComponents().backButton.isVisible = true;
+    AppComponents().backButton.show();
+    AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
+      context.router.replace(CommandRoute());
+    }));
+    AppComponents().mainButton.text = 'Dashboards';
+    AppComponents().mainButton.show();
 
   }
 
   @override
   void dispose() {
-    AppComponents().backButton.isVisible = false;
     super.dispose();
   }
 
@@ -67,10 +73,10 @@ class _DashboardPageState extends State<DashboardPage> {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: !tg.isSupported ?  FloatingActionButton(
         onPressed: () => context.router.replace(CommandRoute()),
         child: const Icon(Icons.code),
-      ),
+      ) : null,
     );
   }
 }

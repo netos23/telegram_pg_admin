@@ -1,9 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_telegram_web_app/flutter_telegram_web_app.dart';
-import 'package:web_app/data/api_client/profile_service.dart';
-import 'package:web_app/domain/entity/connection.dart';
+import 'package:flutter_telegram_web_app/flutter_telegram_web_app.dart' as tg;
 import 'package:web_app/internal/app_components.dart';
 import 'package:web_app/presentation/router/app_router.dart';
 
@@ -12,8 +10,6 @@ class CommandPage extends StatefulWidget {
   CommandPage({
     super.key,
   });
-
-  final ProfileService profileService = AppComponents().profileService;
   final TextEditingController urlController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
 
@@ -22,12 +18,6 @@ class CommandPage extends StatefulWidget {
 
   Future<void> onPressed() async {
     try {
-      final result = await profileService.patchConnection(
-        request: Connection(
-          name: nameController.text,
-          url: urlController.text,
-        ),
-      );
     } on DioException catch (error) {
       throw Exception(
         error.response?.data['message'],
@@ -40,13 +30,16 @@ class _CommandPageState extends State<CommandPage> {
   @override
   void initState() {
     super.initState();
-    AppComponents().backButton.isVisible = true;
-
+    AppComponents().backButton.show();
+    AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
+      context.router.replace(const DashboardRoute());
+    }));
+    AppComponents().mainButton.text = 'Dashboards';
+    AppComponents().mainButton.show();
   }
 
   @override
   void dispose() {
-    AppComponents().backButton.isVisible = false;
     super.dispose();
   }
 
@@ -124,10 +117,10 @@ class _CommandPageState extends State<CommandPage> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: !tg.isSupported ? FloatingActionButton(
         onPressed: () => context.router.replace(const DashboardRoute()),
         child: const Icon(Icons.dashboard),
-      ),
+      ) : null,
     );
   }
 
@@ -138,18 +131,18 @@ class _CommandPageState extends State<CommandPage> {
     String? okText,
     String? cancelText,
   }) {
-    TelegramPopup(
+    tg.TelegramPopup(
       title: "Are you sure?",
       message: 'It seems dangerous!',
       buttons: [
-        PopupButton(
+        tg.PopupButton(
           id: okText ?? 'Ok',
-          type: PopupButtonType.destructive,
+          type: tg.PopupButtonType.destructive,
           text: okText,
         ),
-        PopupButton(
+        tg.PopupButton(
           id: okText ?? "Cancel",
-          type: PopupButtonType.cancel,
+          type: tg.PopupButtonType.cancel,
           text: cancelText,
         ),
       ],

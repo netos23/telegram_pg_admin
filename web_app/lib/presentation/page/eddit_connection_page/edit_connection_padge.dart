@@ -1,8 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_telegram_web_app/flutter_telegram_web_app.dart';
-import 'package:web_app/data/api_client/profile_service.dart';
+import 'package:flutter_telegram_web_app/flutter_telegram_web_app.dart' as tg;
 import 'package:web_app/domain/entity/connection.dart';
 import 'package:web_app/internal/app_components.dart';
 import 'package:web_app/presentation/router/app_router.dart';
@@ -10,8 +9,6 @@ import 'package:web_app/presentation/router/app_router.dart';
 @RoutePage()
 class EditConnectionPage extends StatefulWidget {
   EditConnectionPage({super.key, required this.connection});
-
-  final ProfileService profileService = AppComponents().profileService;
   final Connection connection;
   final TextEditingController urlController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
@@ -23,12 +20,6 @@ class EditConnectionPage extends StatefulWidget {
 
   Future<void> onPressed() async {
     try {
-      final result = await profileService.patchConnection(
-        request: Connection(
-          name: nameController.text,
-          url: urlController.text,
-        ),
-      );
     } on DioException catch (error) {
       throw Exception(
         error.response?.data['message'],
@@ -45,7 +36,7 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
     widget.urlController.text = widget.connection.url ?? '';
     widget.nameController.text = widget.connection.name;
     AppComponents().backButton.show();
-    AppComponents().mainButton.onClick(JsVoidCallback(() {
+    AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
       widget.onPressed();
       context.router.pop();
     }));
@@ -58,7 +49,7 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
   @override
   void dispose() {
     AppComponents().backButton.hide();
-    AppComponents().mainButton.onClick(JsVoidCallback(() {
+    AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
       context.router.push(AddConnectionRoute());
     }));
     AppComponents().mainButton.text = 'Add connection';
@@ -122,6 +113,12 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
           ),
         ),
       ),
+        floatingActionButton: !tg.isSupported ? FloatingActionButton(
+          onPressed: () {
+            context.router.push(AddConnectionRoute());
+          },
+          child: const Icon(Icons.edit),
+        ) : null
     );
   }
 }
