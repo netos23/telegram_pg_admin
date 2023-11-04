@@ -63,29 +63,57 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
                           borderRadius: BorderRadius.circular(12)),
                       child: Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                        child: Row(
+                          mainAxisSize: MainAxisSize.max,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            TextField(
-                              textAlign: TextAlign.start,
-                              controller: nameController,
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                overflow: TextOverflow.ellipsis,
+                            Flexible(
+                              flex: 7,
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  TextField(
+                                    textAlign: TextAlign.start,
+                                    controller: nameController,
+                                    style: theme.textTheme.bodyMedium?.copyWith(
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    decoration: const InputDecoration(
+                                        hintText: 'Connection title'),
+                                  ),
+                                  TextField(
+                                    textAlign: TextAlign.start,
+                                    controller: urlController,
+                                    style: theme.textTheme.bodyMedium?.copyWith(
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    decoration: const InputDecoration(
+                                      border: InputBorder.none,
+                                      hintText: 'Url',
+                                    ),
+                                  ),
+                                ],
                               ),
-                              decoration: const InputDecoration(
-                                  hintText: 'Connection title'),
                             ),
-                            TextField(
-                              textAlign: TextAlign.start,
-                              controller: urlController,
-                              style: theme.textTheme.bodyMedium?.copyWith(
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                              decoration: const InputDecoration(
-                                border: InputBorder.none,
-                                hintText: 'Url',
-                              ),
-                            ),
+                            Flexible(
+                                flex: 1,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: IconButton(
+                                      onPressed: () => setState(() {
+                                            widget.connection =
+                                                widget.connection?.copyWith(
+                                              isActive: !(widget
+                                                      .connection?.isActive ==
+                                                  true),
+                                            );
+                                          }),
+                                      icon: widget.connection?.isActive == true
+                                          ? const Icon(
+                                              Icons.notifications_active)
+                                          : const Icon(Icons
+                                              .notifications_none_outlined)),
+                                ))
                           ],
                         ),
                       ),
