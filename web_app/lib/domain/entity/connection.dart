@@ -11,6 +11,8 @@ class Connection with _$Connection {
     int? id,
     @JsonKey(name: 'tg_user_id')
     String? tgUserId,
+    @JsonKey(name: 'is_active')
+    bool? isActive,
     @JsonKey(name: 'api_key')
     String? apikey,
     String? url,

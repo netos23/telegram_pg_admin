@@ -8,9 +8,9 @@ import 'package:web_app/presentation/widgets/custom_dialog.dart';
 
 @RoutePage()
 class EditConnectionPage extends StatefulWidget {
-  const EditConnectionPage({super.key, required this.connection});
+  EditConnectionPage({super.key, required this.connection});
 
-  final Connection connection;
+  Connection? connection;
 
   @override
   State<EditConnectionPage> createState() => _EditConnectionPageState();
@@ -24,8 +24,8 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
   @override
   void initState() {
     super.initState();
-    urlController.text = widget.connection.url ?? '';
-    nameController.text = widget.connection.name;
+    urlController.text = widget.connection?.url ?? '';
+    nameController.text = widget.connection?.name ?? '';
     AppComponents().backButton.show();
     AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
       context.router.pop();
@@ -59,8 +59,10 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Card(
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
                       child: Padding(
-                        padding: const EdgeInsets.all(32),
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
@@ -71,12 +73,7 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
                                 overflow: TextOverflow.ellipsis,
                               ),
                               decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Connection title',
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 16,
+                                  hintText: 'Connection title'),
                             ),
                             TextField(
                               textAlign: TextAlign.start,
@@ -85,35 +82,8 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
                                 overflow: TextOverflow.ellipsis,
                               ),
                               decoration: const InputDecoration(
-                                border: OutlineInputBorder(),
-                                labelText: 'Url',
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 16,
-                            ),
-                            SizedBox(
-                              height: 50,
-                              child: ElevatedButton(
-                                style: theme.filledButtonTheme.style?.copyWith(
-                                  fixedSize: const MaterialStatePropertyAll(
-                                    Size.fromHeight(50),
-                                  ),
-                                  backgroundColor:
-                                      MaterialStatePropertyAll(theme.hintColor),
-                                ),
-                                onPressed: () {
-                                  onShowButton(
-                                    title: 'Are you sure?',
-                                    onOk: () => context.router.pop(),
-                                    onCancel: () => context.router.pop(),
-                                    okText: 'Delete',
-                                  );
-                                  context.router.pop();
-                                },
-                                child: const Center(
-                                  child: Text('Delete'),
-                                ),
+                                border: InputBorder.none,
+                                hintText: 'Url',
                               ),
                             ),
                           ],
