@@ -184,7 +184,13 @@ class _CommandPageState extends State<CommandPage> {
       showDialog(
         context: context,
         builder: (_) {
-          return CustomDialog(title: title, onOk: onOk, onCancel: onCancel);
+          return CustomDialog(
+            title: title,
+            onOk: onOk,
+            onCancel: onCancel,
+            okText: okText,
+            cancelText: cancelText,
+          );
         },
       );
     }
