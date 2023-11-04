@@ -24,14 +24,14 @@ class ApiClient {
     }
   }
 
-  Future<Connection> patchConnections({
+  Future<void> patchConnections({
     required Connection request,
   }) async {
     final tgId =
         tg.isSupported ? tg.WebAppUser().id.toString() : 'Non telegram user';
     final newRequest = request.copyWith(tgUserId: tgId);
     try {
-      return await profileService.patchConnection(request: newRequest);
+      await profileService.patchConnection(request: newRequest);
     } on DioException catch (error) {
       throw Exception(
         error.response?.data['message'],
@@ -50,6 +50,7 @@ class ApiClient {
       );
     }
   }
+
   Future<List<TopTransaction>> getTopTransactions({
     required ApiKeyModel request,
   }) async {
@@ -67,7 +68,7 @@ class ApiClient {
   }) async {
     final tgId =
         tg.isSupported ? tg.WebAppUser().id.toString() : 'Non telegram user';
-    final newRequest = request.copyWith(tgUserId: tgId,  isActive: true);
+    final newRequest = request.copyWith(tgUserId: tgId, isActive: true);
     try {
       await profileService.createApikey(request: newRequest);
     } on DioException catch (error) {
