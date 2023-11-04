@@ -212,7 +212,7 @@ def top_transactions():
         return {}, 401
     connection = UrlConnection.query.filter_by(api_key=api_key).one()
     data, status = send_get(urllib.parse.urljoin(connection.url, "/top_transactions"), api_key, {})
-    return data or '', status
+    return data or [], status
 
 
 @app.route("/long_transactions/", methods=["POST"])
@@ -223,7 +223,7 @@ def long_transactions():
         return {}, 401
     connection = UrlConnection.query.filter_by(api_key=api_key).one()
     data, status = send_get(urllib.parse.urljoin(connection.url, "/long_transactions"), api_key, {})
-    return data or '', status
+    return data or [], status
 
 
 @app.before_request
