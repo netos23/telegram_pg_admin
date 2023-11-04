@@ -7,7 +7,7 @@ services:
         condition: service_started
     volumes:
       - letsencrypt-data:/etc/letsencrypt
-      - ./static/:/var/www/html
+      - ./static:/var/www/html
     command: certonly --webroot --webroot-path /var/www/html --email nikmoroz2002@yandex.ru --agree-tos --no-eff-email  -d it-profession.fbtw.ru
   web:
     build:
@@ -19,14 +19,16 @@ services:
       - ./bot-service/.env
   ingress:
     image: 'app-ingress:1.0'
-    build: ./ingress/
+    build:
+      context: ingress
+      dockerfile: Dockerfile
     ports:
       - '80:80'
       - '443:443'
     container_name: app-ingress
     volumes:
       - letsencrypt-data:/etc/letsencrypt
-      - ./static/:/var/www/html
+      - ./static:/var/www/html
 volumes:
   letsencrypt-data:
   nginx-static-data:
