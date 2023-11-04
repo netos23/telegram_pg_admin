@@ -29,7 +29,7 @@ abstract class ProfileService {
     @Query('tg_user_id') required String tgUserId,
   });
 
-  @GET('/patch/')
+  @PATCH('/create/')
   Future<Connection> patchConnection({
     @Body() required Connection request,
   });

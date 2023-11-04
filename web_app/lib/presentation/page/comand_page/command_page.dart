@@ -62,83 +62,72 @@ class _CommandPageState extends State<CommandPage> {
             child: Padding(
               padding: const EdgeInsets.all(32.0),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(32),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: 50,
-                            child: ElevatedButton(
-                              style: theme.filledButtonTheme.style?.copyWith(
-                                fixedSize: const MaterialStatePropertyAll(
-                                  Size.fromHeight(50),
-                                ),
-                              ),
-                              onPressed: () {
-                                onShowButton(
-                                  title: 'Are you sure?',
-                                  onOk: () => apiManager.backup(widget.apiKey),
-                                  onCancel: () => context.router.pop(),
-                                  okText: 'Backup',
-                                );
-                                context.router.pop();
-                              },
-                              child: const Center(
-                                child: Text('Backup'),
-                              ),
-                            ),
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                    ),
+                    child: Column(
+                      children: [
+                        ListTile(
+                          leading: const Icon(
+                            Icons.backup,
+                            color: Colors.green,
                           ),
-                          Container(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            height: 82,
-                            child: ElevatedButton(
-                              style: theme.filledButtonTheme.style?.copyWith(
-                                fixedSize: const MaterialStatePropertyAll(
-                                  Size.fromHeight(50),
-                                ),
-                              ),
-                              onPressed: () {
-                                onShowButton(
-                                  title: 'Are you sure?',
-                                  onOk: () => apiManager.restart(widget.apiKey),
-                                  onCancel: () => context.router.pop(),
-                                  okText: 'Restart',
-                                );
-                                context.router.pop();
-                              },
-                              child: const Center(
-                                child: Text('Restart'),
-                              ),
-                            ),
+                          onTap: () {
+                            onShowButton(
+                              title: 'Are you sure?',
+                              onOk: () => apiManager.backup(widget.apiKey),
+                              onCancel: () => context.router.pop(),
+                              okText: 'Backup',
+                            );
+                            context.router.pop();
+                          },
+                          title: Text('Backup'),
+                        ),
+                        const Divider(
+                          height: 1,
+                          indent: 16,
+                          endIndent: 16,
+                        ),
+                        ListTile(
+                          leading: const Icon(
+                            Icons.restart_alt,
+                            color: Colors.red,
                           ),
-                          SizedBox(
-                            height: 50,
-                            child: ElevatedButton(
-                              style: theme.filledButtonTheme.style?.copyWith(
-                                fixedSize: const MaterialStatePropertyAll(
-                                  Size.fromHeight(50),
-                                ),
-                              ),
-                              onPressed: () {
-                                onShowButton(
-                                  title: 'Are you sure?',
-                                  onOk: () => apiManager.restore(widget.apiKey),
-                                  onCancel: () => context.router.pop(),
-                                  okText: 'Restore',
-                                );
-                                context.router.pop();
-                              },
-                              child: const Center(
-                                child: Text('Restore'),
-                              ),
-                            ),
+                          onTap: () {
+                            onShowButton(
+                              title: 'Are you sure?',
+                              onOk: () => apiManager.restart(widget.apiKey),
+                              onCancel: () => context.router.pop(),
+                              okText: 'Restart',
+                            );
+                            context.router.pop();
+                          },
+                          title: Text('Restart'),
+                        ),
+                        const Divider(
+                          height: 1,
+                          indent: 16,
+                          endIndent: 16,
+                        ),
+                        ListTile(
+                          leading: const Icon(
+                            Icons.restore,
+                            color: Colors.blue,
                           ),
-                        ],
-                      ),
+                          onTap: () {
+                            onShowButton(
+                              title: 'Are you sure?',
+                              onOk: () => apiManager.restore(widget.apiKey),
+                              onCancel: () => context.router.pop(),
+                              okText: 'Restore',
+                            );
+                            context.router.pop();
+                          },
+                          title: Text('Restore'),
+                        ),
+                      ],
                     ),
                   ),
                 ],

@@ -23,10 +23,24 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   late final Future<List<Dashboard>> _dashFeature =
       AppComponents().dashboardApiClient.getDashboards(
-            DashboardFilter(
-              apiKey: widget.apiKey,
-            ),
+            _buildFilter(),
           );
+
+  DashboardFilter _buildFilter() {
+    final now = DateTime.now();
+
+    return DashboardFilter(
+      apiKey: widget.apiKey,
+      from: now
+          .subtract(
+            const Duration(
+              minutes: 15,
+            ),
+          )
+          .millisecondsSinceEpoch,
+      to: now.millisecondsSinceEpoch,
+    );
+  }
 
   @override
   void initState() {
@@ -66,9 +80,12 @@ class _DashboardPageState extends State<DashboardPage> {
             );
           }
           return GridView.builder(
+            padding: const EdgeInsets.all(16),
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 500,
-              mainAxisExtent: 400,
+              childAspectRatio: 4/3,
+              crossAxisSpacing: 5,
+              mainAxisSpacing: 5,
             ),
             itemCount: dashboards.length,
             itemBuilder: (context, index) {
