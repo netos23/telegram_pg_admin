@@ -78,7 +78,7 @@ def list_keys():
 
 class RequestCommandModel(BaseModel):
     command: str
-    parameter: Optional[str]
+    parameter: Optional[str] = None
 
 
 @app.route("/exec/", methods=["POST"])
@@ -89,7 +89,7 @@ def exec_command(body: RequestCommandModel):
     if not api_key:
         return {}, 401
     connection = UrlConnection.query.filter_by(api_key=api_key).one()
-    error, status = send_post(urllib.parse.urljoin(connection.url, "/exec"), api_key, body.model_dump())
+    error, status = send_post(urllib.parse.urljoin(connection.url, "/exec"), api_key, body.model_dump(exclude_none=True))
     return {}, status
 
 
