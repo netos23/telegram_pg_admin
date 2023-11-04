@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
@@ -221,11 +223,15 @@ class _ServerCommandMenuState extends State<ServerCommandMenu> {
             onTap: () {
               onShowButton(
                 title: 'Are you sure?',
-                onOk: () => apiManager.restart(widget.apiKey),
-                onCancel: () => context.router.pop(),
+                onOk: () {
+                  apiManager.restart(widget.apiKey);
+                  context.router.pop();
+                },
+                onCancel: () {
+                  context.router.pop();
+                },
                 okText: 'Restart',
               );
-              context.router.pop();
             },
             title: Text('Restart'),
           ),
@@ -242,11 +248,13 @@ class _ServerCommandMenuState extends State<ServerCommandMenu> {
             onTap: () {
               onShowButton(
                 title: 'Are you sure?',
-                onOk: () => apiManager.restore(widget.apiKey),
+                onOk: () {
+                  apiManager.restore(widget.apiKey);
+                  context.router.pop();
+                },
                 onCancel: () => context.router.pop(),
                 okText: 'Restore',
               );
-              context.router.pop();
             },
             title: Text('Restore'),
           ),
@@ -420,12 +428,19 @@ class _TopTransactionsState extends State<TopTransactions> {
               (e) {
                 final index = e.$1;
                 final transaction = e.$2;
+                var query = transaction.query;
                 return [
                   ListTile(
                     trailing: Text(
                       transaction.count.toString(),
                     ),
-                    title: Text(transaction.query),
+                    title: Text(
+                      query.substring(
+                        0,
+                        min(query.length, 100),
+                      ),
+                      overflow: TextOverflow.ellipsis,
+                    ),
                     subtitle: Text(
                       Duration(
                         milliseconds: transaction.durationSum,
