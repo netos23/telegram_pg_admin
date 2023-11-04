@@ -1,52 +1,54 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_telegram_web_app/flutter_telegram_web_app.dart';
-import 'package:web_app/data/api_client/profile_service.dart';
-import 'package:web_app/domain/entity/connection.dart';
+import 'package:flutter_telegram_web_app/flutter_telegram_web_app.dart' as tg;
+import 'package:web_app/domain/api_manager.dart';
 import 'package:web_app/internal/app_components.dart';
-import 'package:web_app/presentation/router/app_router.dart';
+import 'package:web_app/presentation/widgets/custom_dialog.dart';
 
 @RoutePage()
 class CommandPage extends StatefulWidget {
-  CommandPage({
+  const CommandPage({
     super.key,
+    @QueryParam() this.apiKey = '',
   });
 
-  final ProfileService profileService = AppComponents().profileService;
-  final TextEditingController urlController = TextEditingController();
-  final TextEditingController nameController = TextEditingController();
+  final String apiKey;
 
   @override
   State<CommandPage> createState() => _CommandPageState();
+}
+
+class _CommandPageState extends State<CommandPage> {
+  final TextEditingController urlController = TextEditingController();
+
+  final TextEditingController nameController = TextEditingController();
+
+  final ApiManager apiManager = AppComponents().apiManager;
 
   Future<void> onPressed() async {
-    try {
-      final result = await profileService.patchConnection(
-        request: Connection(
-          name: nameController.text,
-          url: urlController.text,
-        ),
-      );
-    } on DioException catch (error) {
+    try {} on DioException catch (error) {
       throw Exception(
         error.response?.data['message'],
       );
     }
   }
-}
 
-class _CommandPageState extends State<CommandPage> {
   @override
   void initState() {
     super.initState();
-    AppComponents().backButton.isVisible = true;
-
+    AppComponents().backButton.show();
+    AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
+      context.router.pop();
+    }));
+    AppComponents().mainButton.text = 'Dashboards';
+    AppComponents().mainButton.show();
   }
 
   @override
   void dispose() {
-    AppComponents().backButton.isVisible = false;
+    urlController.dispose();
+    nameController.dispose();
     super.dispose();
   }
 
@@ -80,14 +82,14 @@ class _CommandPageState extends State<CommandPage> {
                               onPressed: () {
                                 onShowButton(
                                   title: 'Are you sure?',
-                                  onOk: () => context.router.pop(),
+                                  onOk: () => apiManager.backup(widget.apiKey),
                                   onCancel: () => context.router.pop(),
-                                  okText: 'Restart',
+                                  okText: 'Backup',
                                 );
                                 context.router.pop();
                               },
                               child: const Center(
-                                child: Text('db restart'),
+                                child: Text('Backup'),
                               ),
                             ),
                           ),
@@ -103,14 +105,36 @@ class _CommandPageState extends State<CommandPage> {
                               onPressed: () {
                                 onShowButton(
                                   title: 'Are you sure?',
-                                  onOk: () => context.router.pop(),
+                                  onOk: () => apiManager.restart(widget.apiKey),
                                   onCancel: () => context.router.pop(),
-                                  okText: 'Reboot',
+                                  okText: 'Restart',
                                 );
                                 context.router.pop();
                               },
                               child: const Center(
-                                child: Text('db reboot'),
+                                child: Text('Restart'),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 50,
+                            child: ElevatedButton(
+                              style: theme.filledButtonTheme.style?.copyWith(
+                                fixedSize: const MaterialStatePropertyAll(
+                                  Size.fromHeight(50),
+                                ),
+                              ),
+                              onPressed: () {
+                                onShowButton(
+                                  title: 'Are you sure?',
+                                  onOk: () => apiManager.restore(widget.apiKey),
+                                  onCancel: () => context.router.pop(),
+                                  okText: 'Restore',
+                                );
+                                context.router.pop();
+                              },
+                              child: const Center(
+                                child: Text('Restore'),
                               ),
                             ),
                           ),
@@ -124,10 +148,12 @@ class _CommandPageState extends State<CommandPage> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.router.replace(const DashboardRoute()),
-        child: const Icon(Icons.dashboard),
-      ),
+      floatingActionButton: !tg.isSupported
+          ? FloatingActionButton(
+              onPressed: () => context.router.pop(),
+              child: const Icon(Icons.dashboard),
+            )
+          : null,
     );
   }
 
@@ -138,26 +164,41 @@ class _CommandPageState extends State<CommandPage> {
     String? okText,
     String? cancelText,
   }) {
-    TelegramPopup(
-      title: "Are you sure?",
-      message: 'It seems dangerous!',
-      buttons: [
-        PopupButton(
-          id: okText ?? 'Ok',
-          type: PopupButtonType.destructive,
-          text: okText,
-        ),
-        PopupButton(
-          id: okText ?? "Cancel",
-          type: PopupButtonType.cancel,
-          text: cancelText,
-        ),
-      ],
-      onTap: (String buttonId) {
-        if (buttonId == "Ok") return onCancel;
-        if (buttonId == "Cancel") return onOk;
-        //showAlert("Button $buttonId clicked");
-      },
-    ).show();
+    if (tg.isSupported) {
+      tg.TelegramPopup(
+        title: "Are you sure?",
+        message: 'It seems dangerous!',
+        buttons: [
+          tg.PopupButton(
+            id: okText ?? 'Ok',
+            type: tg.PopupButtonType.destructive,
+            text: okText,
+          ),
+          tg.PopupButton(
+            id: okText ?? "Cancel",
+            type: tg.PopupButtonType.cancel,
+            text: cancelText,
+          ),
+        ],
+        onTap: (String buttonId) {
+          if (buttonId == "Ok") return onCancel;
+          if (buttonId == "Cancel") return onOk;
+          //showAlert("Button $buttonId clicked");
+        },
+      ).show();
+    } else {
+      showDialog(
+        context: context,
+        builder: (_) {
+          return CustomDialog(
+            title: title,
+            onOk: onOk,
+            onCancel: onCancel,
+            okText: okText,
+            cancelText: cancelText,
+          );
+        },
+      );
+    }
   }
 }

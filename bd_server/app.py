@@ -1,6 +1,8 @@
 from flask import Flask, request
 from functools import wraps
 import json
+
+import dump
 import get_info
 import os
 import restart
@@ -8,7 +10,7 @@ import restart
 from dump import dump_schema
 
 # костыль
-os.environ['API_KEY'] = "1234567890"
+os.environ['API_KEY'] = "bc6eb18d-f242-4cb8-ad04-352fbb879616"
 os.environ['PGHOSTNAME'] = "92.53.127.18"
 os.environ['PGPORT'] = "5432"
 os.environ['PGUSERNAME'] = "postgres"
@@ -32,6 +34,7 @@ def api_key_required(f):
     return wrapped_view
 
 
+# deprecated use execute() instead
 @app.route('/restart_db')
 @api_key_required
 def restart_db():
@@ -39,12 +42,16 @@ def restart_db():
     return 'OK', 200
 
 
+# deprecated use execute() instead
 @app.route('/restore_db')
 @api_key_required
 def restore_db():
-    return 'hello'
+    path = request.get_json()['file']
+    dump.restore_schema(path)
+    return 'OK', 200
 
 
+# deprecated use execute() instead
 @app.route('/dump_db')
 @api_key_required
 def dump_db():
@@ -53,12 +60,35 @@ def dump_db():
     return 'OK', 200
 
 
+@app.route('/exec')
+@api_key_required
+def execute():
+    command = request.args.get("command")
+    parameter = request.args.get("parameter")
+    if command == "backup":
+        dump_schema(parameter)
+        return 'OK', 200
+    if command == "restore":
+        dump.restore_schema(parameter)
+        return 'OK', 200
+    if command == "restart":
+        restart.restart_db()
+        return 'OK', 200
+    return 'Nor found', 404
+
+
 @app.route('/get_metrics')
 @api_key_required
 def get_metrics():
     result = get_info.get_info()
     json_data = json.dumps(result, default=float)
     return json_data
+
+
+@app.route('/dumps')
+@api_key_required
+def get_dumps():
+    return dump.get_dumps()
 
 
 if __name__ == '__main__':

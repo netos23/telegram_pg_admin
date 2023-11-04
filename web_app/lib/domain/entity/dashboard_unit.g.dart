@@ -9,7 +9,7 @@ part of 'dashboard_unit.dart';
 _$DashboardUnitImpl _$$DashboardUnitImplFromJson(Map<String, dynamic> json) =>
     _$DashboardUnitImpl(
       timestamp: json['timestamp'] as int,
-      value: (json['value'] as num).toDouble(),
+      value: (json['value'] as num?)?.toDouble(),
     );
 
 Map<String, dynamic> _$$DashboardUnitImplToJson(_$DashboardUnitImpl instance) =>

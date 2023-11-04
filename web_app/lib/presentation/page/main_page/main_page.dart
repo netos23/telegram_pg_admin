@@ -1,8 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_telegram_web_app/flutter_telegram_web_app.dart';
+import 'package:flutter_telegram_web_app/flutter_telegram_web_app.dart' as tg;
 import 'package:rxdart/rxdart.dart';
-import 'package:web_app/data/api_client/connection_api_client.dart';
 import 'package:web_app/domain/entity/connection.dart';
 import 'package:web_app/internal/app_components.dart';
 import 'package:web_app/presentation/router/app_router.dart';
@@ -11,27 +10,38 @@ import 'package:web_app/presentation/router/app_router.dart';
 class MainPage extends StatefulWidget {
   MainPage({super.key});
 
-  final BehaviorSubject<List<Connection>> connectionController =
-      BehaviorSubject.seeded([]);
-
   @override
   State<MainPage> createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
-  late final Future<List<Connection>> _connections =
-      ConnectionApiClient().getConnections();
+  final apiManager = AppComponents().apiManager;
+
+  final BehaviorSubject<List<Connection>> connectionController =
+      BehaviorSubject.seeded([]);
 
   @override
   void initState() {
+
     super.initState();
+
+    apiManager.connectionController.listen((value) {
+      connectionController.add(value);
+    });
+
+    apiManager.updateConnections();
     AppComponents().backButton.hide();
-    AppComponents().mainButton.onClick(JsVoidCallback(() {
+    AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
       context.router.push(AddConnectionRoute());
     }));
     AppComponents().mainButton.text = 'Add connection';
     AppComponents().mainButton.show();
+  }
 
+  @override
+  void dispose() {
+    connectionController.close();
+    super.dispose();
   }
 
   @override
@@ -42,8 +52,8 @@ class _MainPageState extends State<MainPage> {
         child: Center(
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 32.0),
-            child: FutureBuilder<List<Connection>>(
-              future: _connections,
+            child: StreamBuilder<List<Connection>>(
+              stream: connectionController,
               initialData: const [],
               builder: (context, snapshot) {
                 if (!snapshot.hasData || snapshot.data == null) {
@@ -72,8 +82,13 @@ class _MainPageState extends State<MainPage> {
                           ),
                           child: Card(
                             child: InkWell(
-                              onTap: () =>
-                                  context.router.push(const DashboardRoute()),
+                              onTap: () {
+                                context.router.push(
+                                  DashboardRoute(
+                                    apiKey: connection.apikey ?? '',
+                                  ),
+                                );
+                              },
                               child: Padding(
                                 padding: const EdgeInsets.all(16),
                                 child: Column(
@@ -92,7 +107,8 @@ class _MainPageState extends State<MainPage> {
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
                                         IconButton(
-                                            onPressed: () => context.router.push(
+                                            onPressed: () =>
+                                                context.router.push(
                                                   EditConnectionRoute(
                                                       connection: connection),
                                                 ),
@@ -115,10 +131,16 @@ class _MainPageState extends State<MainPage> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.router.push(AddConnectionRoute()),
-        child: const Icon(Icons.add),
-      ),
+      floatingActionButton: !tg.isSupported
+          ? FloatingActionButton(
+              onPressed: () async {
+                await context.router.push(AddConnectionRoute());
+                apiManager.updateConnections();
+              },
+              child: const Icon(Icons.add),
+            )
+          : null,
     );
   }
+
 }

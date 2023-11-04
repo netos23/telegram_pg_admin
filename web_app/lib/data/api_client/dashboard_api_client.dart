@@ -1,127 +1,15 @@
+import 'package:dio/dio.dart';
+import 'package:retrofit/http.dart';
 import 'package:web_app/domain/entity/dashboard.dart';
-import 'package:web_app/domain/entity/dashboard_unit.dart';
+import 'package:web_app/domain/entity/dashboard_filter.dart';
 
-class DashBoardApiClient {
-  Future<List<Dashboard>> getDashboards({int? from, int? to}) async {
-    var timestamp = DateTime.now().millisecondsSinceEpoch;
+part 'dashboard_api_client.g.dart';
 
-    return [
-      Dashboard(
-        title: 'Cpu usage',
-        units: [
-          DashboardUnit(
-            timestamp: timestamp++,
-            value: 98.1,
-          ),
-          DashboardUnit(
-            timestamp: timestamp++,
-            value: 91.1,
-          ),
-          DashboardUnit(
-            timestamp: timestamp++,
-            value: 86.1,
-          ),
-          DashboardUnit(
-            timestamp: timestamp++,
-            value: 61.1,
-          ),
-          DashboardUnit(
-            timestamp: timestamp++,
-            value: 91.1,
-          ),
-          DashboardUnit(
-            timestamp: timestamp++,
-            value: 86.1,
-          ),
-        ],
-      ),
-      Dashboard(
-        title: 'Cpu usage',
-        units: [
-          DashboardUnit(
-            timestamp: timestamp++,
-            value: 98.1,
-          ),
-          DashboardUnit(
-            timestamp: timestamp++,
-            value: 91.1,
-          ),
-          DashboardUnit(
-            timestamp: timestamp++,
-            value: 86.1,
-          ),
-          DashboardUnit(
-            timestamp: timestamp++,
-            value: 61.1,
-          ),
-          DashboardUnit(
-            timestamp: timestamp++,
-            value: 91.1,
-          ),
-          DashboardUnit(
-            timestamp: timestamp++,
-            value: 86.1,
-          ),
-        ],
-      ),
-      Dashboard(
-        title: 'Cpu usage',
-        units: [
-          DashboardUnit(
-            timestamp: timestamp++,
-            value: 98.1,
-          ),
-          DashboardUnit(
-            timestamp: timestamp++,
-            value: 91.1,
-          ),
-          DashboardUnit(
-            timestamp: timestamp++,
-            value: 86.1,
-          ),
-          DashboardUnit(
-            timestamp: timestamp++,
-            value: 61.1,
-          ),
-          DashboardUnit(
-            timestamp: timestamp++,
-            value: 91.1,
-          ),
-          DashboardUnit(
-            timestamp: timestamp++,
-            value: 86.1,
-          ),
-        ],
-      ),
-      Dashboard(
-        title: 'Cpu usage',
-        units: [
-          DashboardUnit(
-            timestamp: timestamp++,
-            value: 98.1,
-          ),
-          DashboardUnit(
-            timestamp: timestamp++,
-            value: 91.1,
-          ),
-          DashboardUnit(
-            timestamp: timestamp++,
-            value: 86.1,
-          ),
-          DashboardUnit(
-            timestamp: timestamp++,
-            value: 61.1,
-          ),
-          DashboardUnit(
-            timestamp: timestamp++,
-            value: 91.1,
-          ),
-          DashboardUnit(
-            timestamp: timestamp++,
-            value: 86.1,
-          ),
-        ],
-      ),
-    ];
-  }
+@RestApi()
+abstract class DashBoardApiClient {
+
+  factory DashBoardApiClient(Dio dio, {String baseUrl}) = _DashBoardApiClient;
+
+  @POST('/dashboard/')
+  Future<List<Dashboard>> getDashboards(@Body() DashboardFilter filter);
 }

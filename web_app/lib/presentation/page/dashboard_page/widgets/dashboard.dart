@@ -15,7 +15,6 @@ class DashboardWidget extends StatefulWidget {
 }
 
 class _DashboardWidgetState extends State<DashboardWidget> {
-
   List<Color> gradientColors = [
     Colors.cyan,
     Colors.yellow,
@@ -33,13 +32,12 @@ class _DashboardWidgetState extends State<DashboardWidget> {
                 mainData(),
               ),
             ),
-            Text(widget.dashboard.title),
+            Text(widget.dashboard.name),
           ],
         ),
       ),
     );
   }
-
 
   Widget leftTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
@@ -91,7 +89,6 @@ class _DashboardWidgetState extends State<DashboardWidget> {
     );
   }
 
-
   LineChartData mainData() {
     final theme = Theme.of(context).colorScheme;
     return LineChartData(
@@ -101,13 +98,13 @@ class _DashboardWidgetState extends State<DashboardWidget> {
         horizontalInterval: 1,
         verticalInterval: 1,
         getDrawingHorizontalLine: (value) {
-          return  FlLine(
+          return FlLine(
             color: theme.onSurface,
             strokeWidth: 1,
           );
         },
         getDrawingVerticalLine: (value) {
-          return  FlLine(
+          return FlLine(
             color: theme.onSurface,
             strokeWidth: 1,
           );
@@ -142,21 +139,13 @@ class _DashboardWidgetState extends State<DashboardWidget> {
         show: true,
         border: Border.all(color: const Color(0xff37434d)),
       ),
-      minX: 0,
-      maxX: 11,
-      minY: 0,
-      maxY: 6,
       lineBarsData: [
         LineChartBarData(
-          spots: const [
-            FlSpot(0, 3),
-            FlSpot(2.6, 2),
-            FlSpot(4.9, 5),
-            FlSpot(6.8, 3.1),
-            FlSpot(8, 4),
-            FlSpot(9.5, 3),
-            FlSpot(11, 4),
-          ],
+          spots: widget.dashboard.units
+              .map(
+                (e) => FlSpot(e.timestamp.toDouble(), e.value ?? 0),
+              )
+              .toList(),
           isCurved: true,
           gradient: LinearGradient(
             colors: gradientColors,
