@@ -107,12 +107,13 @@ class _MainPageState extends State<MainPage> {
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 IconButton(
-                                    onPressed: () => context.router.push(
+                                    onPressed: () async {
+                                      await context.router.push(
                                           EditConnectionRoute(
-                                              connection: connection),
-                                        ),
-                                    icon:
-                                        const Icon(Icons.settings_outlined)),
+                                              connection: connection));
+                                      apiManager.updateConnections();
+                                    },
+                                    icon: const Icon(Icons.settings_outlined)),
                               ],
                             )
                           ],

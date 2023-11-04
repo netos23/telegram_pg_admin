@@ -6,6 +6,7 @@ import 'package:web_app/domain/api_manager.dart';
 import 'package:web_app/domain/entity/connection.dart';
 import 'package:web_app/internal/app_components.dart';
 import 'package:web_app/presentation/router/app_router.dart';
+import 'package:web_app/presentation/widgets/custom_allert_dialog.dart';
 
 @RoutePage()
 class AddConnectionPage extends StatefulWidget {
@@ -33,29 +34,49 @@ class AddConnectionPage extends StatefulWidget {
 }
 
 class _AddConnectionPageState extends State<AddConnectionPage> {
-
   TextEditingController urlController = TextEditingController();
   TextEditingController nameController = TextEditingController();
-
 
   @override
   void initState() {
     super.initState();
     AppComponents().backButton.isVisible = true;
-    AppComponents().mainButton.onClick(tg.JsVoidCallback(() async {
-      await widget.onPressed(nameController.text, urlController.text);
-      context.router.pop();
-    }));
+    AppComponents().mainButton.onClick(
+          tg.JsVoidCallback(onAdd),
+        );
     AppComponents().mainButton.text = 'Save';
     AppComponents().mainButton.isVisible = true;
+  }
+
+  Future<void> onAdd() async {
+    if (urlController.text.isNotEmpty && nameController.text.isNotEmpty) {
+      if (!urlController.text.startsWith('https://')) {
+        showCustomAlertDialog(
+          'Please send me a valid url. https is required.',
+          'Invalid url',
+        );
+      } else {
+        await widget.onPressed(nameController.text, urlController.text);
+        context.router.pop();
+      }
+    } else {
+      showCustomAlertDialog(
+        'Enter the connection name and url to create',
+        'Empty data',
+      );
+    }
   }
 
   @override
   void dispose() {
     AppComponents().backButton.isVisible = false;
-    AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
-      context.router.push(AddConnectionRoute());
-    }));
+    AppComponents().mainButton.onClick(
+      tg.JsVoidCallback(
+        () {
+          context.router.push(AddConnectionRoute());
+        },
+      ),
+    );
     AppComponents().mainButton.text = 'Add connection';
     super.dispose();
   }
@@ -75,7 +96,9 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Card(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Column(
@@ -88,9 +111,7 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
                               overflow: TextOverflow.ellipsis,
                             ),
                             decoration: const InputDecoration(
-                              // border: OutlineInputBorder(),
-                                hintText: 'Connection title'
-                            ),
+                                hintText: 'Connection title'),
                           ),
                           TextField(
                             textAlign: TextAlign.start,
@@ -101,7 +122,6 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
                             decoration: const InputDecoration(
                               border: InputBorder.none,
                               hintText: 'Url',
-                              //labelText: 'Url',
                             ),
                           ),
                         ],
@@ -116,13 +136,26 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
       ),
       floatingActionButton: !tg.isSupported
           ? FloatingActionButton(
-              onPressed: () async {
-                await widget.onPressed(nameController.text, urlController.text);
-                context.router.pop();
-              },
+              onPressed: onAdd,
               child: const Icon(Icons.check),
             )
           : null,
     );
+  }
+
+  void showCustomAlertDialog(String description, String title) {
+    if (tg.isSupported) {
+      tg.showAlert(description);
+    } else {
+      showDialog(
+        context: context,
+        builder: (_) {
+          return CustomAlertDialog(
+            title: title,
+            description: description,
+          );
+        },
+      );
+    }
   }
 }

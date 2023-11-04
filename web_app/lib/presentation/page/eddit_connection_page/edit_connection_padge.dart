@@ -1,9 +1,11 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_telegram_web_app/flutter_telegram_web_app.dart' as tg;
 import 'package:web_app/domain/entity/connection.dart';
 import 'package:web_app/internal/app_components.dart';
 import 'package:web_app/presentation/router/app_router.dart';
+import 'package:web_app/presentation/widgets/custom_allert_dialog.dart';
 import 'package:web_app/presentation/widgets/custom_dialog.dart';
 
 @RoutePage()
@@ -27,11 +29,32 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
     urlController.text = widget.connection?.url ?? '';
     nameController.text = widget.connection?.name ?? '';
     AppComponents().backButton.show();
-    AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
-      context.router.pop();
-    }));
+    AppComponents().mainButton.onClick(
+      tg.JsVoidCallback(
+          onEdit,
+      ),
+    );
     AppComponents().mainButton.text = 'Edit';
     AppComponents().mainButton.show();
+  }
+
+  Future<void> onEdit() async {
+    if (urlController.text.isNotEmpty && nameController.text.isNotEmpty) {
+      if (!urlController.text.startsWith('https://')) {
+        showCustomAlertDialog(
+          'Please send me a valid url. https is required.',
+          'Invalid url',
+        );
+      } else {
+        await onPatchConnection();
+        context.router.pop();
+      }
+    } else {
+      showCustomAlertDialog(
+        'Enter the connection name and url to create',
+        'Empty data',
+      );
+    }
   }
 
   @override
@@ -44,8 +67,14 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
     super.dispose();
   }
 
-  Future<void> onPatchConnection()async{
-    await apiManager.patchConnections(widget.connection!);
+  Future<void> onPatchConnection() async {
+    try {
+      await apiManager.patchConnections(widget.connection!);
+    } on DioException catch (error) {
+      throw Exception(
+        error.response?.data['message'],
+      );
+    }
   }
 
   @override
@@ -100,24 +129,24 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
                               ),
                             ),
                             Flexible(
-                                flex: 1,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(right: 8.0),
-                                  child: IconButton(
-                                      onPressed: () => setState(() {
-                                            widget.connection =
-                                                widget.connection?.copyWith(
-                                              isActive: !(widget
-                                                      .connection?.isActive ==
-                                                  true),
-                                            );
-                                          }),
-                                      icon: widget.connection?.isActive == true
-                                          ? const Icon(
-                                              Icons.notifications_active)
-                                          : const Icon(Icons
-                                              .notifications_none_outlined)),
-                                ))
+                              flex: 1,
+                              child: Padding(
+                                padding: const EdgeInsets.only(right: 8.0),
+                                child: IconButton(
+                                    onPressed: () => setState(() {
+                                          widget.connection =
+                                              widget.connection?.copyWith(
+                                            isActive:
+                                                !(widget.connection?.isActive ==
+                                                    true),
+                                          );
+                                        }),
+                                    icon: widget.connection?.isActive == true
+                                        ? const Icon(Icons.notifications_active)
+                                        : const Icon(
+                                            Icons.notifications_none_outlined)),
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -130,15 +159,26 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
         ),
         floatingActionButton: !tg.isSupported
             ? FloatingActionButton(
-                onPressed: () {
-                  if (widget.connection != null) {
-                   onPatchConnection();
-                  }
-                  context.router.pop();
-                },
+                onPressed: onEdit,
                 child: const Icon(Icons.edit),
               )
             : null);
+  }
+
+  void showCustomAlertDialog(String description, String title) {
+    if (tg.isSupported) {
+      tg.showAlert(description);
+    } else {
+      showDialog(
+        context: context,
+        builder: (_) {
+          return CustomAlertDialog(
+            title: title,
+            description: description,
+          );
+        },
+      );
+    }
   }
 
   void onShowButton({
