@@ -44,6 +44,10 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
     super.dispose();
   }
 
+  Future<void> onPatchConnection()async{
+    await apiManager.patchConnections(widget.connection!);
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -127,6 +131,9 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
         floatingActionButton: !tg.isSupported
             ? FloatingActionButton(
                 onPressed: () {
+                  if (widget.connection != null) {
+                   onPatchConnection();
+                  }
                   context.router.pop();
                 },
                 child: const Icon(Icons.edit),
