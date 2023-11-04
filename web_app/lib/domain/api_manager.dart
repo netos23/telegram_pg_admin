@@ -16,13 +16,20 @@ class ApiManager {
     connectionController.add(result);
   }
 
+  Future<void> patchConnections(Connection request) async {
+    final result = await apiClient.patchConnections(request: request);
+    final value = (connectionController.valueOrNull ?? [])
+        .where((element) => element.id != request.id).toList();
+    value.add(result);
+    connectionController.add(value);
+  }
+
   Future<void> create(Connection request) async {
     final result = await apiClient.createApikey(request: request);
     final value = connectionController.valueOrNull ?? [];
     value.add(result);
     connectionController.add(value);
   }
-
 
   Future<void> backup() async {
     await apiClient.execCommand(

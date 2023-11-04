@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:auto_route/annotations.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 import 'package:web_app/domain/entity/command.dart';
@@ -24,6 +23,11 @@ abstract class ProfileService {
 
   @GET('/list_keys/')
   Future<List<Connection>> getConnections({
-    @QueryParam('tg_user_id') required String tgUserId,
+    @Query('tg_user_id') required String tgUserId,
+  });
+
+  @GET('/patch/')
+  Future<Connection> patchConnection({
+    @Body() required Connection request,
   });
 }

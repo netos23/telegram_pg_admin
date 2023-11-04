@@ -76,6 +76,23 @@ class ApiClient {
     ];
   }
 
+  Future<Connection> patchConnections({
+    required Connection request,
+  }) async {
+    final tgId = tg.isSupported ? tg
+        .WebAppUser()
+        .id
+        .toString() : 'Non telegram user';
+    final newRequest = request.copyWith(tgUserId: tgId);
+    try {
+      return await profileService.patchConnection(request: newRequest);
+    } on DioException catch (error) {
+      throw Exception(
+        error.response?.data['message'],
+      );
+    }
+  }
+
   Future<Connection> createApikey({
     required Connection request,
   }) async {
