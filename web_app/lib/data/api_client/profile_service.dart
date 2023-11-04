@@ -20,6 +20,11 @@ abstract class ProfileService {
     @Body() required Connection request,
   });
 
+  @PATCH('/create/')
+  Future<Connection> patchConnection({
+    @Body() required Connection request,
+  });
+
   @POST('/exec/')
   Future<Connection> execCommand({
     @Body() required Command request,
@@ -30,10 +35,6 @@ abstract class ProfileService {
     @Query('tg_user_id') required String tgUserId,
   });
 
-  @PATCH('/create/')
-  Future<Connection> patchConnection({
-    @Body() required Connection request,
-  });
 
   @PATCH('/long_transactions/')
   Future<LongTransaction> getLongTransactions({
@@ -45,6 +46,5 @@ abstract class ProfileService {
   Future<List<Dump>> postDumps({
     @Body() required DumpResponce request,
   });
-
 
 }

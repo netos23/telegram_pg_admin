@@ -71,11 +71,13 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
             child: Padding(
               padding: const EdgeInsets.all(32.0),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Card(
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                     child: Padding(
-                      padding: const EdgeInsets.all(32),
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -86,12 +88,9 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
                               overflow: TextOverflow.ellipsis,
                             ),
                             decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Connection title',
+                              // border: OutlineInputBorder(),
+                                hintText: 'Connection title'
                             ),
-                          ),
-                          const SizedBox(
-                            height: 16,
                           ),
                           TextField(
                             textAlign: TextAlign.start,
@@ -100,8 +99,9 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
                               overflow: TextOverflow.ellipsis,
                             ),
                             decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Url',
+                              border: InputBorder.none,
+                              hintText: 'Url',
+                              //labelText: 'Url',
                             ),
                           ),
                         ],
