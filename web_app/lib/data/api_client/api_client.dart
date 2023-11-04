@@ -13,8 +13,9 @@ class ApiClient {
   ApiClient({required this.profileService});
 
   Future<List<Connection>> getConnections() async {
-    final tgId =
-        tg.isSupported ? tg.WebAppChat().id.toString() : 'Non telegram user';
+    final tgId = tg.isSupported
+        ? tg.initDataUnsafe.chat?.id.toString() ?? ''
+        : 'Non telegram user';
     try {
       return await profileService.getConnections(tgUserId: tgId);
     } on DioException catch (error) {
@@ -27,8 +28,9 @@ class ApiClient {
   Future<void> patchConnections({
     required Connection request,
   }) async {
-    final tgId =
-        tg.isSupported ? tg.WebAppChat().id.toString() : 'Non telegram user';
+    final tgId = tg.isSupported
+        ? tg.initDataUnsafe.chat?.id.toString()
+        : 'Non telegram user';
     final newRequest = request.copyWith(tgUserId: tgId);
     try {
       await profileService.patchConnection(request: newRequest);
@@ -66,8 +68,9 @@ class ApiClient {
   Future<void> createApikey({
     required Connection request,
   }) async {
-    final tgId =
-        tg.isSupported ? tg.WebAppChat().id.toString() : 'Non telegram user';
+    final tgId = tg.isSupported
+        ? tg.initDataUnsafe.chat?.id.toString() ?? ''
+        : 'Non telegram user';
     final newRequest = request.copyWith(tgUserId: tgId, isActive: true);
     try {
       await profileService.createApikey(request: newRequest);

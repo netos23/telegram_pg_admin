@@ -485,3 +485,30 @@ class _TopTransactionsState extends State<TopTransactions> {
     super.dispose();
   }
 }
+
+/*
+
+class AppInfo extends StatelessWidget {
+  const AppInfo({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      child: Column(
+        children: [
+          Text(tg.WebAppChat().title),
+          Text(tg.initDataUnsafe.chat?.id.toString()),
+          Text(tg.WebAppChat().photo_url.toString()),
+          Text(tg.initDataUnsafe.chat?.id.toString() ?? ''),
+          Text(tg.initDataUnsafe.chat?.title.toString() ?? ''),
+          Text(tg.initDataUnsafe.chat?..toString() ?? ''),
+        ],
+      ),
+    );
+  }
+}
+
+*/
