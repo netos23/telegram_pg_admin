@@ -50,9 +50,10 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
 
   Future<void> onAdd() async {
     if (urlController.text.isNotEmpty && nameController.text.isNotEmpty) {
-      if (!urlController.text.startsWith('https://')) {
+      if (!urlController.text.startsWith('https://') &&
+          !urlController.text.startsWith('http://')) {
         showCustomAlertDialog(
-          'Please send me a valid url. https is required.',
+          'Please send me a valid url. http or https is required.',
           'Invalid url',
         );
       } else {
@@ -90,7 +91,7 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
           width: 600,
           child: SafeArea(
             child: Padding(
-              padding: const EdgeInsets.all(32.0),
+              padding: const EdgeInsets.all(16.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,

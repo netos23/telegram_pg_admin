@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_telegram_web_app/flutter_telegram_web_app.dart' as tg;
 import 'package:rxdart/rxdart.dart';
 import 'package:web_app/domain/entity/connection.dart';
@@ -101,6 +102,20 @@ class _MainPageState extends State<MainPage> {
                             Text(
                               connection.url ?? '',
                               overflow: TextOverflow.ellipsis,
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Clipboard.setData(
+                                  ClipboardData(
+                                    text:  connection.apikey ?? '',
+                                  ),
+                                );
+                                tg.HapticFeedback.selectionChanged();
+                              },
+                              child: Text(
+                                connection.apikey ?? '',
+                                overflow: TextOverflow.ellipsis,
+                              ),
                             ),
                             const Spacer(),
                             Row(

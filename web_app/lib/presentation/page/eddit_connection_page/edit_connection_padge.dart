@@ -30,19 +30,20 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
     nameController.text = widget.connection?.name ?? '';
     AppComponents().backButton.show();
     AppComponents().mainButton.onClick(
-      tg.JsVoidCallback(
-          onEdit,
-      ),
-    );
+          tg.JsVoidCallback(
+            onEdit,
+          ),
+        );
     AppComponents().mainButton.text = 'Edit';
     AppComponents().mainButton.show();
   }
 
   Future<void> onEdit() async {
     if (urlController.text.isNotEmpty && nameController.text.isNotEmpty) {
-      if (!urlController.text.startsWith('https://')) {
+      if (!urlController.text.startsWith('https://') &&
+          !urlController.text.startsWith('http://')) {
         showCustomAlertDialog(
-          'Please send me a valid url. https is required.',
+          'Please send me a valid url. http or https is required.',
           'Invalid url',
         );
       } else {
@@ -86,7 +87,7 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
             width: 600,
             child: SafeArea(
               child: Padding(
-                padding: const EdgeInsets.all(32.0),
+                padding: const EdgeInsets.all(16.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
