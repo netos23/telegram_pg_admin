@@ -114,14 +114,13 @@ def get_metrics():
                         if col != 'timestamp':
                             row.append(r.get(col))
                         else:
-                            datetime_obj = parser.parse(r.get(col))
-                            row.append(datetime_obj)
+                            row.append(r.get(col)*1000)
                     row.append(api_key)
                     rows.append(row)
                 client.insert('metrics', rows, column_names=[*column_names, 'api_key'])
             except Exception as e:
                 TelegramSender().send_message(f"Connection: {connection.name}. Error: {str(e)}", connection.tg_user_id)
-    return
+    return "", 200
 
 
 @app.route("/dashboard/", methods=["POST"])
@@ -132,7 +131,7 @@ def dashboard():
         return {}, 401
 
     default = datetime.today() - timedelta(hours=0, minutes=15)
-    date_from = request.json.get('date_from') or default.timestamp()
+    date_from = request.json.get('date_from') or default.timestamp()*1000
     date_to = request.json.get('date_to') or 1000000000000000
     result = client.query(
         'SELECT timestamp, name, value FROM metrics WHERE api_key= %s and timestamp>=toDateTime(%s) and timestamp<=toDateTime(%s) order by timestamp, name',
