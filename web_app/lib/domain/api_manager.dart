@@ -19,7 +19,8 @@ class ApiManager {
   Future<void> patchConnections(Connection request) async {
     final result = await apiClient.patchConnections(request: request);
     final value = (connectionController.valueOrNull ?? [])
-        .where((element) => element.id != request.id).toList();
+        .where((element) => element.id != request.id)
+        .toList();
     value.add(result);
     connectionController.add(value);
   }
@@ -31,21 +32,30 @@ class ApiManager {
     connectionController.add(value);
   }
 
-  Future<void> backup() async {
+  Future<void> backup(String apiKey) async {
     await apiClient.execCommand(
-      request: Command(command: 'backup'),
+      request: Command(
+        command: 'backup',
+        apiKey: apiKey,
+      ),
     );
   }
 
-  Future<void> restore() async {
+  Future<void> restore(String apiKey) async {
     await apiClient.execCommand(
-      request: Command(command: 'restore'),
+      request: Command(
+        command: 'restore',
+        apiKey: apiKey,
+      ),
     );
   }
 
-  Future<void> restart() async {
+  Future<void> restart(String apiKey) async {
     await apiClient.execCommand(
-      request: Command(command: 'restart'),
+      request: Command(
+        command: 'restart',
+        apiKey: apiKey,
+      ),
     );
   }
 }

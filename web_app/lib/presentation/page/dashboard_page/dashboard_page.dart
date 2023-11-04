@@ -33,7 +33,9 @@ class _DashboardPageState extends State<DashboardPage> {
     super.initState();
     AppComponents().backButton.show();
     AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
-      context.router.replace(CommandRoute());
+      context.router.replace(CommandRoute(
+        apiKey: widget.apiKey,
+      ));
     }));
     AppComponents().mainButton.text = 'Dashboards';
     AppComponents().mainButton.show();
@@ -81,7 +83,9 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
       floatingActionButton: !tg.isSupported
           ? FloatingActionButton(
-              onPressed: () => context.router.replace(CommandRoute()),
+              onPressed: () => context.router.replace(CommandRoute(
+                apiKey: widget.apiKey,
+              )),
               child: const Icon(Icons.code),
             )
           : null,

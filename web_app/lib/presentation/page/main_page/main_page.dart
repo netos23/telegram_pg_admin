@@ -26,7 +26,7 @@ class _MainPageState extends State<MainPage> {
     super.initState();
 
     apiManager.connectionController.listen((value) {
-      widget.connectionController.add(value);
+      connectionController.add(value);
     });
 
     apiManager.updateConnections();
@@ -135,13 +135,12 @@ class _MainPageState extends State<MainPage> {
           ? FloatingActionButton(
               onPressed: () async {
                 await context.router.push(AddConnectionRoute());
-                loadConnections();
+                apiManager.updateConnections();
               },
               child: const Icon(Icons.add),
             )
           : null,
     );
   }
-
 
 }

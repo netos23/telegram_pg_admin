@@ -12,68 +12,17 @@ class ApiClient {
 
 
   Future<List<Connection>> getConnections() async {
-    // final tgId = tg.isSupported ? tg
-    //     .WebAppUser()
-    //     .id
-    //     .toString() : 'Non telegram user';
-    // try {
-    //   return await profileService.getConnections(tgUserId: tgId);
-    // } on DioException catch (error) {
-    //   throw Exception(
-    //     error.response?.data['message'],
-    //   );
-    // }
-
-    // var timestamp = DateTime
-    //     .now()
-    //     .millisecondsSinceEpoch;
-    return [
-      Connection(
-        name: 'PG_1',
-        url: 'https://service/pg_1.ru',
-      ),
-      Connection(
-        name: 'PG_2',
-        url: 'https://service/pg_2.ru',
-      ),
-      Connection(
-        name: 'PG_3',
-        url: 'https://service/pg_2.ru',
-      ), Connection(
-        name: 'PG_1',
-        url: 'https://service/pg_1.ru',
-      ),
-      Connection(
-        name: 'PG_2',
-        url: 'https://service/pg_2.ru',
-      ),
-      Connection(
-        name: 'PG_3',
-        url: 'https://service/pg_2.ru',
-      ), Connection(
-        name: 'PG_1',
-        url: 'https://service/pg_1.ru',
-      ),
-      Connection(
-        name: 'PG_2',
-        url: 'https://service/pg_2.ru',
-      ),
-      Connection(
-        name: 'PG_3',
-        url: 'https://service/pg_2.ru',
-      ), Connection(
-        name: 'PG_1',
-        url: 'https://service/pg_1.ru',
-      ),
-      Connection(
-        name: 'PG_2',
-        url: 'https://service/pg_2.ru',
-      ),
-      Connection(
-        name: 'PG_3',
-        url: 'https://service/pg_2.ru',
-      ),
-    ];
+    final tgId = tg.isSupported ? tg
+        .WebAppUser()
+        .id
+        .toString() : 'Non telegram user';
+    try {
+      return await profileService.getConnections(tgUserId: tgId);
+    } on DioException catch (error) {
+      throw Exception(
+        error.response?.data['message'],
+      );
+    }
   }
 
   Future<Connection> patchConnections({

@@ -4,17 +4,26 @@ import 'package:flutter/material.dart';
 import 'package:flutter_telegram_web_app/flutter_telegram_web_app.dart' as tg;
 import 'package:web_app/domain/api_manager.dart';
 import 'package:web_app/internal/app_components.dart';
-import 'package:web_app/presentation/router/app_router.dart';
 import 'package:web_app/presentation/widgets/custom_dialog.dart';
 
 @RoutePage()
 class CommandPage extends StatefulWidget {
   const CommandPage({
     super.key,
+    @QueryParam() this.apiKey = '',
   });
 
+  final String apiKey;
+
+  @override
+  State<CommandPage> createState() => _CommandPageState();
+}
+
+class _CommandPageState extends State<CommandPage> {
   final TextEditingController urlController = TextEditingController();
+
   final TextEditingController nameController = TextEditingController();
+
   final ApiManager apiManager = AppComponents().apiManager;
 
   Future<void> onPressed() async {
@@ -73,7 +82,7 @@ class CommandPage extends StatefulWidget {
                               onPressed: () {
                                 onShowButton(
                                   title: 'Are you sure?',
-                                  onOk: () => widget.apiManager.backup(),
+                                  onOk: () => apiManager.backup(widget.apiKey),
                                   onCancel: () => context.router.pop(),
                                   okText: 'Backup',
                                 );
@@ -96,7 +105,7 @@ class CommandPage extends StatefulWidget {
                               onPressed: () {
                                 onShowButton(
                                   title: 'Are you sure?',
-                                  onOk: () => widget.apiManager.restart(),
+                                  onOk: () => apiManager.restart(widget.apiKey),
                                   onCancel: () => context.router.pop(),
                                   okText: 'Restart',
                                 );
@@ -118,7 +127,7 @@ class CommandPage extends StatefulWidget {
                               onPressed: () {
                                 onShowButton(
                                   title: 'Are you sure?',
-                                  onOk: () => widget.apiManager.restore(),
+                                  onOk: () => apiManager.restore(widget.apiKey),
                                   onCancel: () => context.router.pop(),
                                   okText: 'Restore',
                                 );
