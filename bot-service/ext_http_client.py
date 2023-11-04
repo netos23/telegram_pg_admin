@@ -13,5 +13,7 @@ def send_get(url, api_key, data):
     try:
         res = requests.get(url, params=data, headers={'X-Api-Key': api_key}, timeout=10)
         return res.json(), res.status_code
-    except:
-        return None, 400
+    except requests.exceptions.ConnectTimeout:
+        return "timeout", 400
+    except Exception as e:
+        return "no connection", 400

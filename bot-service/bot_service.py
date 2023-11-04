@@ -88,7 +88,7 @@ class ResponseMetricModel(BaseModel):
 
 # @app.route("/get_metrics/", methods=["POST"])
 # @cross_origin()
-#@scheduler.task('interval', id='my_job', seconds=15)
+@scheduler.task('interval', id='my_job', seconds=15)
 def get_metrics():
     print('This job is executed every 15 seconds.')
     with app.app_context():
