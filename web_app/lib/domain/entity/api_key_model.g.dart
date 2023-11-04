@@ -8,10 +8,10 @@ part of 'api_key_model.dart';
 
 _$ApiKeyModelImpl _$$ApiKeyModelImplFromJson(Map<String, dynamic> json) =>
     _$ApiKeyModelImpl(
-      apikey: json['api_key'] as String,
+      apiKey: json['api_key'] as String,
     );
 
 Map<String, dynamic> _$$ApiKeyModelImplToJson(_$ApiKeyModelImpl instance) =>
     <String, dynamic>{
-      'api_key': instance.apikey,
+      'api_key': instance.apiKey,
     };

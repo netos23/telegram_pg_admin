@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_telegram_web_app/flutter_telegram_web_app.dart' as tg;
 import 'package:web_app/domain/entity/dashboard.dart';
@@ -76,7 +77,7 @@ class _DashboardPageState extends State<DashboardPage> {
           }
           if (dashboards == null) {
             return const Center(
-              child: CircularProgressIndicator(),
+              child: CupertinoActivityIndicator(),
             );
           }
           return GridView.builder(

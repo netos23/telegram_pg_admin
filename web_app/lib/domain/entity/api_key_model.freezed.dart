@@ -21,7 +21,7 @@ ApiKeyModel _$ApiKeyModelFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$ApiKeyModel {
   @JsonKey(name: 'api_key')
-  String get apikey => throw _privateConstructorUsedError;
+  String get apiKey => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +35,7 @@ abstract class $ApiKeyModelCopyWith<$Res> {
           ApiKeyModel value, $Res Function(ApiKeyModel) then) =
       _$ApiKeyModelCopyWithImpl<$Res, ApiKeyModel>;
   @useResult
-  $Res call({@JsonKey(name: 'api_key') String apikey});
+  $Res call({@JsonKey(name: 'api_key') String apiKey});
 }
 
 /// @nodoc
@@ -51,12 +51,12 @@ class _$ApiKeyModelCopyWithImpl<$Res, $Val extends ApiKeyModel>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? apikey = null,
+    Object? apiKey = null,
   }) {
     return _then(_value.copyWith(
-      apikey: null == apikey
-          ? _value.apikey
-          : apikey // ignore: cast_nullable_to_non_nullable
+      apiKey: null == apiKey
+          ? _value.apiKey
+          : apiKey // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -70,7 +70,7 @@ abstract class _$$ApiKeyModelImplCopyWith<$Res>
       __$$ApiKeyModelImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({@JsonKey(name: 'api_key') String apikey});
+  $Res call({@JsonKey(name: 'api_key') String apiKey});
 }
 
 /// @nodoc
@@ -84,12 +84,12 @@ class __$$ApiKeyModelImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? apikey = null,
+    Object? apiKey = null,
   }) {
     return _then(_$ApiKeyModelImpl(
-      apikey: null == apikey
-          ? _value.apikey
-          : apikey // ignore: cast_nullable_to_non_nullable
+      apiKey: null == apiKey
+          ? _value.apiKey
+          : apiKey // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -98,18 +98,18 @@ class __$$ApiKeyModelImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$ApiKeyModelImpl implements _ApiKeyModel {
-  _$ApiKeyModelImpl({@JsonKey(name: 'api_key') required this.apikey});
+  _$ApiKeyModelImpl({@JsonKey(name: 'api_key') required this.apiKey});
 
   factory _$ApiKeyModelImpl.fromJson(Map<String, dynamic> json) =>
       _$$ApiKeyModelImplFromJson(json);
 
   @override
   @JsonKey(name: 'api_key')
-  final String apikey;
+  final String apiKey;
 
   @override
   String toString() {
-    return 'ApiKeyModel(apikey: $apikey)';
+    return 'ApiKeyModel(apiKey: $apiKey)';
   }
 
   @override
@@ -117,12 +117,12 @@ class _$ApiKeyModelImpl implements _ApiKeyModel {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ApiKeyModelImpl &&
-            (identical(other.apikey, apikey) || other.apikey == apikey));
+            (identical(other.apiKey, apiKey) || other.apiKey == apiKey));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, apikey);
+  int get hashCode => Object.hash(runtimeType, apiKey);
 
   @JsonKey(ignore: true)
   @override
@@ -140,7 +140,7 @@ class _$ApiKeyModelImpl implements _ApiKeyModel {
 
 abstract class _ApiKeyModel implements ApiKeyModel {
   factory _ApiKeyModel(
-          {@JsonKey(name: 'api_key') required final String apikey}) =
+          {@JsonKey(name: 'api_key') required final String apiKey}) =
       _$ApiKeyModelImpl;
 
   factory _ApiKeyModel.fromJson(Map<String, dynamic> json) =
@@ -148,7 +148,7 @@ abstract class _ApiKeyModel implements ApiKeyModel {
 
   @override
   @JsonKey(name: 'api_key')
-  String get apikey;
+  String get apiKey;
   @override
   @JsonKey(ignore: true)
   _$$ApiKeyModelImplCopyWith<_$ApiKeyModelImpl> get copyWith =>

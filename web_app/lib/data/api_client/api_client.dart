@@ -1,8 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_telegram_web_app/flutter_telegram_web_app.dart' as tg;
 import 'package:web_app/data/api_client/profile_service.dart';
+import 'package:web_app/domain/entity/api_key_model.dart';
 import 'package:web_app/domain/entity/command.dart';
 import 'package:web_app/domain/entity/connection.dart';
+import 'package:web_app/domain/entity/long_transaction.dart';
+import 'package:web_app/domain/entity/top_transaction.dart';
 
 class ApiClient {
   final ProfileService profileService;
@@ -29,6 +32,29 @@ class ApiClient {
     final newRequest = request.copyWith(tgUserId: tgId);
     try {
       return await profileService.patchConnection(request: newRequest);
+    } on DioException catch (error) {
+      throw Exception(
+        error.response?.data['message'],
+      );
+    }
+  }
+
+  Future<List<LongTransaction>> getLongTransactions({
+    required ApiKeyModel request,
+  }) async {
+    try {
+      return await profileService.getLongTransactions(request: request);
+    } on DioException catch (error) {
+      throw Exception(
+        error.response?.data['message'],
+      );
+    }
+  }
+  Future<List<TopTransaction>> getTopTransactions({
+    required ApiKeyModel request,
+  }) async {
+    try {
+      return await profileService.getTopTransactions(request: request);
     } on DioException catch (error) {
       throw Exception(
         error.response?.data['message'],

@@ -6,7 +6,7 @@ part 'api_key_model.g.dart';
 @freezed
 class ApiKeyModel with _$ApiKeyModel {
     factory ApiKeyModel({
-      @JsonKey(name: 'api_key') required String apikey,
+      @JsonKey(name: 'api_key') required String apiKey,
 }) = _ApiKeyModel;
 
     factory ApiKeyModel.fromJson(Map<String, dynamic> json) => _$ApiKeyModelFromJson(json);
