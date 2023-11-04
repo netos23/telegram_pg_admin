@@ -115,10 +115,10 @@ class _MainPageState extends State<MainPage> {
           ),
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () => context.router.push(AddConnectionRoute()),
-      //   child: const Icon(Icons.add),
-      // ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => context.router.push(AddConnectionRoute()),
+        child: const Icon(Icons.add),
+      ),
     );
   }
 }
