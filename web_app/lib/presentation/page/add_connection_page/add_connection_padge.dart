@@ -37,6 +37,19 @@ class AddConnectionPage extends StatefulWidget {
 
 class _AddConnectionPageState extends State<AddConnectionPage> {
   @override
+  void initState() {
+    super.initState();
+    AppComponents().backButton.isVisible = true;
+
+  }
+
+  @override
+  void dispose() {
+    AppComponents().backButton.isVisible = false;
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Scaffold(

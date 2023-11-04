@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_telegram_web_app/flutter_telegram_web_app.dart';
 import 'package:provider/provider.dart';
-import 'package:web_app/presentation/router/app_router.dart';
+import 'package:web_app/internal/app_components.dart';
 import 'package:web_app/presentation/widgets/tg_theme_listener.dart';
 
 class PgAdminApp extends StatelessWidget {
@@ -9,7 +9,7 @@ class PgAdminApp extends StatelessWidget {
     super.key,
   });
 
-  final  _appRouter = AppRouter();
+  final  _appRouter = AppComponents().appRouter;
 
   @override
   Widget build(BuildContext context) {

@@ -42,8 +42,15 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
     super.initState();
     widget.urlController.text = widget.connection.url ?? '';
     widget.nameController.text = widget.connection.name ?? '';
+    AppComponents().backButton.isVisible = true;
   }
 
+
+  @override
+  void dispose() {
+    AppComponents().backButton.isVisible = false;
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

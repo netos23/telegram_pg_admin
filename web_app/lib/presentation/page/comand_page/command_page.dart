@@ -1,11 +1,11 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_telegram_web_app/flutter_telegram_web_app.dart';
 import 'package:web_app/data/api_client/profile_service.dart';
 import 'package:web_app/domain/entity/connection.dart';
 import 'package:web_app/internal/app_components.dart';
 import 'package:web_app/presentation/router/app_router.dart';
-import 'package:web_app/presentation/widgets/custom_dialog.dart';
 
 @RoutePage()
 class CommandPage extends StatefulWidget {
@@ -40,6 +40,14 @@ class _CommandPageState extends State<CommandPage> {
   @override
   void initState() {
     super.initState();
+    AppComponents().backButton.isVisible = true;
+
+  }
+
+  @override
+  void dispose() {
+    AppComponents().backButton.isVisible = false;
+    super.dispose();
   }
 
   @override
@@ -61,9 +69,8 @@ class _CommandPageState extends State<CommandPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Container(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                            height: 82,
+                          SizedBox(
+                            height: 50,
                             child: ElevatedButton(
                               style: theme.filledButtonTheme.style?.copyWith(
                                 fixedSize: const MaterialStatePropertyAll(
@@ -71,16 +78,11 @@ class _CommandPageState extends State<CommandPage> {
                                 ),
                               ),
                               onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (_) {
-                                    return CustomDialog(
-                                      title: 'Are you sure?',
-                                      onOk: () => context.router.pop(),
-                                      onCancel: () => context.router.pop(),
-                                      okText: 'Restart',
-                                    );
-                                  },
+                                onShowButton(
+                                  title: 'Are you sure?',
+                                  onOk: () => context.router.pop(),
+                                  onCancel: () => context.router.pop(),
+                                  okText: 'Restart',
                                 );
                                 context.router.pop();
                               },
@@ -99,16 +101,11 @@ class _CommandPageState extends State<CommandPage> {
                                 ),
                               ),
                               onPressed: () {
-                                showDialog(
-                                  context: context,
-                                  builder: (_) {
-                                    return CustomDialog(
-                                      title: 'Are you sure?',
-                                      onOk: () => context.router.pop(),
-                                      onCancel: () => context.router.pop(),
-                                      okText: 'Reboot',
-                                    );
-                                  },
+                                onShowButton(
+                                  title: 'Are you sure?',
+                                  onOk: () => context.router.pop(),
+                                  onCancel: () => context.router.pop(),
+                                  okText: 'Reboot',
                                 );
                                 context.router.pop();
                               },
@@ -132,5 +129,35 @@ class _CommandPageState extends State<CommandPage> {
         child: const Icon(Icons.dashboard),
       ),
     );
+  }
+
+  void onShowButton({
+    required String title,
+    required void Function() onOk,
+    required void Function() onCancel,
+    String? okText,
+    String? cancelText,
+  }) {
+    TelegramPopup(
+      title: "Are you sure?",
+      message: 'It seems dangerous!',
+      buttons: [
+        PopupButton(
+          id: okText ?? 'Ok',
+          type: PopupButtonType.destructive,
+          text: okText,
+        ),
+        PopupButton(
+          id: okText ?? "Cancel",
+          type: PopupButtonType.cancel,
+          text: cancelText,
+        ),
+      ],
+      onTap: (String buttonId) {
+        if (buttonId == "Ok") return onCancel;
+        if (buttonId == "Cancel") return onOk;
+        //showAlert("Button $buttonId clicked");
+      },
+    ).show();
   }
 }
