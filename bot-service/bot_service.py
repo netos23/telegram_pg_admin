@@ -7,14 +7,13 @@ from decimal import Decimal
 from typing import Optional
 
 import clickhouse_connect
-from dateutil import parser
 from dotenv import load_dotenv
 from flask import Flask, jsonify, Response
 from flask import request
 from flask_apscheduler import APScheduler
 from flask_cors import CORS, cross_origin
 from flask_pydantic import validate
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from ext_http_client import send_post, send_get
 from models import UrlConnection
@@ -32,6 +31,8 @@ class RequestCreateModel(BaseModel):
     name: str
     tg_user_id: str
     url: Optional[str]
+    api_key: Optional[str] = None
+    is_active: Optional[bool] = Field(default=True)
 
 
 @app.errorhandler(500)
@@ -48,10 +49,23 @@ def internal_error(error):
 @cross_origin()
 def post(body: RequestCreateModel):
     api_key = str(uuid.uuid4())
-    connection = UrlConnection(**body.model_dump(), api_key=api_key)
+    connection = UrlConnection(**body.model_dump(exclude_none=True), api_key=api_key)
     db.session.add(connection)
     db.session.commit()
     return {'api_key': api_key}
+
+
+@app.route("/create/", methods=["PATCH"])
+@validate()
+@cross_origin()
+def update_connection(body: RequestCreateModel):
+    updated_dict = body.model_dump(exclude_none=True)
+    if 'api_key' not in updated_dict:
+        return {}, 401
+    UrlConnection.query.filter_by(api_key=updated_dict['api_key']). \
+        update(updated_dict)
+    db.session.commit()
+    return {}, 201
 
 
 @app.route("/list_keys/", methods=["GET"])
@@ -92,7 +106,7 @@ class ResponseMetricModel(BaseModel):
 def get_metrics():
     print('This job is executed every 15 seconds.')
     with app.app_context():
-        connections = UrlConnection.query.all()
+        connections = UrlConnection.query.filter_by(is_active=True).all()
         for connection in connections:
             try:
                 api_key = connection.api_key
@@ -107,16 +121,16 @@ def get_metrics():
                                                 parameters=(api_key,))
                     for name in metrics_name.result_rows:
                         rows.append([cur_time, name[0], None, None, api_key])
-
-                for r in res or []:
-                    row = []
-                    for col in column_names:
-                        if col != 'timestamp':
-                            row.append(r.get(col))
-                        else:
-                            row.append(r.get(col) * 1000)
-                    row.append(api_key)
-                    rows.append(row)
+                else:
+                    for r in res:
+                        row = []
+                        for col in column_names:
+                            if col != 'timestamp':
+                                row.append(r.get(col))
+                            else:
+                                row.append(r.get(col) * 1000)
+                        row.append(api_key)
+                        rows.append(row)
                 client.insert('metrics', rows, column_names=[*column_names, 'api_key'])
             except Exception as e:
                 TelegramSender().send_message(f"Connection: {connection.name}. Error: {str(e)}", connection.tg_user_id)
