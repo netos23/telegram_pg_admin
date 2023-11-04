@@ -2,7 +2,7 @@ import os
 import urllib.parse
 import uuid
 from collections import defaultdict
-from datetime import datetime
+from datetime import datetime, timedelta
 from decimal import Decimal
 from typing import Optional
 
@@ -88,7 +88,7 @@ class ResponseMetricModel(BaseModel):
 
 # @app.route("/get_metrics/", methods=["POST"])
 # @cross_origin()
-@scheduler.task('interval', id='my_job', seconds=15)
+#@scheduler.task('interval', id='my_job', seconds=15)
 def get_metrics():
     print('This job is executed every 15 seconds.')
     with app.app_context():
@@ -130,13 +130,18 @@ def dashboard():
     api_key = request.json.get('api_key')
     if not api_key:
         return {}, 401
-    result = client.query('SELECT timestamp, name, value FROM metrics WHERE api_key= %s order by timestamp, name',
-                          parameters=(api_key,))
+
+    default = datetime.today() - timedelta(hours=0, minutes=15)
+    date_from = request.json.get('date_from') or default.timestamp()
+    date_to = request.json.get('date_to') or 1000000000000000
+    result = client.query(
+        'SELECT timestamp, name, value FROM metrics WHERE api_key= %s and timestamp>=toDateTime(%s) and timestamp<=toDateTime(%s) order by timestamp, name',
+        parameters=(api_key, date_from, date_to))
     ans = defaultdict(list)
     for row in result.result_rows:
         ans[row[1]].append(
             {"value": float(row[2]) if row[2] is not None else row[2],
-             "timestamp": row[0].timestamp()})
+             "timestamp": int(row[0].timestamp())})
         # strftime("%d.%m.%Y %H:%M:%S")})
 
     return [{'name': k, 'units': v} for k, v in ans.items()], 200
