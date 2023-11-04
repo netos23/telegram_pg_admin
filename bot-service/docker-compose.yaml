@@ -31,3 +31,5 @@ services:
       - "5000:5000"
     volumes:
       - ./app.db:/app/app.db
+    depends_on:
+      - clickhouse
