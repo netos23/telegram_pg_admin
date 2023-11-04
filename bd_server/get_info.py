@@ -1,16 +1,11 @@
-import psycopg2
+import os
+import time
+from datetime import date, datetime
 
-from telegram_sender import TelegramSender
+import psycopg2 as psycopg2
 
-host = "92.53.127.18"
-port = "5432"
-username = "postgres"
-password = "hCImjO&&k6N$"
-
-sqlItem = {
+sql_item = {
     'Alive': "select 1;",  # monitor survival
-    'Uptime': "SELECT current_timestamp - pg_postmaster_start_time();",
-    'Size': "SELECT pg_size_pretty(pg_database_size(datname)), datname AS size FROM pg_database;",
     'Cache hit ratio': "SELECT sum(heap_blks_hit) / (sum(heap_blks_hit) + sum(heap_blks_read)) as ratio FROM pg_statio_user_tables;",
     'Active_connections': "select count (*) from pg_stat_activity where state = 'active';",
     'Server_connections': "select count (*) from pg_stat_activity where backend_type = 'client backend'",
@@ -20,7 +15,6 @@ sqlItem = {
     'Server_maxcon': "select setting :: int from pg_settings where name = 'max_connections'",
     'Tx_commited': "select sum (xact_commit) from pg_stat_database",
     'Tx_rollbacked': "select sum (xact_rollback) from pg_stat_database",
-    'qps': "SELECT sum(xact_commit+xact_rollback) FROM pg_stat_database;",
     'scan_full_tables': "select sum(tup_returned) from pg_stat_database",
     'scan_index_rows': "select sum(tup_fetched) from pg_stat_database",
     'tup_inserted': "select sum(tup_inserted) from pg_stat_database",
@@ -33,67 +27,75 @@ sqlItem = {
     'Idle_transaction_5': "select count (*) from pg_stat_activity where state = 'idle in transaction' and now () - state_change> interval '5 second'",
     'Long_query_5': "select count (*) from pg_stat_activity where state = 'active' and now () - query_start> interval '5 second'",
     'Long_transaction_5': "select count (*) from pg_stat_activity where now () - xact_start> interval '5 second'",
-    'long_lock_waiting_5': "select count(*) from pg_stat_activity where wait_event_type is not null and now()-state_change > interval '5 second'"
+    'long_lock_waiting_5': "select count(*) from pg_stat_activity where wait_event_type is not null and now()-state_change > interval '5 second'",
+    # 'pg_stat_activity': "SELECT * FROM pg_stat_activity"
+}
+
+sql_items_from_file = {
+
 }
 
 
 def get_item(item_key):
+    query = sql_item[item_key]
     connection = None
-    result = None
     cursor = None
     try:
-        sql_text = sqlItem[item_key]
+        result = {}
+        now = datetime.now()
+        formatted_date = now.strftime("%d.%m.%Y %H:%M:%S")
         connection = psycopg2.connect(
-            user=username,
-            password=password,
-            host=host,
-            port=port
+            user=os.environ['PGUSERNAME'],
+            password=os.environ['PGPASSWORD'],
+            host=os.environ['PGHOSTNAME'],
+            port=os.environ['PGPORT'],
+            database=os.environ['PGDATABASE']
         )
         cursor = connection.cursor()
-        cursor.execute(sql_text)
+        cursor.execute(query)
         rows = cursor.fetchall()
-        if len(rows) >= 1:
-            result = rows[0][0]
-        else:
-            result = None
-
+        result['timestamp'] = formatted_date
+        result['name'] = item_key
+        result['value'] = float(rows[0][0])
+        return result
     except Exception as e:
         print(e)
     finally:
         cursor.close()
         connection.close()
+
+
+def get_from_file(file_path):
+    with open(file_path, 'r') as f:
+        return get_custom_query(f.read())
+
+
+def get_custom_query(query):
+    connection = None
+    cursor = None
+    try:
+        connection = psycopg2.connect(
+            user=os.environ['PGUSERNAME'],
+            password=os.environ['PGPASSWORD'],
+            host=os.environ['PGHOSTNAME'],
+            port=os.environ['PGPORT'],
+            database=os.environ['PGDATABASE']
+        )
+        cursor = connection.cursor()
+        cursor.execute(query)
+        rows = cursor.fetchall()
+        return rows[0][0]
+    except Exception as e:
+        print(e)
+    finally:
+        cursor.close()
+        connection.close()
+
+
+def get_info():
+    result = []
+    for key, value in sql_item.items():
+        item = get_item(key)
+        if item is not None:
+            result.append(get_item(key))
     return result
-
-
-def get_stat_activity():
-    connection = None
-    cursor = None
-    try:
-        connection = psycopg2.connect(
-            user=username,
-            password=password,
-            host=host,
-            port=port
-        )
-        cursor = connection.cursor()
-        cursor.execute("SELECT * FROM pg_stat_activity")
-        rows = cursor.fetchall()
-        columns = [desc[0] for desc in cursor.description]
-        return [dict(zip(columns, row)) for row in rows]
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close()
-        connection.close()
-
-
-if __name__ == '__main__':
-    metrics = {}
-    telegram_sender = TelegramSender()
-    for key in sqlItem.keys():
-        value = get_item(key)
-        metrics[key] = value
-    telegram_sender.send_dict_message("PostgreSql metrics", metrics, chat_id=-4035313120)
-    stats = get_stat_activity()
-    for stat in stats:
-        telegram_sender.send_dict_message("Activity stats", stat, chat_id=-4035313120)
