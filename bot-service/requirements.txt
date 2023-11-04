@@ -4,6 +4,6 @@ Flask-SQLAlchemy
 clickhouse-connect
 python-dotenv
 python-dateutil
-apscheduler
+Flask-APScheduler
 telebot
 flask-cors
