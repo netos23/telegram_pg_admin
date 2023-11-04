@@ -64,6 +64,7 @@ def list_keys():
 
 class RequestCommandModel(BaseModel):
     command: str
+    parameter: Optional[str]
 
 
 @app.route("/exec/", methods=["POST"])
@@ -139,6 +140,17 @@ def dashboard():
         # strftime("%d.%m.%Y %H:%M:%S")})
 
     return [{'name': k, 'units': v} for k, v in ans.items()], 200
+
+
+@app.route("/dumps/", methods=["POST"])
+@cross_origin()
+def dumps():
+    api_key = request.json.get('api_key')
+    if not api_key:
+        return {}, 401
+    connection = UrlConnection.query.filter_by(api_key=api_key).one()
+    data, status = send_get(connection.url + "/dumps", api_key, {})
+    return data or '', status
 
 
 @app.before_request
