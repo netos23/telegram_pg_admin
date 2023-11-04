@@ -20,7 +20,7 @@ Dashboard _$DashboardFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$Dashboard {
-  String get title => throw _privateConstructorUsedError;
+  String get name => throw _privateConstructorUsedError;
   List<DashboardUnit> get units => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -34,7 +34,7 @@ abstract class $DashboardCopyWith<$Res> {
   factory $DashboardCopyWith(Dashboard value, $Res Function(Dashboard) then) =
       _$DashboardCopyWithImpl<$Res, Dashboard>;
   @useResult
-  $Res call({String title, List<DashboardUnit> units});
+  $Res call({String name, List<DashboardUnit> units});
 }
 
 /// @nodoc
@@ -50,13 +50,13 @@ class _$DashboardCopyWithImpl<$Res, $Val extends Dashboard>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? title = null,
+    Object? name = null,
     Object? units = null,
   }) {
     return _then(_value.copyWith(
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String,
       units: null == units
           ? _value.units
@@ -74,7 +74,7 @@ abstract class _$$DashboardImplCopyWith<$Res>
       __$$DashboardImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String title, List<DashboardUnit> units});
+  $Res call({String name, List<DashboardUnit> units});
 }
 
 /// @nodoc
@@ -88,13 +88,13 @@ class __$$DashboardImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? title = null,
+    Object? name = null,
     Object? units = null,
   }) {
     return _then(_$DashboardImpl(
-      title: null == title
-          ? _value.title
-          : title // ignore: cast_nullable_to_non_nullable
+      name: null == name
+          ? _value.name
+          : name // ignore: cast_nullable_to_non_nullable
               as String,
       units: null == units
           ? _value._units
@@ -108,14 +108,14 @@ class __$$DashboardImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$DashboardImpl implements _Dashboard {
   const _$DashboardImpl(
-      {required this.title, required final List<DashboardUnit> units})
+      {required this.name, required final List<DashboardUnit> units})
       : _units = units;
 
   factory _$DashboardImpl.fromJson(Map<String, dynamic> json) =>
       _$$DashboardImplFromJson(json);
 
   @override
-  final String title;
+  final String name;
   final List<DashboardUnit> _units;
   @override
   List<DashboardUnit> get units {
@@ -126,7 +126,7 @@ class _$DashboardImpl implements _Dashboard {
 
   @override
   String toString() {
-    return 'Dashboard(title: $title, units: $units)';
+    return 'Dashboard(name: $name, units: $units)';
   }
 
   @override
@@ -134,14 +134,14 @@ class _$DashboardImpl implements _Dashboard {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$DashboardImpl &&
-            (identical(other.title, title) || other.title == title) &&
+            (identical(other.name, name) || other.name == name) &&
             const DeepCollectionEquality().equals(other._units, _units));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, title, const DeepCollectionEquality().hash(_units));
+      runtimeType, name, const DeepCollectionEquality().hash(_units));
 
   @JsonKey(ignore: true)
   @override
@@ -159,14 +159,14 @@ class _$DashboardImpl implements _Dashboard {
 
 abstract class _Dashboard implements Dashboard {
   const factory _Dashboard(
-      {required final String title,
+      {required final String name,
       required final List<DashboardUnit> units}) = _$DashboardImpl;
 
   factory _Dashboard.fromJson(Map<String, dynamic> json) =
       _$DashboardImpl.fromJson;
 
   @override
-  String get title;
+  String get name;
   @override
   List<DashboardUnit> get units;
   @override
