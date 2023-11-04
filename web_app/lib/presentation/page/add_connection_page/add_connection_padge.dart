@@ -12,7 +12,7 @@ import 'package:web_app/presentation/router/app_router.dart';
 class AddConnectionPage extends StatefulWidget {
   AddConnectionPage({super.key});
 
-  ApiClient profileService = AppComponents().apiClient;
+  ApiManager apiManager = AppComponents().apiManager;
 
   TextEditingController urlController = TextEditingController();
   TextEditingController nameController = TextEditingController();
@@ -22,8 +22,8 @@ class AddConnectionPage extends StatefulWidget {
 
   Future<void> onPressed() async {
     try {
-      final result = await profileService.createApikey(
-        request: Connection(
+      await apiManager.create(
+       Connection(
           name: nameController.text,
           url: urlController.text,
         ),

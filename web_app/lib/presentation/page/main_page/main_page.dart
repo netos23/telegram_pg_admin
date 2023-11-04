@@ -18,12 +18,18 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  final profileService = AppComponents().apiClient;
+  final apiManager = AppComponents().apiManager;
 
   @override
   void initState() {
+
     super.initState();
-    loadConnections();
+
+    apiManager.connectionController.listen((value) {
+      widget.connectionController.add(value);
+    });
+
+    apiManager.updateConnections();
     AppComponents().backButton.hide();
     AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
       context.router.push(AddConnectionRoute());
@@ -128,10 +134,5 @@ class _MainPageState extends State<MainPage> {
             )
           : null,
     );
-  }
-
-  Future<void> loadConnections() async {
-    final result = await profileService.getConnections();
-    widget.connectionController.add(result);
   }
 }
