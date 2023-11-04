@@ -1,0 +1,11 @@
+.idea/*
+venv/*
+__pycache__/
+sqldatabase
+*.log
+*.log.*
+*/tmp.jpg
+*.djcache
+tmp
+*.env*
+/target/
