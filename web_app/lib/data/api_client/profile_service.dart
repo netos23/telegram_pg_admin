@@ -22,7 +22,7 @@ abstract class ProfileService {
   });
 
   @PATCH('/create/')
-  Future<Connection> patchConnection({
+  Future<void> patchConnection({
     @Body() required Connection request,
   });
 
