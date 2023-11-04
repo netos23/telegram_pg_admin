@@ -186,7 +186,7 @@ class DashboardRouteArgs {
 class EditConnectionRoute extends PageRouteInfo<EditConnectionRouteArgs> {
   EditConnectionRoute({
     Key? key,
-    required Connection connection,
+    required Connection? connection,
     List<PageRouteInfo>? children,
   }) : super(
           EditConnectionRoute.name,
@@ -211,7 +211,7 @@ class EditConnectionRouteArgs {
 
   final Key? key;
 
-  final Connection connection;
+  final Connection? connection;
 
   @override
   String toString() {
