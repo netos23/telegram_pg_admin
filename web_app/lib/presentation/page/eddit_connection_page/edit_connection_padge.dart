@@ -30,12 +30,48 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
     nameController.text = widget.connection?.name ?? '';
     AppComponents().backButton.show();
     AppComponents().mainButton.onClick(
-          tg.JsVoidCallback(
-            onEdit,
-          ),
-        );
+      tg.JsVoidCallback(
+          onEdit,
+      ),
+    );
+    AppComponents().backButton.onClick(
+      tg.JsVoidCallback((){
+        onDispose();
+        context.router.pop();
+
+      }
+      ),
+    );
     AppComponents().mainButton.text = 'Edit';
     AppComponents().mainButton.show();
+  }
+
+  void onDispose(){
+    AppComponents().mainButton.hide();
+    AppComponents().backButton.hide();
+    AppComponents().mainButton.offClick(
+      tg.JsVoidCallback(
+        onEdit,
+      ),
+    );
+    AppComponents().backButton.offClick(
+      tg.JsVoidCallback((){
+        onDispose();
+        context.router.pop();
+
+      }
+      ),
+    );
+    AppComponents().mainButton.onClick(
+      tg.JsVoidCallback(
+            () {
+          context.router.push(AddConnectionRoute());
+        },
+      ),
+    );
+    AppComponents().mainButton.text = 'Add connection';
+    AppComponents().mainButton.show();
+
   }
 
   Future<void> onEdit() async {
@@ -48,6 +84,7 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
         );
       } else {
         await onPatchConnection();
+        onDispose();
         context.router.pop();
       }
     } else {
@@ -58,15 +95,6 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
     }
   }
 
-  @override
-  void dispose() {
-    AppComponents().backButton.hide();
-    AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
-      context.router.push(AddConnectionRoute());
-    }));
-    AppComponents().mainButton.text = 'Add connection';
-    super.dispose();
-  }
 
   Future<void> onPatchConnection() async {
     try {
@@ -176,51 +204,6 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
           return CustomAlertDialog(
             title: title,
             description: description,
-          );
-        },
-      );
-    }
-  }
-
-  void onShowButton({
-    required String title,
-    required void Function() onOk,
-    required void Function() onCancel,
-    String? okText,
-    String? cancelText,
-  }) {
-    if (tg.isSupported) {
-      tg.TelegramPopup(
-        title: "Are you sure?",
-        message: 'It seems dangerous!',
-        buttons: [
-          tg.PopupButton(
-            id: okText ?? 'Ok',
-            type: tg.PopupButtonType.destructive,
-            text: okText,
-          ),
-          tg.PopupButton(
-            id: okText ?? "Cancel",
-            type: tg.PopupButtonType.cancel,
-            text: cancelText,
-          ),
-        ],
-        onTap: (String buttonId) {
-          if (buttonId == "Ok") return onCancel;
-          if (buttonId == "Cancel") return onOk;
-          //showAlert("Button $buttonId clicked");
-        },
-      ).show();
-    } else {
-      showDialog(
-        context: context,
-        builder: (_) {
-          return CustomDialog(
-            title: title,
-            onOk: onOk,
-            onCancel: onCancel,
-            okText: okText,
-            cancelText: cancelText,
           );
         },
       );
