@@ -1,0 +1,6 @@
+requests
+Flask-Pydantic
+Flask-SQLAlchemy
+clickhouse-connect
+python-dotenv
+python-dateutil

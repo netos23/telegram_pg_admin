@@ -1,0 +1,13 @@
+<yandex>
+  <!-- Docs: <https://clickhouse.tech/docs/en/operations/settings/settings_users/> -->
+  <users>
+    <monitor_clk>
+      <profile>default</profile>
+      <networks>
+        <ip>::/0</ip>
+      </networks>
+      <password>239QVRVlfsvtfd</password>
+      <quota>default</quota>
+    </monitor_clk>
+  </users>
+</yandex>
