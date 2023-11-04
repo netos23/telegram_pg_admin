@@ -93003,7 +93003,7 @@ case 3:p.RB(b)
 case 1:return A.R(q,r)}})
 return A.S($async$ui,r)},
 ahl(){this.a.toString
-switch(0){case 0:return A.ajW("empty.riv")}},
+switch(0){case 0:return A.ajW("assets/empty.riv")}},
 aV(a){var s,r=this
 r.bl(a)
 r.a.toString

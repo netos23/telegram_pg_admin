@@ -20,7 +20,7 @@ class EmptyWidget extends StatelessWidget {
             child: SizedBox(
               height: 300,
               child: RiveAnimation.asset(
-                'empty.riv',
+                'assets/empty.riv',
               ),
             ),
           ),
