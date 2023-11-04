@@ -133,6 +133,8 @@ def dashboard():
     default = datetime.today() - timedelta(hours=0, minutes=15)
     date_from = request.json.get('date_from') or default.timestamp() * 1000
     date_to = request.json.get('date_to') or 1000000000000000
+    date_from = date_from / 1000
+    date_to = date_to / 1000
     result = client.query(
         'SELECT timestamp, name, value FROM metrics WHERE api_key= %s and timestamp>=toDateTime(%s) and timestamp<=toDateTime(%s) order by timestamp, name',
         parameters=(api_key, date_from, date_to))
