@@ -76,7 +76,6 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
   }
 
   void onDispose(){
-    AppComponents().mainButton.hide();
     AppComponents().backButton.hide();
     AppComponents().mainButton.offClick(
       tg.JsVoidCallback(
