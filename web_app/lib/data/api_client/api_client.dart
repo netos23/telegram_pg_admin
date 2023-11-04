@@ -24,7 +24,7 @@ class ApiClient {
     }
   }
 
-  Future<Connection> patchConnections({
+  Future<void> patchConnections({
     required Connection request,
   }) async {
     final tgId =
