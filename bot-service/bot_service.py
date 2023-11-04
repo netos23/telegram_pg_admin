@@ -88,7 +88,7 @@ class ResponseMetricModel(BaseModel):
 
 # @app.route("/get_metrics/", methods=["POST"])
 # @cross_origin()
-@scheduler.task('interval', id='my_job', seconds=15)
+@scheduler.task('interval', id='my_job', seconds=15, max_instances=10)
 def get_metrics():
     print('This job is executed every 15 seconds.')
     with app.app_context():
@@ -114,7 +114,7 @@ def get_metrics():
                         if col != 'timestamp':
                             row.append(r.get(col))
                         else:
-                            row.append(r.get(col)*1000)
+                            row.append(r.get(col) * 1000)
                     row.append(api_key)
                     rows.append(row)
                 client.insert('metrics', rows, column_names=[*column_names, 'api_key'])
@@ -131,7 +131,7 @@ def dashboard():
         return {}, 401
 
     default = datetime.today() - timedelta(hours=0, minutes=15)
-    date_from = request.json.get('date_from') or default.timestamp()*1000
+    date_from = request.json.get('date_from') or default.timestamp() * 1000
     date_to = request.json.get('date_to') or 1000000000000000
     result = client.query(
         'SELECT timestamp, name, value FROM metrics WHERE api_key= %s and timestamp>=toDateTime(%s) and timestamp<=toDateTime(%s) order by timestamp, name',
