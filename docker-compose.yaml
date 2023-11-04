@@ -18,14 +18,14 @@ services:
     env_file:
       - ./bot-service/.env
   ingress:
-    image: 'app-ingress:1.0'
+    image: 'pg-app-ingress:1.1'
     build:
       context: ingress
       dockerfile: Dockerfile
     ports:
       - '80:80'
       - '443:443'
-    container_name: app-ingress
+    container_name: pg-app-ingress
     volumes:
       - letsencrypt-data:/etc/letsencrypt
       - ./static:/var/www/html
