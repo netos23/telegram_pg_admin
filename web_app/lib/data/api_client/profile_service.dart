@@ -7,6 +7,7 @@ import 'package:web_app/domain/entity/command.dart';
 import 'package:web_app/domain/entity/connection.dart';
 import 'package:web_app/domain/entity/dump.dart';
 import 'package:web_app/domain/entity/dump_response.dart';
+import 'package:web_app/domain/entity/long_transaction.dart';
 
 part 'profile_service.g.dart';
 
@@ -32,6 +33,11 @@ abstract class ProfileService {
   @PATCH('/create/')
   Future<Connection> patchConnection({
     @Body() required Connection request,
+  });
+
+  @PATCH('/long_transactions/')
+  Future<LongTransaction> getLongTransactions({
+    @Body() required ApiKeyModel request,
   });
 
 

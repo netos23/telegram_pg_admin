@@ -23,8 +23,6 @@ class _CommandPageState extends State<CommandPage> {
   final TextEditingController urlController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
 
-  final ApiManager apiManager = AppComponents().apiManager;
-
   Future<void> onPressed() async {
     try {} on DioException catch (error) {
       throw Exception(
@@ -58,103 +56,53 @@ class _CommandPageState extends State<CommandPage> {
       body: Center(
         child: SizedBox(
           width: 600,
-          child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(32.0),
-              child: Column(
-                children: [
-                  Card(
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
-                    child: Column(
-                      children: [
-                        ListTile(
-                          leading: const Icon(
-                            Icons.backup,
-                            color: Colors.green,
-                          ),
-                          onTap: () {
-                            onShowButton(
-                              title: 'Are you sure?',
-                              onOk: () => apiManager.backup(widget.apiKey),
-                              onCancel: () => context.router.pop(),
-                              okText: 'Backup',
-                            );
-                            context.router.pop();
-                          },
-                          title: Text('Backup'),
-                        ),
-                        const Divider(
-                          height: 1,
-                          indent: 16,
-                          endIndent: 16,
-                        ),
-                        ListTile(
-                          leading: const Icon(
-                            Icons.restart_alt,
-                            color: Colors.red,
-                          ),
-                          onTap: () {
-                            onShowButton(
-                              title: 'Are you sure?',
-                              onOk: () => apiManager.restart(widget.apiKey),
-                              onCancel: () => context.router.pop(),
-                              okText: 'Restart',
-                            );
-                            context.router.pop();
-                          },
-                          title: Text('Restart'),
-                        ),
-                        const Divider(
-                          height: 1,
-                          indent: 16,
-                          endIndent: 16,
-                        ),
-                        ListTile(
-                          leading: const Icon(
-                            Icons.restore,
-                            color: Colors.blue,
-                          ),
-                          onTap: () {
-                            onShowButton(
-                              title: 'Are you sure?',
-                              onOk: () => apiManager.restore(widget.apiKey),
-                              onCancel: () => context.router.pop(),
-                              okText: 'Restore',
-                            );
-                            context.router.pop();
-                          },
-                          title: Text('Restore'),
-                        ),
-                        SizedBox(
-                          height: 50,
-                          child: ElevatedButton(
-                            style: theme.filledButtonTheme.style?.copyWith(
-                              fixedSize: const MaterialStatePropertyAll(
-                                Size.fromHeight(50),
-                              ),
-                            ),
-                            onPressed: () {
-                              onShowButton(
-                                title: 'Are you sure?',
-                                onOk: () => context.router.pop(),
-                                onCancel: () => context.router.pop(),
-                                okText: 'Close connections',
-                              );
-                              context.router.pop();
-                            },
-                            child: const Center(
-                              child: Text('Close connections'),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+          child: ListView(
+            padding: const EdgeInsets.all(32.0),
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 10,
+                ),
+                child: Text(
+                  'УПРАВЛЕНИЕ',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: theme.colorScheme.onSurface,
                   ),
-                ],
+                ),
               ),
-            ),
+              ServerCommandMenu(
+                apiKey: widget.apiKey,
+              ),
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 10,
+                ),
+                child: Text(
+                  'ДЛИННЫЕ ТРАНЗАКЦИИ',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
+              ),
+              const TransactionsMenu(),
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 10,
+                ),
+                child: Text(
+                  'ТОП ТРАНЗАКЦИЙ',
+                  style: theme.textTheme.titleMedium?.copyWith(
+                    color: theme.colorScheme.onSurface,
+                  ),
+                ),
+              ),
+              const TopTransactions(),
+            ],
           ),
         ),
       ),
@@ -166,6 +114,22 @@ class _CommandPageState extends State<CommandPage> {
           : null,
     );
   }
+}
+
+class ServerCommandMenu extends StatefulWidget {
+  const ServerCommandMenu({
+    super.key,
+    required this.apiKey,
+  });
+
+  final String apiKey;
+
+  @override
+  State<ServerCommandMenu> createState() => _ServerCommandMenuState();
+}
+
+class _ServerCommandMenuState extends State<ServerCommandMenu> {
+  final ApiManager apiManager = AppComponents().apiManager;
 
   void onShowButton({
     required String title,
@@ -211,4 +175,145 @@ class _CommandPageState extends State<CommandPage> {
       );
     }
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      child: Column(
+        children: [
+          ListTile(
+            leading: const Icon(
+              Icons.backup,
+              color: Colors.green,
+            ),
+            onTap: () {
+              onShowButton(
+                title: 'Are you sure?',
+                onOk: () => apiManager.backup(widget.apiKey),
+                onCancel: () => context.router.pop(),
+                okText: 'Backup',
+              );
+              context.router.pop();
+            },
+            title: Text('Backup'),
+          ),
+          const Divider(
+            height: 1,
+            indent: 16,
+            endIndent: 16,
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.restart_alt,
+              color: Colors.orange,
+            ),
+            onTap: () {
+              onShowButton(
+                title: 'Are you sure?',
+                onOk: () => apiManager.restart(widget.apiKey),
+                onCancel: () => context.router.pop(),
+                okText: 'Restart',
+              );
+              context.router.pop();
+            },
+            title: Text('Restart'),
+          ),
+          const Divider(
+            height: 1,
+            indent: 16,
+            endIndent: 16,
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.restore,
+              color: Colors.blue,
+            ),
+            onTap: () {
+              onShowButton(
+                title: 'Are you sure?',
+                onOk: () => apiManager.restore(widget.apiKey),
+                onCancel: () => context.router.pop(),
+                okText: 'Restore',
+              );
+              context.router.pop();
+            },
+            title: Text('Restore'),
+          ),
+        ],
+      ),
+    );
+  }
 }
+
+class TransactionsMenu extends StatefulWidget {
+  const TransactionsMenu({super.key});
+
+  @override
+  State<TransactionsMenu> createState() => _TransactionsMenuState();
+}
+
+class _TransactionsMenuState extends State<TransactionsMenu> {
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      child: Column(
+        children: [
+          ListTile(
+            leading: const Icon(
+              Icons.backup,
+              color: Colors.green,
+            ),
+            title: Text('Backup'),
+          ),
+          const Divider(
+            height: 1,
+            indent: 16,
+            endIndent: 16,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class TopTransactions extends StatefulWidget {
+  const TopTransactions({super.key});
+
+  @override
+  State<TopTransactions> createState() => _TopTransactionsState();
+}
+
+class _TopTransactionsState extends State<TopTransactions> {
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
+      child: Column(
+        children: [
+          ListTile(
+            leading: const Icon(
+              Icons.backup,
+              color: Colors.green,
+            ),
+            title: Text('Backup'),
+          ),
+          const Divider(
+            height: 1,
+            indent: 16,
+            endIndent: 16,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
