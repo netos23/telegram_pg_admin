@@ -33,17 +33,10 @@ class _CommandPageState extends State<CommandPage> {
   void onReplace() {
     AppComponents().mainButton.hide();
     AppComponents().mainButton.offClick(tg.JsVoidCallback(() {
-      context.router.replace(DashboardRoute(
+      context.router.popAndPush(DashboardRoute(
         apiKey: widget.apiKey,
       ));
     }));
-    AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
-      context.router.replace(CommandRoute(
-        apiKey: widget.apiKey,
-      ));
-    }));
-    AppComponents().mainButton.text = 'To commands';
-    AppComponents().mainButton.show();
   }
 
   @override
@@ -132,7 +125,7 @@ class _CommandPageState extends State<CommandPage> {
           ? FloatingActionButton(
               onPressed: (){
                 onReplace();
-                context.router.replace(DashboardRoute(
+                context.router.popAndPush(DashboardRoute(
                   apiKey: widget.apiKey,
                 ));
               },
@@ -225,7 +218,7 @@ class _ServerCommandMenuState extends State<ServerCommandMenu> {
               );
               context.router.pop();
             },
-            title: Text('Backup'),
+            title: const Text('Backup'),
           ),
           const Divider(
             height: 1,
@@ -250,7 +243,7 @@ class _ServerCommandMenuState extends State<ServerCommandMenu> {
                 okText: 'Restart',
               );
             },
-            title: Text('Restart'),
+            title: const Text('Restart'),
           ),
           const Divider(
             height: 1,
@@ -273,7 +266,7 @@ class _ServerCommandMenuState extends State<ServerCommandMenu> {
                 okText: 'Restore',
               );
             },
-            title: Text('Restore'),
+            title: const Text('Restore'),
           ),
         ],
       ),
@@ -317,7 +310,6 @@ class _TransactionsMenuState extends State<TransactionsMenu> {
     return StreamBuilder(
       stream: _transactionController,
       builder: (context, snapshot) {
-        final theme = Theme.of(context);
         final transactions = snapshot.data;
         final error = snapshot.error;
 

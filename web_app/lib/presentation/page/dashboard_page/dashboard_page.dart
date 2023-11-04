@@ -48,7 +48,7 @@ class _DashboardPageState extends State<DashboardPage> {
     AppComponents().mainButton.hide();
     AppComponents().backButton.hide();
     AppComponents().mainButton.offClick(tg.JsVoidCallback(() {
-      context.router.replace(CommandRoute(
+      context.router.popAndPush(CommandRoute(
         apiKey: widget.apiKey,
       ));
     }));
@@ -70,17 +70,10 @@ class _DashboardPageState extends State<DashboardPage> {
   void onReplace() {
     AppComponents().mainButton.hide();
     AppComponents().mainButton.offClick(tg.JsVoidCallback(() {
-      context.router.replace(CommandRoute(
+      context.router.popAndPush(CommandRoute(
         apiKey: widget.apiKey,
       ));
     }));
-    AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
-      context.router.replace(DashboardRoute(
-        apiKey: widget.apiKey,
-      ));
-    }));
-    AppComponents().mainButton.text = 'To dashboards';
-    AppComponents().mainButton.show();
   }
 
 
@@ -97,7 +90,7 @@ class _DashboardPageState extends State<DashboardPage> {
       onDispose();
       context.router.pop();
     }));
-    AppComponents().mainButton.text = 'Commands';
+    AppComponents().mainButton.text = 'To commands < >';
     AppComponents().backButton.show();
     AppComponents().mainButton.show();
   }
@@ -150,7 +143,7 @@ class _DashboardPageState extends State<DashboardPage> {
           ? FloatingActionButton(
               onPressed: () {
                 onReplace();
-                context.router.replace(CommandRoute(
+                context.router.popAndPush(CommandRoute(
                   apiKey: widget.apiKey,
                 ));
               },
