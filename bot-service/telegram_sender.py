@@ -10,7 +10,7 @@ class TelegramSender:
         return cls._instance
 
     def __init__(self):
-        self.bot = telebot.TeleBot('6535871705:AAGKgG5Jh6Lgld5WabvQQsagMF28m9Lta34')
+        self.bot = telebot.TeleBot('6981773924:AAFZiL4CI4kneo4qJllbMka4WqdqY23T1Ro')
 
     # 293466331
 
