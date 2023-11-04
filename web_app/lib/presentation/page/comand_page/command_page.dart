@@ -117,6 +117,7 @@ class _CommandPageState extends State<CommandPage> {
               TopTransactions(
                 apiKey: widget.apiKey,
               ),
+              Text(tg.initData),
             ],
           ),
         ),
