@@ -18,12 +18,12 @@ services:
     env_file:
       - ./bot-service/.env
   ingress:
-    image: 'it-profession-ingress:1.0'
+    image: 'app-ingress:1.0'
     build: ./ingress/
     ports:
       - '80:80'
       - '443:443'
-    container_name: it-profession-ingress
+    container_name: app-ingress
     volumes:
       - letsencrypt-data:/etc/letsencrypt
       - ./static/:/var/www/html
