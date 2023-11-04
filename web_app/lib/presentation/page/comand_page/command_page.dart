@@ -10,6 +10,7 @@ import 'package:web_app/domain/api_manager.dart';
 import 'package:web_app/domain/entity/long_transaction.dart';
 import 'package:web_app/domain/entity/top_transaction.dart';
 import 'package:web_app/internal/app_components.dart';
+import 'package:web_app/presentation/router/app_router.dart';
 import 'package:web_app/presentation/widgets/custom_dialog.dart';
 
 @RoutePage()
@@ -29,12 +30,20 @@ class _CommandPageState extends State<CommandPage> {
   final TextEditingController urlController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
 
-  Future<void> onPressed() async {
-    try {} on DioException catch (error) {
-      throw Exception(
-        error.response?.data['message'],
-      );
-    }
+  void onReplace() {
+    AppComponents().mainButton.hide();
+    AppComponents().mainButton.offClick(tg.JsVoidCallback(() {
+      context.router.replace(DashboardRoute(
+        apiKey: widget.apiKey,
+      ));
+    }));
+    AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
+      context.router.replace(CommandRoute(
+        apiKey: widget.apiKey,
+      ));
+    }));
+    AppComponents().mainButton.text = 'Dashboards';
+    AppComponents().mainButton.show();
   }
 
   @override
@@ -42,7 +51,10 @@ class _CommandPageState extends State<CommandPage> {
     super.initState();
     AppComponents().backButton.show();
     AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
-      context.router.pop();
+      onReplace();
+      context.router.replace(DashboardRoute(
+        apiKey: widget.apiKey,
+      ));
     }));
     AppComponents().mainButton.text = 'Dashboards';
     AppComponents().mainButton.show();
@@ -118,7 +130,12 @@ class _CommandPageState extends State<CommandPage> {
       ),
       floatingActionButton: !tg.isSupported
           ? FloatingActionButton(
-              onPressed: () => context.router.pop(),
+              onPressed: (){
+                onReplace();
+                context.router.replace(DashboardRoute(
+                  apiKey: widget.apiKey,
+                ));
+              },
               child: const Icon(Icons.dashboard),
             )
           : null,

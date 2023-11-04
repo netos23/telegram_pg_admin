@@ -44,12 +44,38 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-    AppComponents().backButton.show();
-    AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
+  void onDispose() {
+    AppComponents().mainButton.hide();
+    AppComponents().backButton.hide();
+    AppComponents().mainButton.offClick(tg.JsVoidCallback(() {
       context.router.replace(CommandRoute(
+        apiKey: widget.apiKey,
+      ));
+    }));
+    AppComponents().backButton.offClick(tg.JsVoidCallback(() {
+      onDispose();
+      context.router.pop();
+    }));
+    AppComponents().mainButton.onClick(
+      tg.JsVoidCallback(
+        () {
+          context.router.push(AddConnectionRoute());
+        },
+      ),
+    );
+    AppComponents().mainButton.text = 'Add connection';
+    AppComponents().mainButton.show();
+  }
+
+  void onReplace() {
+    AppComponents().mainButton.hide();
+    AppComponents().mainButton.offClick(tg.JsVoidCallback(() {
+      context.router.replace(CommandRoute(
+        apiKey: widget.apiKey,
+      ));
+    }));
+    AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
+      context.router.replace(DashboardRoute(
         apiKey: widget.apiKey,
       ));
     }));
@@ -57,9 +83,23 @@ class _DashboardPageState extends State<DashboardPage> {
     AppComponents().mainButton.show();
   }
 
+
   @override
-  void dispose() {
-    super.dispose();
+  void initState() {
+    super.initState();
+    AppComponents().backButton.show();
+    AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
+      onReplace();
+      context.router.replace(CommandRoute(
+        apiKey: widget.apiKey,
+      ));
+    }));
+    AppComponents().backButton.onClick(tg.JsVoidCallback(() {
+      onDispose();
+      context.router.pop();
+    }));
+    AppComponents().mainButton.text = 'Dashboards';
+    AppComponents().mainButton.show();
   }
 
   @override
@@ -108,9 +148,12 @@ class _DashboardPageState extends State<DashboardPage> {
       ),
       floatingActionButton: !tg.isSupported
           ? FloatingActionButton(
-              onPressed: () => context.router.replace(CommandRoute(
-                apiKey: widget.apiKey,
-              )),
+              onPressed: () {
+                onReplace();
+                context.router.replace(CommandRoute(
+                  apiKey: widget.apiKey,
+                ));
+              },
               child: const Icon(Icons.code),
             )
           : null,

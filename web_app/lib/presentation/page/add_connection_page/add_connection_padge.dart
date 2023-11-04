@@ -44,6 +44,12 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
     AppComponents().mainButton.onClick(
           tg.JsVoidCallback(onAdd),
         );
+    AppComponents().backButton.onClick(
+      tg.JsVoidCallback(() {
+        onDispose();
+        context.router.pop();
+      }),
+    );
     AppComponents().mainButton.text = 'Save';
     AppComponents().mainButton.isVisible = true;
   }
@@ -58,6 +64,7 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
         );
       } else {
         await widget.onPressed(nameController.text, urlController.text);
+        onDispose();
         context.router.pop();
       }
     } else {
@@ -68,18 +75,32 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
     }
   }
 
-  @override
-  void dispose() {
-    AppComponents().backButton.isVisible = false;
+  void onDispose(){
+    AppComponents().mainButton.hide();
+    AppComponents().backButton.hide();
+    AppComponents().mainButton.offClick(
+      tg.JsVoidCallback(
+        tg.JsVoidCallback(onAdd),
+      ),
+    );
+    AppComponents().backButton.offClick(
+      tg.JsVoidCallback((){
+        onDispose();
+        context.router.pop();
+
+      }
+      ),
+    );
     AppComponents().mainButton.onClick(
       tg.JsVoidCallback(
-        () {
+            () {
           context.router.push(AddConnectionRoute());
         },
       ),
     );
     AppComponents().mainButton.text = 'Add connection';
-    super.dispose();
+    AppComponents().mainButton.show();
+
   }
 
   @override

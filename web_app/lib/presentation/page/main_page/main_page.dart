@@ -31,6 +31,7 @@ class _MainPageState extends State<MainPage> {
     });
 
     apiManager.updateConnections();
+
     AppComponents().backButton.hide();
     AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
       context.router.push(AddConnectionRoute());
@@ -42,6 +43,11 @@ class _MainPageState extends State<MainPage> {
   @override
   void dispose() {
     connectionController.close();
+    AppComponents().mainButton.offClick(tg.JsVoidCallback(() {
+      context.router.push(AddConnectionRoute());
+    }));
+    AppComponents().mainButton.hide();
+
     super.dispose();
   }
 
