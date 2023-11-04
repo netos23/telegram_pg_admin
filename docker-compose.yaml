@@ -16,7 +16,7 @@ services:
     ports:
       - "5000:5000"
     env_file:
-      - /it_profession/.env
+      - /bot-service/.env
   ingress:
     image: 'it-profession-ingress:1.0'
     build: ./ingress/
