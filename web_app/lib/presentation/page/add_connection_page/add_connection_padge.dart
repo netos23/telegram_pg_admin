@@ -5,6 +5,7 @@ import 'package:flutter_telegram_web_app/flutter_telegram_web_app.dart';
 import 'package:web_app/data/api_client/profile_service.dart';
 import 'package:web_app/domain/entity/connection.dart';
 import 'package:web_app/internal/app_components.dart';
+import 'package:web_app/presentation/router/app_router.dart';
 
 @RoutePage()
 class AddConnectionPage extends StatefulWidget {
@@ -40,13 +41,22 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
   void initState() {
     super.initState();
     AppComponents().backButton.isVisible = true;
+    AppComponents().mainButton.onClick(JsVoidCallback(() {
+      widget.onPressed();
+      context.router.pop();
+    }));
+    AppComponents().mainButton.text = 'Save';
+    AppComponents().mainButton.isVisible = true;
 
   }
 
   @override
   void dispose() {
     AppComponents().backButton.isVisible = false;
-    super.dispose();
+    AppComponents().mainButton.onClick(JsVoidCallback(() {
+      context.router.push(AddConnectionRoute());
+    }));
+    AppComponents().mainButton.text = 'Add connection';    super.dispose();
   }
 
   @override
@@ -96,25 +106,6 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
                             ),
                           ),
                         ],
-                      ),
-                    ),
-                  ),
-                  const Spacer(),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 16),
-                    height: 82,
-                    child: ElevatedButton(
-                      style: theme.filledButtonTheme.style?.copyWith(
-                        fixedSize: const MaterialStatePropertyAll(
-                          Size.fromHeight(50),
-                        ),
-                      ),
-                      onPressed: () {
-                        widget.onPressed();
-                        context.router.pop();
-                      },
-                      child: const Center(
-                        child: Text('Save'),
                       ),
                     ),
                   ),

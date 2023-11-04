@@ -15,7 +15,7 @@ class AppComponents {
   AppComponents._internal();
 
   final TelegramBackButton backButton = BackButton;
-
+  final TelegramMainButton mainButton = MainButton;
   final Dio dio = Dio();
 
   AppRouter appRouter = AppRouter();

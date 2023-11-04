@@ -1,5 +1,6 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_telegram_web_app/flutter_telegram_web_app.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:web_app/data/api_client/connection_api_client.dart';
 import 'package:web_app/domain/entity/connection.dart';
@@ -24,7 +25,13 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    AppComponents().backButton.isVisible = false;
+    AppComponents().backButton.hide();
+    AppComponents().mainButton.onClick(JsVoidCallback(() {
+      context.router.push(AddConnectionRoute());
+    }));
+    AppComponents().mainButton.text = 'Add connection';
+    AppComponents().mainButton.show();
+
   }
 
   @override
@@ -37,6 +44,7 @@ class _MainPageState extends State<MainPage> {
             padding: const EdgeInsets.symmetric(vertical: 32.0),
             child: FutureBuilder<List<Connection>>(
               future: _connections,
+              initialData: const [],
               builder: (context, snapshot) {
                 if (!snapshot.hasData || snapshot.data == null) {
                   return const SizedBox.shrink();
@@ -107,10 +115,10 @@ class _MainPageState extends State<MainPage> {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => context.router.push(AddConnectionRoute()),
-        child: const Icon(Icons.add),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () => context.router.push(AddConnectionRoute()),
+      //   child: const Icon(Icons.add),
+      // ),
     );
   }
 }
