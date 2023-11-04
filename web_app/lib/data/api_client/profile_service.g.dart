@@ -19,14 +19,14 @@ class _ProfileService implements ProfileService {
   String? baseUrl;
 
   @override
-  Future<Connection> createApikey({required Connection request}) async {
+  Future<ApiKeyModel> createApikey({required Connection request}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(request.toJson());
     final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<Connection>(Options(
+        .fetch<Map<String, dynamic>>(_setStreamType<ApiKeyModel>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
@@ -38,7 +38,7 @@ class _ProfileService implements ProfileService {
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = Connection.fromJson(_result.data!);
+    final value = ApiKeyModel.fromJson(_result.data!);
     return value;
   }
 

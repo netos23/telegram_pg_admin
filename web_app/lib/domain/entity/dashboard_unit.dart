@@ -7,7 +7,7 @@ part 'dashboard_unit.g.dart';
 @freezed
 class DashboardUnit with _$DashboardUnit {
   const factory DashboardUnit({
-    required int timestamp,
+    required double timestamp,
     double? value,
   }) = _DashboardUnit;
 

@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_telegram_web_app/flutter_telegram_web_app.dart' as tg;
-import 'package:web_app/data/api_client/api_client.dart';
 import 'package:web_app/domain/api_manager.dart';
 import 'package:web_app/domain/entity/connection.dart';
 import 'package:web_app/internal/app_components.dart';
@@ -23,7 +22,7 @@ class AddConnectionPage extends StatefulWidget {
   Future<void> onPressed() async {
     try {
       await apiManager.create(
-       Connection(
+        Connection(
           name: nameController.text,
           url: urlController.text,
         ),
@@ -41,8 +40,8 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
   void initState() {
     super.initState();
     AppComponents().backButton.isVisible = true;
-    AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
-      widget.onPressed();
+    AppComponents().mainButton.onClick(tg.JsVoidCallback(() async {
+      await widget.onPressed();
       context.router.pop();
     }));
     AppComponents().mainButton.text = 'Save';
@@ -115,8 +114,8 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
       ),
       floatingActionButton: !tg.isSupported
           ? FloatingActionButton(
-              onPressed: () {
-                widget.onPressed();
+              onPressed: () async {
+                await widget.onPressed();
                 context.router.pop();
               },
               child: const Icon(Icons.check),

@@ -95,8 +95,8 @@ class _DashboardWidgetState extends State<DashboardWidget> {
       gridData: FlGridData(
         show: true,
         drawVerticalLine: true,
-        horizontalInterval: 1,
-        verticalInterval: 1,
+        // horizontalInterval: 1,
+        // verticalInterval: 1,
         getDrawingHorizontalLine: (value) {
           return FlLine(
             color: theme.onSurface,
@@ -122,7 +122,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
           sideTitles: SideTitles(
             showTitles: true,
             reservedSize: 30,
-            interval: 1,
+            interval: 100,
             getTitlesWidget: bottomTitleWidgets,
           ),
         ),
@@ -143,7 +143,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
         LineChartBarData(
           spots: widget.dashboard.units
               .map(
-                (e) => FlSpot(e.timestamp.toDouble(), e.value ?? 0),
+                (e) => FlSpot((e.timestamp % 10000), e.value ?? 0),
               )
               .toList(),
           isCurved: true,

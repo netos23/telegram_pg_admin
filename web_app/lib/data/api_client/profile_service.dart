@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
+import 'package:web_app/domain/entity/api_key_model.dart';
 import 'package:web_app/domain/entity/command.dart';
 import 'package:web_app/domain/entity/connection.dart';
 
@@ -12,7 +13,7 @@ abstract class ProfileService {
   factory ProfileService(Dio dio, {String baseUrl}) = _ProfileService;
 
   @POST('/create/')
-  Future<Connection> createApikey({
+  Future<ApiKeyModel> createApikey({
     @Body() required Connection request,
   });
 

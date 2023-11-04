@@ -28,7 +28,6 @@ class ApiManager {
   Future<void> create(Connection request) async {
     final result = await apiClient.createApikey(request: request);
     final value = connectionController.valueOrNull ?? [];
-    value.add(result);
     connectionController.add(value);
   }
 
