@@ -9,7 +9,7 @@ from typing import Optional
 import clickhouse_connect
 from dateutil import parser
 from dotenv import load_dotenv
-from flask import Flask, jsonify
+from flask import Flask, jsonify, Response
 from flask import request
 from flask_apscheduler import APScheduler
 from flask_cors import CORS, cross_origin
@@ -126,7 +126,7 @@ def get_metrics():
 @app.route("/dashboard/", methods=["POST"])
 @cross_origin()
 def dashboard():
-    print(0/0)
+    print(0 / 0)
     if 'X-Api-Key' not in request.headers:
         return {}, 401
     api_key = request.headers['X-Api-Key']
@@ -140,6 +140,12 @@ def dashboard():
         # strftime("%d.%m.%Y %H:%M:%S")})
 
     return [{'name': k, 'units': v} for k, v in ans.items()], 200
+
+
+@app.before_request
+def before_request():
+    if request.method.lower() == 'options':
+        return Response()
 
 
 if __name__ == "__main__":
