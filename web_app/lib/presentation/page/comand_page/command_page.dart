@@ -127,6 +127,28 @@ class _CommandPageState extends State<CommandPage> {
                           },
                           title: Text('Restore'),
                         ),
+                        SizedBox(
+                          height: 50,
+                          child: ElevatedButton(
+                            style: theme.filledButtonTheme.style?.copyWith(
+                              fixedSize: const MaterialStatePropertyAll(
+                                Size.fromHeight(50),
+                              ),
+                            ),
+                            onPressed: () {
+                              onShowButton(
+                                title: 'Are you sure?',
+                                onOk: () => context.router.pop(),
+                                onCancel: () => context.router.pop(),
+                                okText: 'Close connections',
+                              );
+                              context.router.pop();
+                            },
+                            child: const Center(
+                              child: Text('Close connections'),
+                            ),
+                          ),
+                        ),
                       ],
                     ),
                   ),
