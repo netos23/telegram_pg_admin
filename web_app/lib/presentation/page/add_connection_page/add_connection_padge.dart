@@ -82,7 +82,6 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
                             textAlign: TextAlign.start,
                             controller: widget.nameController,
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onBackground,
                               overflow: TextOverflow.ellipsis,
                             ),
                             decoration: const InputDecoration(
@@ -97,7 +96,6 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
                             textAlign: TextAlign.start,
                             controller: widget.urlController,
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onBackground,
                               overflow: TextOverflow.ellipsis,
                             ),
                             decoration: const InputDecoration(
