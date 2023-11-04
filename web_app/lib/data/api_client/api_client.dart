@@ -67,7 +67,7 @@ class ApiClient {
   }) async {
     final tgId =
         tg.isSupported ? tg.WebAppUser().id.toString() : 'Non telegram user';
-    final newRequest = request.copyWith(tgUserId: tgId);
+    final newRequest = request.copyWith(tgUserId: tgId,  isActive: true);
     try {
       await profileService.createApikey(request: newRequest);
     } on DioException catch (error) {

@@ -1,9 +1,11 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_telegram_web_app/flutter_telegram_web_app.dart' as tg;
 import 'package:web_app/domain/entity/connection.dart';
 import 'package:web_app/internal/app_components.dart';
 import 'package:web_app/presentation/router/app_router.dart';
+import 'package:web_app/presentation/widgets/custom_allert_dialog.dart';
 import 'package:web_app/presentation/widgets/custom_dialog.dart';
 
 @RoutePage()
@@ -28,7 +30,24 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
     nameController.text = widget.connection?.name ?? '';
     AppComponents().backButton.show();
     AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
-      context.router.pop();
+      if (urlController.text.isNotEmpty && nameController.text.isNotEmpty) {
+        onPatchConnection();
+        context.router.pop();
+      } else {
+        if (tg.isSupported) {
+          tg.showAlert('Enter the connection name and url to create');
+        } else {
+          showDialog(
+            context: context,
+            builder: (_) {
+              return const CustomAlertDialog(
+                title: 'Empty data',
+                description: 'Enter the connection name and url to create',
+              );
+            },
+          );
+        }
+      }
     }));
     AppComponents().mainButton.text = 'Edit';
     AppComponents().mainButton.show();
@@ -44,8 +63,14 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
     super.dispose();
   }
 
-  Future<void> onPatchConnection()async{
-    await apiManager.patchConnections(widget.connection!);
+  Future<void> onPatchConnection() async {
+    try {
+      await apiManager.patchConnections(widget.connection!);
+    } on DioException catch (error) {
+      throw Exception(
+        error.response?.data['message'],
+      );
+    }
   }
 
   @override
@@ -117,7 +142,8 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
                                               Icons.notifications_active)
                                           : const Icon(Icons
                                               .notifications_none_outlined)),
-                                ))
+                                ),
+                            ),
                           ],
                         ),
                       ),
@@ -131,10 +157,26 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
         floatingActionButton: !tg.isSupported
             ? FloatingActionButton(
                 onPressed: () {
-                  if (widget.connection != null) {
-                   onPatchConnection();
+                  if (urlController.text.isNotEmpty && nameController.text.isNotEmpty) {
+                    if (widget.connection != null) {
+                      onPatchConnection();
+                    }
+                    context.router.pop();
+                  } else {
+                    if (tg.isSupported) {
+                      tg.showAlert('Enter the connection name and url to create');
+                    } else {
+                      showDialog(
+                        context: context,
+                        builder: (_) {
+                          return const CustomAlertDialog(
+                            title: 'Empty data',
+                            description: 'Enter the connection name and url to create',
+                          );
+                        },
+                      );
+                    }
                   }
-                  context.router.pop();
                 },
                 child: const Icon(Icons.edit),
               )

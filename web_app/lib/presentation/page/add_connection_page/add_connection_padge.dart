@@ -6,6 +6,7 @@ import 'package:web_app/domain/api_manager.dart';
 import 'package:web_app/domain/entity/connection.dart';
 import 'package:web_app/internal/app_components.dart';
 import 'package:web_app/presentation/router/app_router.dart';
+import 'package:web_app/presentation/widgets/custom_allert_dialog.dart';
 
 @RoutePage()
 class AddConnectionPage extends StatefulWidget {
@@ -33,19 +34,37 @@ class AddConnectionPage extends StatefulWidget {
 }
 
 class _AddConnectionPageState extends State<AddConnectionPage> {
-
   TextEditingController urlController = TextEditingController();
   TextEditingController nameController = TextEditingController();
-
 
   @override
   void initState() {
     super.initState();
     AppComponents().backButton.isVisible = true;
-    AppComponents().mainButton.onClick(tg.JsVoidCallback(() async {
-      await widget.onPressed(nameController.text, urlController.text);
-      context.router.pop();
-    }));
+    AppComponents().mainButton.onClick(
+      tg.JsVoidCallback(
+        () async {
+          if (nameController.text.isNotEmpty && urlController.text.isNotEmpty) {
+            await widget.onPressed(nameController.text, urlController.text);
+            context.router.pop();
+          } else {
+            if (tg.isSupported) {
+              tg.showAlert('Enter the connection name and url to create');
+            } else {
+              showDialog(
+                context: context,
+                builder: (_) {
+                  return const CustomAlertDialog(
+                    title: 'Empty data',
+                    description: 'Enter the connection name and url to create',
+                  );
+                },
+              );
+            }
+          }
+        },
+      ),
+    );
     AppComponents().mainButton.text = 'Save';
     AppComponents().mainButton.isVisible = true;
   }
@@ -75,7 +94,8 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Card(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12)),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Column(
@@ -88,9 +108,7 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
                               overflow: TextOverflow.ellipsis,
                             ),
                             decoration: const InputDecoration(
-                              // border: OutlineInputBorder(),
-                                hintText: 'Connection title'
-                            ),
+                                hintText: 'Connection title'),
                           ),
                           TextField(
                             textAlign: TextAlign.start,
@@ -101,7 +119,6 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
                             decoration: const InputDecoration(
                               border: InputBorder.none,
                               hintText: 'Url',
-                              //labelText: 'Url',
                             ),
                           ),
                         ],
@@ -117,8 +134,27 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
       floatingActionButton: !tg.isSupported
           ? FloatingActionButton(
               onPressed: () async {
-                await widget.onPressed(nameController.text, urlController.text);
-                context.router.pop();
+                if (nameController.text.isNotEmpty &&
+                    urlController.text.isNotEmpty) {
+                  await widget.onPressed(
+                      nameController.text, urlController.text);
+                  context.router.pop();
+                } else {
+                  if (tg.isSupported) {
+                    tg.showAlert('Enter the connection name and url to create');
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (_) {
+                        return const CustomAlertDialog(
+                          title: 'Empty data',
+                          description:
+                              'Enter the connection name and url to create',
+                        );
+                      },
+                    );
+                  }
+                }
               },
               child: const Icon(Icons.check),
             )
