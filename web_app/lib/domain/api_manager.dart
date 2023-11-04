@@ -20,7 +20,11 @@ class ApiManager {
   }
 
   Future<void> patchConnections(Connection request) async {
-    final result = await apiClient.patchConnections(request: request);
+    await apiClient.patchConnections(request: request);
+    final value = (connectionController.valueOrNull ?? [])
+        .where((element) => element.id != request.id)
+        .toList();
+    connectionController.add(value);
   }
 
   Future<void> create(Connection request) async {
