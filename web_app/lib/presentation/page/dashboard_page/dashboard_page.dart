@@ -7,6 +7,7 @@ import 'package:web_app/domain/entity/dashboard_filter.dart';
 import 'package:web_app/internal/app_components.dart';
 import 'package:web_app/presentation/page/dashboard_page/widgets/dashboard.dart';
 import 'package:web_app/presentation/router/app_router.dart';
+import 'package:web_app/presentation/widgets/empty_widget.dart';
 
 @RoutePage()
 class DashboardPage extends StatefulWidget {
@@ -80,11 +81,17 @@ class _DashboardPageState extends State<DashboardPage> {
               child: CupertinoActivityIndicator(),
             );
           }
+
+          if (dashboards.isEmpty) {
+            return const EmptyWidget(
+              description: 'Данных пока нет!',
+            );
+          }
           return GridView.builder(
             padding: const EdgeInsets.all(16),
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 500,
-              childAspectRatio: 4/3,
+              childAspectRatio: 4 / 3,
               crossAxisSpacing: 5,
               mainAxisSpacing: 5,
             ),
