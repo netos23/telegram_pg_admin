@@ -126,7 +126,6 @@ def get_metrics():
 @app.route("/dashboard/", methods=["POST"])
 @cross_origin()
 def dashboard():
-    print(0 / 0)
     if 'X-Api-Key' not in request.headers:
         return {}, 401
     api_key = request.headers['X-Api-Key']
