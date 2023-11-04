@@ -115,6 +115,13 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
           ),
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          widget.onPressed();
+          context.router.pop();
+        },
+        child: const Icon(Icons.check),
+      ),
     );
   }
 }
