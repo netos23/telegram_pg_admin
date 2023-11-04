@@ -12,68 +12,85 @@ class ApiClient {
 
 
   Future<List<Connection>> getConnections() async {
+    // final tgId = tg.isSupported ? tg
+    //     .WebAppUser()
+    //     .id
+    //     .toString() : 'Non telegram user';
+    // try {
+    //   return await profileService.getConnections(tgUserId: tgId);
+    // } on DioException catch (error) {
+    //   throw Exception(
+    //     error.response?.data['message'],
+    //   );
+    // }
+
+    // var timestamp = DateTime
+    //     .now()
+    //     .millisecondsSinceEpoch;
+    return [
+      Connection(
+        name: 'PG_1',
+        url: 'https://service/pg_1.ru',
+      ),
+      Connection(
+        name: 'PG_2',
+        url: 'https://service/pg_2.ru',
+      ),
+      Connection(
+        name: 'PG_3',
+        url: 'https://service/pg_2.ru',
+      ), Connection(
+        name: 'PG_1',
+        url: 'https://service/pg_1.ru',
+      ),
+      Connection(
+        name: 'PG_2',
+        url: 'https://service/pg_2.ru',
+      ),
+      Connection(
+        name: 'PG_3',
+        url: 'https://service/pg_2.ru',
+      ), Connection(
+        name: 'PG_1',
+        url: 'https://service/pg_1.ru',
+      ),
+      Connection(
+        name: 'PG_2',
+        url: 'https://service/pg_2.ru',
+      ),
+      Connection(
+        name: 'PG_3',
+        url: 'https://service/pg_2.ru',
+      ), Connection(
+        name: 'PG_1',
+        url: 'https://service/pg_1.ru',
+      ),
+      Connection(
+        name: 'PG_2',
+        url: 'https://service/pg_2.ru',
+      ),
+      Connection(
+        name: 'PG_3',
+        url: 'https://service/pg_2.ru',
+      ),
+    ];
+  }
+
+  Future<Connection> patchConnections({
+    required Connection request,
+  }) async {
     final tgId = tg.isSupported ? tg
         .WebAppUser()
         .id
         .toString() : 'Non telegram user';
+    final newRequest = request.copyWith(tgUserId: tgId);
     try {
-      return await profileService.getConnections(tgUserId: tgId);
+      return await profileService.patchConnection(request: newRequest);
     } on DioException catch (error) {
       throw Exception(
         error.response?.data['message'],
       );
     }
-
-    // var timestamp = DateTime
-    //     .now()
-    //     .millisecondsSinceEpoch;
-    // return [
-    //   Connection(
-    //     name: 'PG_1',
-    //     url: 'https://service/pg_1.ru',
-    //   ),
-    //   Connection(
-    //     name: 'PG_2',
-    //     url: 'https://service/pg_2.ru',
-    //   ),
-    //   Connection(
-    //     name: 'PG_3',
-    //     url: 'https://service/pg_2.ru',
-    //   ), Connection(
-    //     name: 'PG_1',
-    //     url: 'https://service/pg_1.ru',
-    //   ),
-    //   Connection(
-    //     name: 'PG_2',
-    //     url: 'https://service/pg_2.ru',
-    //   ),
-    //   Connection(
-    //     name: 'PG_3',
-    //     url: 'https://service/pg_2.ru',
-    //   ), Connection(
-    //     name: 'PG_1',
-    //     url: 'https://service/pg_1.ru',
-    //   ),
-    //   Connection(
-    //     name: 'PG_2',
-    //     url: 'https://service/pg_2.ru',
-    //   ),
-    //   Connection(
-    //     name: 'PG_3',
-    //     url: 'https://service/pg_2.ru',
-    //   ), Connection(
-    //     name: 'PG_1',
-    //     url: 'https://service/pg_1.ru',
-    //   ),
-    //   Connection(
-    //     name: 'PG_2',
-    //     url: 'https://service/pg_2.ru',
-    //   ),
-    //   Connection(
-    //     name: 'PG_3',
-    //     url: 'https://service/pg_2.ru',
-    //   ),
-    // ];
   }
 
   Future<Connection> createApikey({
