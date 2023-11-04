@@ -24,17 +24,35 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     CommandRoute.name: (routeData) {
+      final queryParams = routeData.queryParams;
       final args = routeData.argsAs<CommandRouteArgs>(
-          orElse: () => const CommandRouteArgs());
+          orElse: () => CommandRouteArgs(
+                  apiKey: queryParams.getString(
+                'apiKey',
+                '',
+              )));
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: CommandPage(key: args.key),
+        child: CommandPage(
+          key: args.key,
+          apiKey: args.apiKey,
+        ),
       );
     },
     DashboardRoute.name: (routeData) {
+      final queryParams = routeData.queryParams;
+      final args = routeData.argsAs<DashboardRouteArgs>(
+          orElse: () => DashboardRouteArgs(
+                  apiKey: queryParams.getString(
+                'apiKey',
+                '',
+              )));
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const DashboardPage(),
+        child: DashboardPage(
+          key: args.key,
+          apiKey: args.apiKey,
+        ),
       );
     },
     EditConnectionRoute.name: (routeData) {
@@ -92,10 +110,15 @@ class AddConnectionRouteArgs {
 class CommandRoute extends PageRouteInfo<CommandRouteArgs> {
   CommandRoute({
     Key? key,
+    String apiKey = '',
     List<PageRouteInfo>? children,
   }) : super(
           CommandRoute.name,
-          args: CommandRouteArgs(key: key),
+          args: CommandRouteArgs(
+            key: key,
+            apiKey: apiKey,
+          ),
+          rawQueryParams: {'apiKey': apiKey},
           initialChildren: children,
         );
 
@@ -106,28 +129,58 @@ class CommandRoute extends PageRouteInfo<CommandRouteArgs> {
 }
 
 class CommandRouteArgs {
-  const CommandRouteArgs({this.key});
+  const CommandRouteArgs({
+    this.key,
+    this.apiKey = '',
+  });
 
   final Key? key;
 
+  final String apiKey;
+
   @override
   String toString() {
-    return 'CommandRouteArgs{key: $key}';
+    return 'CommandRouteArgs{key: $key, apiKey: $apiKey}';
   }
 }
 
 /// generated route for
 /// [DashboardPage]
-class DashboardRoute extends PageRouteInfo<void> {
-  const DashboardRoute({List<PageRouteInfo>? children})
-      : super(
+class DashboardRoute extends PageRouteInfo<DashboardRouteArgs> {
+  DashboardRoute({
+    Key? key,
+    String apiKey = '',
+    List<PageRouteInfo>? children,
+  }) : super(
           DashboardRoute.name,
+          args: DashboardRouteArgs(
+            key: key,
+            apiKey: apiKey,
+          ),
+          rawQueryParams: {'apiKey': apiKey},
           initialChildren: children,
         );
 
   static const String name = 'DashboardRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<DashboardRouteArgs> page =
+      PageInfo<DashboardRouteArgs>(name);
+}
+
+class DashboardRouteArgs {
+  const DashboardRouteArgs({
+    this.key,
+    this.apiKey = '',
+  });
+
+  final Key? key;
+
+  final String apiKey;
+
+  @override
+  String toString() {
+    return 'DashboardRouteArgs{key: $key, apiKey: $apiKey}';
+  }
 }
 
 /// generated route for

@@ -1,8 +1,9 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_telegram_web_app/flutter_telegram_web_app.dart';
-import 'package:web_app/data/api_client/profile_service.dart';
+import 'package:flutter_telegram_web_app/flutter_telegram_web_app.dart' as tg;
+import 'package:web_app/data/api_client/api_client.dart';
+import 'package:web_app/domain/api_manager.dart';
 import 'package:web_app/domain/entity/connection.dart';
 import 'package:web_app/internal/app_components.dart';
 import 'package:web_app/presentation/router/app_router.dart';
@@ -11,7 +12,7 @@ import 'package:web_app/presentation/router/app_router.dart';
 class AddConnectionPage extends StatefulWidget {
   AddConnectionPage({super.key});
 
-  ProfileService profileService = AppComponents().profileService;
+  ApiManager apiManager = AppComponents().apiManager;
 
   TextEditingController urlController = TextEditingController();
   TextEditingController nameController = TextEditingController();
@@ -21,12 +22,11 @@ class AddConnectionPage extends StatefulWidget {
 
   Future<void> onPressed() async {
     try {
-      final result = await profileService.createApikey(
-        request: Connection(
+      await apiManager.create(
+       Connection(
           name: nameController.text,
           url: urlController.text,
-          tgUserId: WebAppUser().id.toString(),
-      ),
+        ),
       );
     } on DioException catch (error) {
       throw Exception(
@@ -41,22 +41,22 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
   void initState() {
     super.initState();
     AppComponents().backButton.isVisible = true;
-    AppComponents().mainButton.onClick(JsVoidCallback(() {
+    AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
       widget.onPressed();
       context.router.pop();
     }));
     AppComponents().mainButton.text = 'Save';
     AppComponents().mainButton.isVisible = true;
-
   }
 
   @override
   void dispose() {
     AppComponents().backButton.isVisible = false;
-    AppComponents().mainButton.onClick(JsVoidCallback(() {
+    AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
       context.router.push(AddConnectionRoute());
     }));
-    AppComponents().mainButton.text = 'Add connection';    super.dispose();
+    AppComponents().mainButton.text = 'Add connection';
+    super.dispose();
   }
 
   @override
@@ -82,7 +82,6 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
                             textAlign: TextAlign.start,
                             controller: widget.nameController,
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onBackground,
                               overflow: TextOverflow.ellipsis,
                             ),
                             decoration: const InputDecoration(
@@ -97,7 +96,6 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
                             textAlign: TextAlign.start,
                             controller: widget.urlController,
                             style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onBackground,
                               overflow: TextOverflow.ellipsis,
                             ),
                             decoration: const InputDecoration(
@@ -115,6 +113,15 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
           ),
         ),
       ),
+      floatingActionButton: !tg.isSupported
+          ? FloatingActionButton(
+              onPressed: () {
+                widget.onPressed();
+                context.router.pop();
+              },
+              child: const Icon(Icons.check),
+            )
+          : null,
     );
   }
 }

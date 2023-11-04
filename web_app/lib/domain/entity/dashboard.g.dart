@@ -8,7 +8,7 @@ part of 'dashboard.dart';
 
 _$DashboardImpl _$$DashboardImplFromJson(Map<String, dynamic> json) =>
     _$DashboardImpl(
-      title: json['title'] as String,
+      name: json['name'] as String,
       units: (json['units'] as List<dynamic>)
           .map((e) => DashboardUnit.fromJson(e as Map<String, dynamic>))
           .toList(),
@@ -16,6 +16,6 @@ _$DashboardImpl _$$DashboardImplFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$$DashboardImplToJson(_$DashboardImpl instance) =>
     <String, dynamic>{
-      'title': instance.title,
+      'name': instance.name,
       'units': instance.units,
     };

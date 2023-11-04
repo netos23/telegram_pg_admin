@@ -4,6 +4,11 @@ import telebot
 class TelegramSender:
     _instance = None
 
+    def __new__(cls):
+        if cls._instance is None:
+            cls._instance = super(TelegramSender, cls).__new__(cls)
+        return cls._instance
+
     def __init__(self):
         self.bot = telebot.TeleBot('6535871705:AAGKgG5Jh6Lgld5WabvQQsagMF28m9Lta34')
 
