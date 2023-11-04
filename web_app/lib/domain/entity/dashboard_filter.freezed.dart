@@ -22,6 +22,10 @@ DashboardFilter _$DashboardFilterFromJson(Map<String, dynamic> json) {
 mixin _$DashboardFilter {
   @JsonKey(name: 'api_key')
   String get apiKey => throw _privateConstructorUsedError;
+  @JsonKey(name: 'date_from')
+  int? get from => throw _privateConstructorUsedError;
+  @JsonKey(name: 'date_to')
+  int? get to => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +39,10 @@ abstract class $DashboardFilterCopyWith<$Res> {
           DashboardFilter value, $Res Function(DashboardFilter) then) =
       _$DashboardFilterCopyWithImpl<$Res, DashboardFilter>;
   @useResult
-  $Res call({@JsonKey(name: 'api_key') String apiKey});
+  $Res call(
+      {@JsonKey(name: 'api_key') String apiKey,
+      @JsonKey(name: 'date_from') int? from,
+      @JsonKey(name: 'date_to') int? to});
 }
 
 /// @nodoc
@@ -52,12 +59,22 @@ class _$DashboardFilterCopyWithImpl<$Res, $Val extends DashboardFilter>
   @override
   $Res call({
     Object? apiKey = null,
+    Object? from = freezed,
+    Object? to = freezed,
   }) {
     return _then(_value.copyWith(
       apiKey: null == apiKey
           ? _value.apiKey
           : apiKey // ignore: cast_nullable_to_non_nullable
               as String,
+      from: freezed == from
+          ? _value.from
+          : from // ignore: cast_nullable_to_non_nullable
+              as int?,
+      to: freezed == to
+          ? _value.to
+          : to // ignore: cast_nullable_to_non_nullable
+              as int?,
     ) as $Val);
   }
 }
@@ -70,7 +87,10 @@ abstract class _$$DashboardFilterImplCopyWith<$Res>
       __$$DashboardFilterImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({@JsonKey(name: 'api_key') String apiKey});
+  $Res call(
+      {@JsonKey(name: 'api_key') String apiKey,
+      @JsonKey(name: 'date_from') int? from,
+      @JsonKey(name: 'date_to') int? to});
 }
 
 /// @nodoc
@@ -85,20 +105,34 @@ class __$$DashboardFilterImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? apiKey = null,
+    Object? from = freezed,
+    Object? to = freezed,
   }) {
     return _then(_$DashboardFilterImpl(
       apiKey: null == apiKey
           ? _value.apiKey
           : apiKey // ignore: cast_nullable_to_non_nullable
               as String,
+      from: freezed == from
+          ? _value.from
+          : from // ignore: cast_nullable_to_non_nullable
+              as int?,
+      to: freezed == to
+          ? _value.to
+          : to // ignore: cast_nullable_to_non_nullable
+              as int?,
     ));
   }
 }
 
 /// @nodoc
-@JsonSerializable()
+
+@JsonSerializable(includeIfNull: false)
 class _$DashboardFilterImpl implements _DashboardFilter {
-  _$DashboardFilterImpl({@JsonKey(name: 'api_key') required this.apiKey});
+  _$DashboardFilterImpl(
+      {@JsonKey(name: 'api_key') required this.apiKey,
+      @JsonKey(name: 'date_from') this.from,
+      @JsonKey(name: 'date_to') this.to});
 
   factory _$DashboardFilterImpl.fromJson(Map<String, dynamic> json) =>
       _$$DashboardFilterImplFromJson(json);
@@ -106,10 +140,16 @@ class _$DashboardFilterImpl implements _DashboardFilter {
   @override
   @JsonKey(name: 'api_key')
   final String apiKey;
+  @override
+  @JsonKey(name: 'date_from')
+  final int? from;
+  @override
+  @JsonKey(name: 'date_to')
+  final int? to;
 
   @override
   String toString() {
-    return 'DashboardFilter(apiKey: $apiKey)';
+    return 'DashboardFilter(apiKey: $apiKey, from: $from, to: $to)';
   }
 
   @override
@@ -117,12 +157,14 @@ class _$DashboardFilterImpl implements _DashboardFilter {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$DashboardFilterImpl &&
-            (identical(other.apiKey, apiKey) || other.apiKey == apiKey));
+            (identical(other.apiKey, apiKey) || other.apiKey == apiKey) &&
+            (identical(other.from, from) || other.from == from) &&
+            (identical(other.to, to) || other.to == to));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, apiKey);
+  int get hashCode => Object.hash(runtimeType, apiKey, from, to);
 
   @JsonKey(ignore: true)
   @override
@@ -141,8 +183,9 @@ class _$DashboardFilterImpl implements _DashboardFilter {
 
 abstract class _DashboardFilter implements DashboardFilter {
   factory _DashboardFilter(
-          {@JsonKey(name: 'api_key') required final String apiKey}) =
-      _$DashboardFilterImpl;
+      {@JsonKey(name: 'api_key') required final String apiKey,
+      @JsonKey(name: 'date_from') final int? from,
+      @JsonKey(name: 'date_to') final int? to}) = _$DashboardFilterImpl;
 
   factory _DashboardFilter.fromJson(Map<String, dynamic> json) =
       _$DashboardFilterImpl.fromJson;
@@ -150,6 +193,12 @@ abstract class _DashboardFilter implements DashboardFilter {
   @override
   @JsonKey(name: 'api_key')
   String get apiKey;
+  @override
+  @JsonKey(name: 'date_from')
+  int? get from;
+  @override
+  @JsonKey(name: 'date_to')
+  int? get to;
   @override
   @JsonKey(ignore: true)
   _$$DashboardFilterImplCopyWith<_$DashboardFilterImpl> get copyWith =>

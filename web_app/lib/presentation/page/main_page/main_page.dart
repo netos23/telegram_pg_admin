@@ -8,7 +8,7 @@ import 'package:web_app/presentation/router/app_router.dart';
 
 @RoutePage()
 class MainPage extends StatefulWidget {
-  MainPage({super.key});
+  const MainPage({super.key});
 
   @override
   State<MainPage> createState() => _MainPageState();

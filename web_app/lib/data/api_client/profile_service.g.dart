@@ -19,7 +19,31 @@ class _ProfileService implements ProfileService {
   String? baseUrl;
 
   @override
-  Future<Connection> createApikey({required Connection request}) async {
+  Future<ApiKeyModel> createApikey({required Connection request}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(request.toJson());
+    final _result = await _dio
+        .fetch<Map<String, dynamic>>(_setStreamType<ApiKeyModel>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/create/',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = ApiKeyModel.fromJson(_result.data!);
+    return value;
+  }
+
+  @override
+  Future<Connection> patchConnection({required Connection request}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -27,7 +51,7 @@ class _ProfileService implements ProfileService {
     _data.addAll(request.toJson());
     final _result = await _dio
         .fetch<Map<String, dynamic>>(_setStreamType<Connection>(Options(
-      method: 'POST',
+      method: 'PATCH',
       headers: _headers,
       extra: _extra,
     )
@@ -92,26 +116,56 @@ class _ProfileService implements ProfileService {
   }
 
   @override
-  Future<Connection> patchConnection({required Connection request}) async {
+  Future<List<LongTransaction>> getLongTransactions(
+      {required ApiKeyModel request}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(request.toJson());
     final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<Connection>(Options(
-      method: 'GET',
+        .fetch<List<dynamic>>(_setStreamType<List<LongTransaction>>(Options(
+      method: 'POST',
       headers: _headers,
       extra: _extra,
     )
             .compose(
               _dio.options,
-              '/patch/',
+              '/long_transactions/',
               queryParameters: queryParameters,
               data: _data,
             )
             .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = Connection.fromJson(_result.data!);
+    var value = _result.data!
+        .map((dynamic i) => LongTransaction.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return value;
+  }
+
+  @override
+  Future<List<TopTransaction>> getTopTransactions(
+      {required ApiKeyModel request}) async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    _data.addAll(request.toJson());
+    final _result = await _dio
+        .fetch<List<dynamic>>(_setStreamType<List<TopTransaction>>(Options(
+      method: 'POST',
+      headers: _headers,
+      extra: _extra,
+    )
+            .compose(
+              _dio.options,
+              '/top_transactions/',
+              queryParameters: queryParameters,
+              data: _data,
+            )
+            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    var value = _result.data!
+        .map((dynamic i) => TopTransaction.fromJson(i as Map<String, dynamic>))
+        .toList();
     return value;
   }
 

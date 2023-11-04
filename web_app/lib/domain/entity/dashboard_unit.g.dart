@@ -8,7 +8,7 @@ part of 'dashboard_unit.dart';
 
 _$DashboardUnitImpl _$$DashboardUnitImplFromJson(Map<String, dynamic> json) =>
     _$DashboardUnitImpl(
-      timestamp: json['timestamp'] as int,
+      timestamp: (json['timestamp'] as num).toDouble(),
       value: (json['value'] as num?)?.toDouble(),
     );
 

@@ -23,6 +23,9 @@ class _DashboardWidgetState extends State<DashboardWidget> {
   @override
   Widget build(BuildContext context) {
     return Card(
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(10)),
+      ),
       child: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
@@ -44,48 +47,27 @@ class _DashboardWidgetState extends State<DashboardWidget> {
       fontWeight: FontWeight.bold,
       fontSize: 15,
     );
-    String text;
-    switch (value.toInt()) {
-      case 1:
-        text = '10K';
-        break;
-      case 3:
-        text = '30k';
-        break;
-      case 5:
-        text = '50k';
-        break;
-      default:
-        return Container();
-    }
 
-    return Text(text, style: style, textAlign: TextAlign.left);
+    return Text(
+      value.toString(),
+      style: style,
+      textAlign: TextAlign.left,
+    );
   }
 
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
     const style = TextStyle(
       fontWeight: FontWeight.bold,
-      fontSize: 16,
+      fontSize: 12,
     );
-    Widget text;
-    switch (value.toInt()) {
-      case 2:
-        text = const Text('MAR', style: style);
-        break;
-      case 5:
-        text = const Text('JUN', style: style);
-        break;
-      case 8:
-        text = const Text('SEP', style: style);
-        break;
-      default:
-        text = const Text('', style: style);
-        break;
-    }
 
+    var dateTime = DateTime.fromMillisecondsSinceEpoch(value.toInt());
     return SideTitleWidget(
       axisSide: meta.axisSide,
-      child: text,
+      child: Text(
+        '${dateTime.hour}:${dateTime.minute}:${dateTime.second}',
+        style: style,
+      ),
     );
   }
 
@@ -95,18 +77,17 @@ class _DashboardWidgetState extends State<DashboardWidget> {
       gridData: FlGridData(
         show: true,
         drawVerticalLine: true,
-        horizontalInterval: 1,
-        verticalInterval: 1,
+        drawHorizontalLine: true,
         getDrawingHorizontalLine: (value) {
           return FlLine(
             color: theme.onSurface,
-            strokeWidth: 1,
+            strokeWidth: 0.5,
           );
         },
         getDrawingVerticalLine: (value) {
           return FlLine(
             color: theme.onSurface,
-            strokeWidth: 1,
+            strokeWidth: 0.5,
           );
         },
       ),
@@ -121,15 +102,14 @@ class _DashboardWidgetState extends State<DashboardWidget> {
         bottomTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            reservedSize: 30,
-            interval: 1,
+            reservedSize: 50,
+            interval: 1000,
             getTitlesWidget: bottomTitleWidgets,
           ),
         ),
         leftTitles: AxisTitles(
           sideTitles: SideTitles(
             showTitles: true,
-            interval: 1,
             getTitlesWidget: leftTitleWidgets,
             reservedSize: 42,
           ),
@@ -137,13 +117,13 @@ class _DashboardWidgetState extends State<DashboardWidget> {
       ),
       borderData: FlBorderData(
         show: true,
-        border: Border.all(color: const Color(0xff37434d)),
+        border: Border.all(color: theme.onSurface),
       ),
       lineBarsData: [
         LineChartBarData(
           spots: widget.dashboard.units
               .map(
-                (e) => FlSpot(e.timestamp.toDouble(), e.value ?? 0),
+                (e) => FlSpot((e.timestamp), e.value ?? 0),
               )
               .toList(),
           isCurved: true,

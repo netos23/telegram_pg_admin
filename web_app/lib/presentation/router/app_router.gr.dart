@@ -66,11 +66,9 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     MainRoute.name: (routeData) {
-      final args =
-          routeData.argsAs<MainRouteArgs>(orElse: () => const MainRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: MainPage(key: args.key),
+        child: const MainPage(),
       );
     },
   };
@@ -188,7 +186,7 @@ class DashboardRouteArgs {
 class EditConnectionRoute extends PageRouteInfo<EditConnectionRouteArgs> {
   EditConnectionRoute({
     Key? key,
-    required Connection connection,
+    required Connection? connection,
     List<PageRouteInfo>? children,
   }) : super(
           EditConnectionRoute.name,
@@ -213,7 +211,7 @@ class EditConnectionRouteArgs {
 
   final Key? key;
 
-  final Connection connection;
+  final Connection? connection;
 
   @override
   String toString() {
@@ -223,28 +221,14 @@ class EditConnectionRouteArgs {
 
 /// generated route for
 /// [MainPage]
-class MainRoute extends PageRouteInfo<MainRouteArgs> {
-  MainRoute({
-    Key? key,
-    List<PageRouteInfo>? children,
-  }) : super(
+class MainRoute extends PageRouteInfo<void> {
+  const MainRoute({List<PageRouteInfo>? children})
+      : super(
           MainRoute.name,
-          args: MainRouteArgs(key: key),
           initialChildren: children,
         );
 
   static const String name = 'MainRoute';
 
-  static const PageInfo<MainRouteArgs> page = PageInfo<MainRouteArgs>(name);
-}
-
-class MainRouteArgs {
-  const MainRouteArgs({this.key});
-
-  final Key? key;
-
-  @override
-  String toString() {
-    return 'MainRouteArgs{key: $key}';
-  }
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
