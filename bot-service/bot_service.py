@@ -89,7 +89,7 @@ def exec_command(body: RequestCommandModel):
     if not api_key:
         return {}, 401
     connection = UrlConnection.query.filter_by(api_key=api_key).one()
-    error, status = send_post(connection.url + "/exec", api_key, body.model_dump())
+    error, status = send_post(urllib.parse.urljoin(connection.url, "/exec"), api_key, body.model_dump())
     return {}, status
 
 
@@ -200,7 +200,7 @@ def dumps():
     if not api_key:
         return {}, 401
     connection = UrlConnection.query.filter_by(api_key=api_key).one()
-    data, status = send_get(connection.url + "/dumps", api_key, {})
+    data, status = send_get(urllib.parse.urljoin(connection.url, "/dumps"), api_key, {})
     return data or '', status
 
 
@@ -211,7 +211,7 @@ def top_transactions():
     if not api_key:
         return {}, 401
     connection = UrlConnection.query.filter_by(api_key=api_key).one()
-    data, status = send_get(connection.url + "/top_transactions", api_key, {})
+    data, status = send_get(urllib.parse.urljoin(connection.url, "/top_transactions"), api_key, {})
     return data or '', status
 
 
@@ -222,7 +222,7 @@ def long_transactions():
     if not api_key:
         return {}, 401
     connection = UrlConnection.query.filter_by(api_key=api_key).one()
-    data, status = send_get(connection.url + "/long_transactions", api_key, {})
+    data, status = send_get(urllib.parse.urljoin(connection.url, "/long_transactions"), api_key, {})
     return data or '', status
 
 
