@@ -45,8 +45,6 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
       tg.JsVoidCallback(
         () async {
           if (nameController.text.isNotEmpty && urlController.text.isNotEmpty) {
-            await widget.onPressed(nameController.text, urlController.text);
-            context.router.pop();
           } else {
             if (tg.isSupported) {
               tg.showAlert('Enter the connection name and url to create');
@@ -67,6 +65,25 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
     );
     AppComponents().mainButton.text = 'Save';
     AppComponents().mainButton.isVisible = true;
+  }
+
+  Future<void> onEdit() async {
+    if (urlController.text.isNotEmpty && nameController.text.isNotEmpty) {
+      if (!urlController.text.startsWith('https://')) {
+        showCustomAlertDialog(
+          'Please send me a valid url. https is required.',
+          'Invalid url',
+        );
+      } else {
+        await widget.onPressed(nameController.text, urlController.text);
+        context.router.pop();
+      }
+    } else {
+      showCustomAlertDialog(
+        'Enter the connection name and url to create',
+        'Empty data',
+      );
+    }
   }
 
   @override
@@ -160,5 +177,21 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
             )
           : null,
     );
+  }
+
+  void showCustomAlertDialog(String description, String title) {
+    if (tg.isSupported) {
+      tg.showAlert(description);
+    } else {
+      showDialog(
+        context: context,
+        builder: (_) {
+          return CustomAlertDialog(
+            title: title,
+            description: description,
+          );
+        },
+      );
+    }
   }
 }
