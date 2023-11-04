@@ -98,7 +98,7 @@ class _DashboardPageState extends State<DashboardPage> {
       onDispose();
       context.router.pop();
     }));
-    AppComponents().mainButton.text = 'Dashboards';
+    AppComponents().mainButton.text = 'Commands';
     AppComponents().mainButton.show();
   }
 

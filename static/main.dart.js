@@ -95672,7 +95672,7 @@ s=s.b
 p=J.bn(s)
 p.h6(s,A.aP(new A.arZ(this)))
 q.h6(r,A.aP(new A.as_(this)))
-J.mL(s,"Dashboards")
+J.mL(s,"Commands")
 p.fS(s)},
 R(a){var s,r,q=this,p=q.d
 if(p===$){s=$.f7()
