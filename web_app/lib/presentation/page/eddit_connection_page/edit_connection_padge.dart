@@ -10,9 +10,6 @@ import 'package:web_app/presentation/router/app_router.dart';
 class EditConnectionPage extends StatefulWidget {
   EditConnectionPage({super.key, required this.connection});
   final Connection connection;
-  final TextEditingController urlController = TextEditingController();
-  final TextEditingController nameController = TextEditingController();
-
   @override
   State<EditConnectionPage> createState() => _EditConnectionPageState();
 
@@ -30,11 +27,15 @@ class EditConnectionPage extends StatefulWidget {
 
 class _EditConnectionPageState extends State<EditConnectionPage> {
 
+  final TextEditingController urlController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
+
+
   @override
   void initState() {
     super.initState();
-    widget.urlController.text = widget.connection.url ?? '';
-    widget.nameController.text = widget.connection.name;
+    urlController.text = widget.connection.url ?? '';
+    nameController.text = widget.connection.name;
     AppComponents().backButton.show();
     AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
       widget.onPressed();
@@ -78,13 +79,13 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
                         children: [
                           TextField(
                             textAlign: TextAlign.start,
-                            controller: widget.nameController,
+                            controller: nameController,
                             style: theme.textTheme.bodyMedium?.copyWith(
                               overflow: TextOverflow.ellipsis,
                             ),
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
-                              labelText: 'Название',
+                              labelText: 'Connection title',
                             ),
                           ),
                           const SizedBox(
@@ -92,7 +93,7 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
                           ),
                           TextField(
                             textAlign: TextAlign.start,
-                            controller: widget.urlController,
+                            controller: urlController,
                             style: theme.textTheme.bodyMedium?.copyWith(
                               overflow: TextOverflow.ellipsis,
                             ),

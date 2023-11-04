@@ -5,6 +5,8 @@ import 'package:retrofit/http.dart';
 import 'package:web_app/domain/entity/api_key_model.dart';
 import 'package:web_app/domain/entity/command.dart';
 import 'package:web_app/domain/entity/connection.dart';
+import 'package:web_app/domain/entity/dump.dart';
+import 'package:web_app/domain/entity/dump_response.dart';
 
 part 'profile_service.g.dart';
 
@@ -31,4 +33,12 @@ abstract class ProfileService {
   Future<Connection> patchConnection({
     @Body() required Connection request,
   });
+
+
+  @GET('/dumps/')
+  Future<List<Dump>> postDumps({
+    @Body() required DumpResponce request,
+  });
+
+
 }

@@ -21,7 +21,6 @@ class CommandPage extends StatefulWidget {
 
 class _CommandPageState extends State<CommandPage> {
   final TextEditingController urlController = TextEditingController();
-
   final TextEditingController nameController = TextEditingController();
 
   final ApiManager apiManager = AppComponents().apiManager;
