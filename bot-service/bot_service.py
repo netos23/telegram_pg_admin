@@ -36,8 +36,8 @@ class RequestCreateModel(BaseModel):
 
 @app.errorhandler(500)
 def internal_error(error):
-    if 'X-Api-Key' in request.headers:
-        api_key = request.headers['X-Api-Key']
+    api_key = request.json.get('api_key')
+    if api_key:
         connection = UrlConnection.query.filter_by(api_key=api_key).one()
         TelegramSender().send_message(f"Connection: {connection.name}. Error", connection.tg_user_id)
     return error
@@ -70,11 +70,11 @@ class RequestCommandModel(BaseModel):
 @validate()
 @cross_origin()
 def exec_command(body: RequestCommandModel):
-    if 'X-Api-Key' not in request.headers:
+    api_key = request.json.get('api_key')
+    if not api_key:
         return {}, 401
-    api_key = request.headers['X-Api-Key']
     connection = UrlConnection.query.filter_by(api_key=api_key).one()
-    _, status = send_post(connection.url + "/exec", api_key, body.model_dump())
+    error, status = send_post(connection.url + "/exec", api_key, body.model_dump())
     return {}, status
 
 
@@ -99,8 +99,8 @@ def get_metrics():
                 res, status = send_get(urllib.parse.urljoin(connection.url, "/get_metrics"), api_key, {})
                 column_names = ['timestamp', 'name', 'value', 'aggregation']
                 rows = []
-                if res is None:
-                    TelegramSender().send_message(f"Connection: {connection.name}. Db not answer",
+                if status != 200:
+                    TelegramSender().send_message(f"Connection: {connection.name}. {res}",
                                                   connection.tg_user_id)
                     metrics_name = client.query('SELECT DISTINCT name FROM metrics WHERE api_key= %s ',
                                                 parameters=(api_key,))
@@ -126,9 +126,9 @@ def get_metrics():
 @app.route("/dashboard/", methods=["POST"])
 @cross_origin()
 def dashboard():
-    if 'X-Api-Key' not in request.headers:
+    api_key = request.json.get('api_key')
+    if not api_key:
         return {}, 401
-    api_key = request.headers['X-Api-Key']
     result = client.query('SELECT timestamp, name, value FROM metrics WHERE api_key= %s order by timestamp, name',
                           parameters=(api_key,))
     ans = defaultdict(list)
