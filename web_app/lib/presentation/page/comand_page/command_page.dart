@@ -42,7 +42,7 @@ class _CommandPageState extends State<CommandPage> {
         apiKey: widget.apiKey,
       ));
     }));
-    AppComponents().mainButton.text = 'Dashboards';
+    AppComponents().mainButton.text = 'To commands';
     AppComponents().mainButton.show();
   }
 
@@ -52,11 +52,11 @@ class _CommandPageState extends State<CommandPage> {
     AppComponents().backButton.show();
     AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
       onReplace();
-      context.router.replace(DashboardRoute(
+      context.router.popAndPush(DashboardRoute(
         apiKey: widget.apiKey,
       ));
     }));
-    AppComponents().mainButton.text = 'Dashboards';
+    AppComponents().mainButton.text = 'To dashboards';
     AppComponents().mainButton.show();
   }
 

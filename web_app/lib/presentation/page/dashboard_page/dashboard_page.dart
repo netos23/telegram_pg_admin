@@ -79,7 +79,7 @@ class _DashboardPageState extends State<DashboardPage> {
         apiKey: widget.apiKey,
       ));
     }));
-    AppComponents().mainButton.text = 'Dashboards';
+    AppComponents().mainButton.text = 'To dashboards';
     AppComponents().mainButton.show();
   }
 
@@ -87,10 +87,9 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   void initState() {
     super.initState();
-    AppComponents().backButton.show();
     AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
       onReplace();
-      context.router.replace(CommandRoute(
+      context.router.popAndPush(CommandRoute(
         apiKey: widget.apiKey,
       ));
     }));
@@ -99,6 +98,7 @@ class _DashboardPageState extends State<DashboardPage> {
       context.router.pop();
     }));
     AppComponents().mainButton.text = 'Commands';
+    AppComponents().backButton.show();
     AppComponents().mainButton.show();
   }
 
