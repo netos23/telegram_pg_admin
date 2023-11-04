@@ -31,9 +31,7 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
     AppComponents().backButton.show();
     AppComponents().mainButton.onClick(
       tg.JsVoidCallback(
-        () {
-          onEdit();
-        },
+          onEdit,
       ),
     );
     AppComponents().mainButton.text = 'Edit';
@@ -161,9 +159,7 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
         ),
         floatingActionButton: !tg.isSupported
             ? FloatingActionButton(
-                onPressed: () {
-                  onEdit();
-                },
+                onPressed: onEdit,
                 child: const Icon(Icons.edit),
               )
             : null);

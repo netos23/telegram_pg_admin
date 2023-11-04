@@ -42,32 +42,13 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
     super.initState();
     AppComponents().backButton.isVisible = true;
     AppComponents().mainButton.onClick(
-      tg.JsVoidCallback(
-        () async {
-          if (nameController.text.isNotEmpty && urlController.text.isNotEmpty) {
-          } else {
-            if (tg.isSupported) {
-              tg.showAlert('Enter the connection name and url to create');
-            } else {
-              showDialog(
-                context: context,
-                builder: (_) {
-                  return const CustomAlertDialog(
-                    title: 'Empty data',
-                    description: 'Enter the connection name and url to create',
-                  );
-                },
-              );
-            }
-          }
-        },
-      ),
-    );
+          tg.JsVoidCallback(onAdd),
+        );
     AppComponents().mainButton.text = 'Save';
     AppComponents().mainButton.isVisible = true;
   }
 
-  Future<void> onEdit() async {
+  Future<void> onAdd() async {
     if (urlController.text.isNotEmpty && nameController.text.isNotEmpty) {
       if (!urlController.text.startsWith('https://')) {
         showCustomAlertDialog(
@@ -89,9 +70,13 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
   @override
   void dispose() {
     AppComponents().backButton.isVisible = false;
-    AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
-      context.router.push(AddConnectionRoute());
-    }));
+    AppComponents().mainButton.onClick(
+      tg.JsVoidCallback(
+        () {
+          context.router.push(AddConnectionRoute());
+        },
+      ),
+    );
     AppComponents().mainButton.text = 'Add connection';
     super.dispose();
   }
@@ -112,7 +97,8 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
                 children: [
                   Card(
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12)),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
                       child: Column(
@@ -150,29 +136,7 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
       ),
       floatingActionButton: !tg.isSupported
           ? FloatingActionButton(
-              onPressed: () async {
-                if (nameController.text.isNotEmpty &&
-                    urlController.text.isNotEmpty) {
-                  await widget.onPressed(
-                      nameController.text, urlController.text);
-                  context.router.pop();
-                } else {
-                  if (tg.isSupported) {
-                    tg.showAlert('Enter the connection name and url to create');
-                  } else {
-                    showDialog(
-                      context: context,
-                      builder: (_) {
-                        return const CustomAlertDialog(
-                          title: 'Empty data',
-                          description:
-                              'Enter the connection name and url to create',
-                        );
-                      },
-                    );
-                  }
-                }
-              },
+              onPressed: onAdd,
               child: const Icon(Icons.check),
             )
           : null,
