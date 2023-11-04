@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_telegram_web_app/flutter_telegram_web_app.dart' as tg;
-import 'package:web_app/data/api_client/api_client.dart';
 import 'package:web_app/domain/api_manager.dart';
 import 'package:web_app/domain/entity/connection.dart';
 import 'package:web_app/internal/app_components.dart';
@@ -14,18 +13,15 @@ class AddConnectionPage extends StatefulWidget {
 
   ApiManager apiManager = AppComponents().apiManager;
 
-  TextEditingController urlController = TextEditingController();
-  TextEditingController nameController = TextEditingController();
-
   @override
   State<AddConnectionPage> createState() => _AddConnectionPageState();
 
-  Future<void> onPressed() async {
+  Future<void> onPressed(String name, String url) async {
     try {
       await apiManager.create(
        Connection(
-          name: nameController.text,
-          url: urlController.text,
+          name: name,
+          url: url,
         ),
       );
     } on DioException catch (error) {
@@ -37,12 +33,17 @@ class AddConnectionPage extends StatefulWidget {
 }
 
 class _AddConnectionPageState extends State<AddConnectionPage> {
+
+  TextEditingController urlController = TextEditingController();
+  TextEditingController nameController = TextEditingController();
+
+
   @override
   void initState() {
     super.initState();
     AppComponents().backButton.isVisible = true;
     AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
-      widget.onPressed();
+      widget.onPressed(nameController.text, urlController.text);
       context.router.pop();
     }));
     AppComponents().mainButton.text = 'Save';
@@ -80,13 +81,13 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
                         children: [
                           TextField(
                             textAlign: TextAlign.start,
-                            controller: widget.nameController,
+                            controller: nameController,
                             style: theme.textTheme.bodyMedium?.copyWith(
                               overflow: TextOverflow.ellipsis,
                             ),
                             decoration: const InputDecoration(
                               border: OutlineInputBorder(),
-                              labelText: 'Название',
+                              labelText: 'Connection title',
                             ),
                           ),
                           const SizedBox(
@@ -94,7 +95,7 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
                           ),
                           TextField(
                             textAlign: TextAlign.start,
-                            controller: widget.urlController,
+                            controller: urlController,
                             style: theme.textTheme.bodyMedium?.copyWith(
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -116,7 +117,7 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
       floatingActionButton: !tg.isSupported
           ? FloatingActionButton(
               onPressed: () {
-                widget.onPressed();
+                widget.onPressed(nameController.text, urlController.text);
                 context.router.pop();
               },
               child: const Icon(Icons.check),
