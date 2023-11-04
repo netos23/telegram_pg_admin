@@ -10,6 +10,7 @@ password = "hCImjO&&k6N$"
 sqlItem = {
     'Alive': "select 1;",  # monitor survival
     'Uptime': "SELECT current_timestamp - pg_postmaster_start_time();",
+    'Size': "SELECT pg_size_pretty(pg_database_size(datname)), datname AS size FROM pg_database;",
     'Cache hit ratio': "SELECT sum(heap_blks_hit) / (sum(heap_blks_hit) + sum(heap_blks_read)) as ratio FROM pg_statio_user_tables;",
     'Active_connections': "select count (*) from pg_stat_activity where state = 'active';",
     'Server_connections': "select count (*) from pg_stat_activity where backend_type = 'client backend'",
@@ -51,7 +52,7 @@ def get_item(item_key):
         cursor = connection.cursor()
         cursor.execute(sql_text)
         rows = cursor.fetchall()
-        if len(rows) == 1:
+        if len(rows) >= 1:
             result = rows[0][0]
         else:
             result = None
