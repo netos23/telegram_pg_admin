@@ -89,7 +89,7 @@ def exec_command(body: RequestCommandModel):
     if not api_key:
         return {}, 401
     connection = UrlConnection.query.filter_by(api_key=api_key).one()
-    error, status = send_post(urllib.parse.urljoin(connection.url, "/exec"), api_key, body.model_dump(exclude_none=True))
+    error, status = send_get(urllib.parse.urljoin(connection.url, "/exec"), api_key, body.model_dump(exclude_none=True))
     return {}, status
 
 
