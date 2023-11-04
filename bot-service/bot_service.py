@@ -149,17 +149,48 @@ def dashboard():
     date_to = request.json.get('date_to') or 1000000000000000
     date_from = date_from / 1000
     date_to = date_to / 1000
+    print(datetime.fromtimestamp(date_from))
+    print(datetime.fromtimestamp(date_to))
     result = client.query(
         'SELECT timestamp, name, value FROM metrics WHERE api_key= %s and timestamp>=toDateTime(%s) and timestamp<=toDateTime(%s) order by timestamp, name',
         parameters=(api_key, date_from, date_to))
-    ans = defaultdict(list)
+    grouped_metrics = defaultdict(list)
+    maxt = 0
+    mint = 10000000000000
     for row in result.result_rows:
-        ans[row[1]].append(
+        current_timestamp = int(row[0].timestamp())
+        grouped_metrics[row[1]].append(
             {"value": float(row[2]) if row[2] is not None else row[2],
-             "timestamp": int(row[0].timestamp())})
-        # strftime("%d.%m.%Y %H:%M:%S")})
-
-    return [{'name': k, 'units': v} for k, v in ans.items()], 200
+             "timestamp": current_timestamp})
+        maxt = max(maxt, current_timestamp)
+        mint = min(mint, current_timestamp)
+    delta = (maxt - mint) // 30
+    ans = []
+    for metric, values in grouped_metrics.items():
+        sumt = 0
+        sumv = None
+        curk = 0
+        initial = 0
+        agg_result = []
+        for value in values:
+            if abs(initial - value['timestamp']) < delta:
+                curk += 1
+                sumt += value['timestamp']
+                if value['value']:
+                    if not sumv:
+                        sumv = 0
+                    sumv += value['value']
+            else:
+                initial = value['timestamp']
+                if curk:
+                    agg_result.append({"value": sumv / curk if sumv else sumv, "timestamp": int(sumt / curk)})
+                curk = 1
+                sumv = None
+                sumt = value['timestamp']
+        if curk != 0:
+            agg_result.append({"value": sumv / curk if sumv else sumv, "timestamp": int(sumt / curk)})
+        ans.append({'name': metric, 'units': agg_result})
+    return ans, 200
 
 
 @app.route("/dumps/", methods=["POST"])
@@ -170,6 +201,28 @@ def dumps():
         return {}, 401
     connection = UrlConnection.query.filter_by(api_key=api_key).one()
     data, status = send_get(connection.url + "/dumps", api_key, {})
+    return data or '', status
+
+
+@app.route("/top_transactions/", methods=["POST"])
+@cross_origin()
+def top_transactions():
+    api_key = request.json.get('api_key')
+    if not api_key:
+        return {}, 401
+    connection = UrlConnection.query.filter_by(api_key=api_key).one()
+    data, status = send_get(connection.url + "/top_transactions", api_key, {})
+    return data or '', status
+
+
+@app.route("/long_transactions/", methods=["POST"])
+@cross_origin()
+def long_transactions():
+    api_key = request.json.get('api_key')
+    if not api_key:
+        return {}, 401
+    connection = UrlConnection.query.filter_by(api_key=api_key).one()
+    data, status = send_get(connection.url + "/long_transactions", api_key, {})
     return data or '', status
 
 
