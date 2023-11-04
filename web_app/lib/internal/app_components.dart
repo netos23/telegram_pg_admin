@@ -30,7 +30,7 @@ class AppComponents {
 
   Future<void> init() async {
     dio.options
-      ..baseUrl = 'http://85.193.85.188:5000/'
+      ..baseUrl = 'https://pg-admin-app.fbtw.ru/'
       ..connectTimeout = timeout
       ..receiveTimeout = timeout
       ..sendTimeout = timeout;

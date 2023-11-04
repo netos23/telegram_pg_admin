@@ -95242,7 +95242,7 @@ var $async$KD=A.U(function(a,b){if(a===1)return A.Q(b,r)
 while(true)switch(s){case 0:p=q.c
 o=p.hk$
 o===$&&A.b()
-o.dE$="http://85.193.85.188:5000/"
+o.dE$="https://pg-admin-app.fbtw.ru/"
 o.sJ5(B.iw)
 o.d=B.iw
 o.c=B.iw
