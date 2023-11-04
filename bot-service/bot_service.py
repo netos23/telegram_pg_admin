@@ -4,9 +4,8 @@ import uuid
 from collections import defaultdict
 from datetime import datetime
 from decimal import Decimal
-from io import BytesIO
 from typing import Optional
-
+from flask_cors import CORS, cross_origin
 import clickhouse_connect
 from dateutil import parser
 from dotenv import load_dotenv
@@ -39,6 +38,7 @@ class RequestCreateModel(BaseModel):
 
 @app.route("/create/", methods=["POST"])
 @validate()
+@cross_origin()
 def post(body: RequestCreateModel):
     api_key = str(uuid.uuid4())
     connection = UrlConnection(**body.model_dump(), api_key=api_key)
@@ -48,6 +48,7 @@ def post(body: RequestCreateModel):
 
 
 @app.route("/list_keys/", methods=["GET"])
+@cross_origin()
 def list_keys():
     tg_user_id = request.args.get('tg_user_id')
     connections = UrlConnection.query.filter_by(tg_user_id=tg_user_id).all()
@@ -60,6 +61,7 @@ class RequestCommandModel(BaseModel):
 
 @app.route("/exec/", methods=["POST"])
 @validate()
+@cross_origin()
 def exec_command(body: RequestCommandModel):
     if 'X-Api-Key' not in request.headers:
         return {}, 401
@@ -77,6 +79,7 @@ class ResponseMetricModel(BaseModel):
 
 
 # @app.route("/get_metrics/", methods=["POST"])
+# @cross_origin()
 @scheduler.task('interval', id='my_job', seconds=15)
 def get_metrics():
     print('This job is executed every 15 seconds.')
@@ -111,6 +114,7 @@ def get_metrics():
 
 
 @app.route("/dashboard/", methods=["POST"])
+@cross_origin()
 def dashboard():
     if 'X-Api-Key' not in request.headers:
         return {}, 401
@@ -142,6 +146,9 @@ if __name__ == "__main__":
 
     scheduler.init_app(app)
     scheduler.start()
+
+    cors = CORS(app)
+    app.config['CORS_HEADERS'] = 'Content-Type'
 
     with app.app_context():
         db.create_all()

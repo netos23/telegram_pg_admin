@@ -6,3 +6,4 @@ python-dotenv
 python-dateutil
 apscheduler
 telebot
+flask-cors
