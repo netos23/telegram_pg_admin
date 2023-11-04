@@ -21,7 +21,7 @@ DashboardUnit _$DashboardUnitFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$DashboardUnit {
   int get timestamp => throw _privateConstructorUsedError;
-  double get value => throw _privateConstructorUsedError;
+  double? get value => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -35,7 +35,7 @@ abstract class $DashboardUnitCopyWith<$Res> {
           DashboardUnit value, $Res Function(DashboardUnit) then) =
       _$DashboardUnitCopyWithImpl<$Res, DashboardUnit>;
   @useResult
-  $Res call({int timestamp, double value});
+  $Res call({int timestamp, double? value});
 }
 
 /// @nodoc
@@ -52,17 +52,17 @@ class _$DashboardUnitCopyWithImpl<$Res, $Val extends DashboardUnit>
   @override
   $Res call({
     Object? timestamp = null,
-    Object? value = null,
+    Object? value = freezed,
   }) {
     return _then(_value.copyWith(
       timestamp: null == timestamp
           ? _value.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
               as int,
-      value: null == value
+      value: freezed == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
-              as double,
+              as double?,
     ) as $Val);
   }
 }
@@ -75,7 +75,7 @@ abstract class _$$DashboardUnitImplCopyWith<$Res>
       __$$DashboardUnitImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int timestamp, double value});
+  $Res call({int timestamp, double? value});
 }
 
 /// @nodoc
@@ -90,17 +90,17 @@ class __$$DashboardUnitImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? timestamp = null,
-    Object? value = null,
+    Object? value = freezed,
   }) {
     return _then(_$DashboardUnitImpl(
       timestamp: null == timestamp
           ? _value.timestamp
           : timestamp // ignore: cast_nullable_to_non_nullable
               as int,
-      value: null == value
+      value: freezed == value
           ? _value.value
           : value // ignore: cast_nullable_to_non_nullable
-              as double,
+              as double?,
     ));
   }
 }
@@ -108,7 +108,7 @@ class __$$DashboardUnitImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$DashboardUnitImpl implements _DashboardUnit {
-  const _$DashboardUnitImpl({required this.timestamp, required this.value});
+  const _$DashboardUnitImpl({required this.timestamp, this.value});
 
   factory _$DashboardUnitImpl.fromJson(Map<String, dynamic> json) =>
       _$$DashboardUnitImplFromJson(json);
@@ -116,7 +116,7 @@ class _$DashboardUnitImpl implements _DashboardUnit {
   @override
   final int timestamp;
   @override
-  final double value;
+  final double? value;
 
   @override
   String toString() {
@@ -154,7 +154,7 @@ class _$DashboardUnitImpl implements _DashboardUnit {
 abstract class _DashboardUnit implements DashboardUnit {
   const factory _DashboardUnit(
       {required final int timestamp,
-      required final double value}) = _$DashboardUnitImpl;
+      final double? value}) = _$DashboardUnitImpl;
 
   factory _DashboardUnit.fromJson(Map<String, dynamic> json) =
       _$DashboardUnitImpl.fromJson;
@@ -162,7 +162,7 @@ abstract class _DashboardUnit implements DashboardUnit {
   @override
   int get timestamp;
   @override
-  double get value;
+  double? get value;
   @override
   @JsonKey(ignore: true)
   _$$DashboardUnitImplCopyWith<_$DashboardUnitImpl> get copyWith =>

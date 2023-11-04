@@ -7,14 +7,18 @@ import 'package:web_app/presentation/router/app_router.dart';
 
 @RoutePage()
 class CommandPage extends StatefulWidget {
-  CommandPage({
+  const CommandPage({
     super.key,
   });
-  final TextEditingController urlController = TextEditingController();
-  final TextEditingController nameController = TextEditingController();
 
   @override
   State<CommandPage> createState() => _CommandPageState();
+}
+
+class _CommandPageState extends State<CommandPage> {
+
+  final TextEditingController urlController = TextEditingController();
+  final TextEditingController nameController = TextEditingController();
 
   Future<void> onPressed() async {
     try {
@@ -24,15 +28,13 @@ class CommandPage extends StatefulWidget {
       );
     }
   }
-}
 
-class _CommandPageState extends State<CommandPage> {
   @override
   void initState() {
     super.initState();
     AppComponents().backButton.show();
     AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
-      context.router.replace(const DashboardRoute());
+      context.router.pop();
     }));
     AppComponents().mainButton.text = 'Dashboards';
     AppComponents().mainButton.show();
@@ -40,6 +42,8 @@ class _CommandPageState extends State<CommandPage> {
 
   @override
   void dispose() {
+    urlController.dispose();
+    nameController.dispose();
     super.dispose();
   }
 
@@ -118,7 +122,7 @@ class _CommandPageState extends State<CommandPage> {
         ),
       ),
       floatingActionButton: !tg.isSupported ? FloatingActionButton(
-        onPressed: () => context.router.replace(const DashboardRoute()),
+        onPressed: () => context.router.pop(),
         child: const Icon(Icons.dashboard),
       ) : null,
     );

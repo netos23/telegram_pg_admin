@@ -24,6 +24,6 @@ abstract class ProfileService {
 
   @GET('/list_keys/')
   Future<List<Connection>> getConnections({
-    @QueryParam('tg_user_id') required String tgUserId,
+    @Query('tg_user_id') required String tgUserId,
   });
 }

@@ -69,7 +69,7 @@ class _ProfileService implements ProfileService {
   @override
   Future<List<Connection>> getConnections({required String tgUserId}) async {
     const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{r'tg_user_id': tgUserId};
     final _headers = <String, dynamic>{};
     final Map<String, dynamic>? _data = null;
     final _result = await _dio

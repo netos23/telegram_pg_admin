@@ -1,17 +1,20 @@
-import 'package:auto_route/annotations.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:web_app/data/api_client/dashboard_api_client.dart';
+import 'package:flutter_telegram_web_app/flutter_telegram_web_app.dart' as tg;
 import 'package:web_app/domain/entity/dashboard.dart';
+import 'package:web_app/domain/entity/dashboard_filter.dart';
 import 'package:web_app/internal/app_components.dart';
 import 'package:web_app/presentation/page/dashboard_page/widgets/dashboard.dart';
 import 'package:web_app/presentation/router/app_router.dart';
-import 'package:flutter_telegram_web_app/flutter_telegram_web_app.dart' as tg;
-
 
 @RoutePage()
 class DashboardPage extends StatefulWidget {
-  const DashboardPage({super.key});
+  const DashboardPage({
+    super.key,
+    @QueryParam() this.apiKey = '',
+  });
+
+  final String apiKey;
 
   @override
   State<DashboardPage> createState() => _DashboardPageState();
@@ -19,7 +22,11 @@ class DashboardPage extends StatefulWidget {
 
 class _DashboardPageState extends State<DashboardPage> {
   late final Future<List<Dashboard>> _dashFeature =
-      DashBoardApiClient().getDashboards();
+      AppComponents().dashboardApiClient.getDashboards(
+            DashboardFilter(
+              apiKey: widget.apiKey,
+            ),
+          );
 
   @override
   void initState() {
@@ -30,7 +37,6 @@ class _DashboardPageState extends State<DashboardPage> {
     }));
     AppComponents().mainButton.text = 'Dashboards';
     AppComponents().mainButton.show();
-
   }
 
   @override
@@ -73,10 +79,12 @@ class _DashboardPageState extends State<DashboardPage> {
           );
         },
       ),
-      floatingActionButton: !tg.isSupported ?  FloatingActionButton(
-        onPressed: () => context.router.replace(CommandRoute()),
-        child: const Icon(Icons.code),
-      ) : null,
+      floatingActionButton: !tg.isSupported
+          ? FloatingActionButton(
+              onPressed: () => context.router.replace(CommandRoute()),
+              child: const Icon(Icons.code),
+            )
+          : null,
     );
   }
 }

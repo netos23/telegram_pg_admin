@@ -10,15 +10,15 @@ import 'package:web_app/presentation/router/app_router.dart';
 class MainPage extends StatefulWidget {
   MainPage({super.key});
 
-  final BehaviorSubject<List<Connection>> connectionController =
-      BehaviorSubject.seeded([]);
-
   @override
   State<MainPage> createState() => _MainPageState();
 }
 
 class _MainPageState extends State<MainPage> {
   final profileService = AppComponents().apiClient;
+
+  final BehaviorSubject<List<Connection>> connectionController =
+      BehaviorSubject.seeded([]);
 
   @override
   void initState() {
@@ -34,8 +34,7 @@ class _MainPageState extends State<MainPage> {
 
   @override
   void dispose() {
-    widget.connectionController.close();
-    // TODO: implement dispose
+    connectionController.close();
     super.dispose();
   }
 
@@ -48,7 +47,7 @@ class _MainPageState extends State<MainPage> {
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 32.0),
             child: StreamBuilder<List<Connection>>(
-              stream: widget.connectionController,
+              stream: connectionController,
               initialData: const [],
               builder: (context, snapshot) {
                 if (!snapshot.hasData || snapshot.data == null) {
@@ -77,8 +76,13 @@ class _MainPageState extends State<MainPage> {
                           ),
                           child: Card(
                             child: InkWell(
-                              onTap: () =>
-                                  context.router.push(const DashboardRoute()),
+                              onTap: () {
+                                context.router.push(
+                                  DashboardRoute(
+                                    apiKey: connection.apikey ?? '',
+                                  ),
+                                );
+                              },
                               child: Padding(
                                 padding: const EdgeInsets.all(16),
                                 child: Column(
@@ -123,7 +127,10 @@ class _MainPageState extends State<MainPage> {
       ),
       floatingActionButton: !tg.isSupported
           ? FloatingActionButton(
-              onPressed: () => context.router.push(AddConnectionRoute()),
+              onPressed: () async {
+                await context.router.push(AddConnectionRoute());
+                loadConnections();
+              },
               child: const Icon(Icons.add),
             )
           : null,
@@ -132,6 +139,6 @@ class _MainPageState extends State<MainPage> {
 
   Future<void> loadConnections() async {
     final result = await profileService.getConnections();
-    widget.connectionController.add(result);
+    connectionController.add(result);
   }
 }

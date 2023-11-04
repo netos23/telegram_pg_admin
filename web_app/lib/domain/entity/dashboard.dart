@@ -8,7 +8,7 @@ part 'dashboard.g.dart';
 @freezed
 class Dashboard with _$Dashboard {
     const factory Dashboard({
-      required String title,
+      required String name,
       required List<DashboardUnit> units,
 }) = _Dashboard;
 
