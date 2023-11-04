@@ -24,6 +24,8 @@ mixin _$Connection {
   int? get id => throw _privateConstructorUsedError;
   @JsonKey(name: 'tg_user_id')
   String? get tgUserId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'is_active')
+  bool? get isActive => throw _privateConstructorUsedError;
   @JsonKey(name: 'api_key')
   String? get apikey => throw _privateConstructorUsedError;
   String? get url => throw _privateConstructorUsedError;
@@ -44,6 +46,7 @@ abstract class $ConnectionCopyWith<$Res> {
       {String name,
       int? id,
       @JsonKey(name: 'tg_user_id') String? tgUserId,
+      @JsonKey(name: 'is_active') bool? isActive,
       @JsonKey(name: 'api_key') String? apikey,
       String? url});
 }
@@ -64,6 +67,7 @@ class _$ConnectionCopyWithImpl<$Res, $Val extends Connection>
     Object? name = null,
     Object? id = freezed,
     Object? tgUserId = freezed,
+    Object? isActive = freezed,
     Object? apikey = freezed,
     Object? url = freezed,
   }) {
@@ -80,6 +84,10 @@ class _$ConnectionCopyWithImpl<$Res, $Val extends Connection>
           ? _value.tgUserId
           : tgUserId // ignore: cast_nullable_to_non_nullable
               as String?,
+      isActive: freezed == isActive
+          ? _value.isActive
+          : isActive // ignore: cast_nullable_to_non_nullable
+              as bool?,
       apikey: freezed == apikey
           ? _value.apikey
           : apikey // ignore: cast_nullable_to_non_nullable
@@ -104,6 +112,7 @@ abstract class _$$ConnectionImplCopyWith<$Res>
       {String name,
       int? id,
       @JsonKey(name: 'tg_user_id') String? tgUserId,
+      @JsonKey(name: 'is_active') bool? isActive,
       @JsonKey(name: 'api_key') String? apikey,
       String? url});
 }
@@ -122,6 +131,7 @@ class __$$ConnectionImplCopyWithImpl<$Res>
     Object? name = null,
     Object? id = freezed,
     Object? tgUserId = freezed,
+    Object? isActive = freezed,
     Object? apikey = freezed,
     Object? url = freezed,
   }) {
@@ -138,6 +148,10 @@ class __$$ConnectionImplCopyWithImpl<$Res>
           ? _value.tgUserId
           : tgUserId // ignore: cast_nullable_to_non_nullable
               as String?,
+      isActive: freezed == isActive
+          ? _value.isActive
+          : isActive // ignore: cast_nullable_to_non_nullable
+              as bool?,
       apikey: freezed == apikey
           ? _value.apikey
           : apikey // ignore: cast_nullable_to_non_nullable
@@ -157,6 +171,7 @@ class _$ConnectionImpl implements _Connection {
       {required this.name,
       this.id,
       @JsonKey(name: 'tg_user_id') this.tgUserId,
+      @JsonKey(name: 'is_active') this.isActive,
       @JsonKey(name: 'api_key') this.apikey,
       this.url});
 
@@ -171,6 +186,9 @@ class _$ConnectionImpl implements _Connection {
   @JsonKey(name: 'tg_user_id')
   final String? tgUserId;
   @override
+  @JsonKey(name: 'is_active')
+  final bool? isActive;
+  @override
   @JsonKey(name: 'api_key')
   final String? apikey;
   @override
@@ -178,7 +196,7 @@ class _$ConnectionImpl implements _Connection {
 
   @override
   String toString() {
-    return 'Connection(name: $name, id: $id, tgUserId: $tgUserId, apikey: $apikey, url: $url)';
+    return 'Connection(name: $name, id: $id, tgUserId: $tgUserId, isActive: $isActive, apikey: $apikey, url: $url)';
   }
 
   @override
@@ -190,13 +208,16 @@ class _$ConnectionImpl implements _Connection {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.tgUserId, tgUserId) ||
                 other.tgUserId == tgUserId) &&
+            (identical(other.isActive, isActive) ||
+                other.isActive == isActive) &&
             (identical(other.apikey, apikey) || other.apikey == apikey) &&
             (identical(other.url, url) || other.url == url));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, name, id, tgUserId, apikey, url);
+  int get hashCode =>
+      Object.hash(runtimeType, name, id, tgUserId, isActive, apikey, url);
 
   @JsonKey(ignore: true)
   @override
@@ -217,6 +238,7 @@ abstract class _Connection implements Connection {
       {required final String name,
       final int? id,
       @JsonKey(name: 'tg_user_id') final String? tgUserId,
+      @JsonKey(name: 'is_active') final bool? isActive,
       @JsonKey(name: 'api_key') final String? apikey,
       final String? url}) = _$ConnectionImpl;
 
@@ -230,6 +252,9 @@ abstract class _Connection implements Connection {
   @override
   @JsonKey(name: 'tg_user_id')
   String? get tgUserId;
+  @override
+  @JsonKey(name: 'is_active')
+  bool? get isActive;
   @override
   @JsonKey(name: 'api_key')
   String? get apikey;

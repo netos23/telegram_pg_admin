@@ -1,4 +1,5 @@
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_telegram_web_app/flutter_telegram_web_app.dart' as tg;
 import 'package:web_app/domain/entity/dashboard.dart';
@@ -23,10 +24,24 @@ class DashboardPage extends StatefulWidget {
 class _DashboardPageState extends State<DashboardPage> {
   late final Future<List<Dashboard>> _dashFeature =
       AppComponents().dashboardApiClient.getDashboards(
-            DashboardFilter(
-              apiKey: widget.apiKey,
-            ),
+            _buildFilter(),
           );
+
+  DashboardFilter _buildFilter() {
+    final now = DateTime.now();
+
+    return DashboardFilter(
+      apiKey: widget.apiKey,
+      from: now
+          .subtract(
+            const Duration(
+              minutes: 15,
+            ),
+          )
+          .millisecondsSinceEpoch,
+      to: now.millisecondsSinceEpoch,
+    );
+  }
 
   @override
   void initState() {
@@ -62,13 +77,16 @@ class _DashboardPageState extends State<DashboardPage> {
           }
           if (dashboards == null) {
             return const Center(
-              child: CircularProgressIndicator(),
+              child: CupertinoActivityIndicator(),
             );
           }
           return GridView.builder(
+            padding: const EdgeInsets.all(16),
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 500,
-              mainAxisExtent: 400,
+              childAspectRatio: 4/3,
+              crossAxisSpacing: 5,
+              mainAxisSpacing: 5,
             ),
             itemCount: dashboards.length,
             itemBuilder: (context, index) {
