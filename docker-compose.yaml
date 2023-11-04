@@ -8,7 +8,7 @@ services:
     volumes:
       - letsencrypt-data:/etc/letsencrypt
       - ./static:/var/www/html
-    command: certonly --webroot --webroot-path /var/www/html --email nikmoroz2002@yandex.ru --agree-tos --no-eff-email  -d it-profession.fbtw.ru
+    command: certonly --webroot --webroot-path /var/www/html --email nikmoroz2002@yandex.ru --agree-tos --no-eff-email  -d pg-admin-app.fbtw.ru
   web:
     build:
       context: bot-service
