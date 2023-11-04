@@ -1,0 +1,34 @@
+version: "3.9"
+services:
+  certbot:
+    image: 'certbot/certbot'
+    depends_on:
+      ingress:
+        condition: service_started
+    volumes:
+      - letsencrypt-data:/etc/letsencrypt
+      - ./static:/var/www/html
+    command: certonly --webroot --webroot-path /var/www/html --email nikmoroz2002@yandex.ru --agree-tos --no-eff-email  -d pg-admin-app.fbtw.ru
+  web:
+    build:
+      context: bot-service
+      dockerfile: Dockerfile
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./bot-service/.env
+  ingress:
+    image: 'app-ingress:1.0'
+    build:
+      context: ingress
+      dockerfile: Dockerfile
+    ports:
+      - '80:80'
+      - '443:443'
+    container_name: app-ingress
+    volumes:
+      - letsencrypt-data:/etc/letsencrypt
+      - ./static:/var/www/html
+volumes:
+  letsencrypt-data:
+  nginx-static-data:
