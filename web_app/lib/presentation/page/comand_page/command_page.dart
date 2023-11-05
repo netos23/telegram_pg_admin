@@ -472,9 +472,9 @@ class AppInfo extends StatelessWidget {
       child: Column(
         children: [
           Text(tg.WebAppChat().title),
-          Text(tg.initDataUnsafe.user?.id.toString()),
+          Text(tg.initData),
           Text(tg.WebAppChat().photo_url.toString()),
-          Text(tg.initDataUnsafe.user?.id.toString() ?? ''),
+          Text(tg.initData ?? ''),
           Text(tg.initDataUnsafe.chat?.title.toString() ?? ''),
           Text(tg.initDataUnsafe.chat?..toString() ?? ''),
         ],
