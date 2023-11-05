@@ -1,17 +1,17 @@
-from flask import Flask, request
+from flask import Flask, request, Response, jsonify
 from functools import wraps
 import json
-
-import dump
-import get_info
 import os
-import restart
-
-from dump import dump_schema
+from logic import restart, get_info, custom_metric, bd_utils, dump
+from logic.dump import dump_schema, get_last_dumps
 
 # костыль
-os.environ['API_KEY'] = ["bc6eb18d-f242-4cb8-ad04-352fbb879616", "f02f9fb3-5ead-4e62-a978-e87c05529855",
-                         "4715299c-4bac-42f0-adb0-e8d3c475e200"]
+os.environ['API_KEY'] = "a768b1d2-0929-469f-bce9-ee6e2c5e6f77"
+# жесткий костыль
+api_key_storage = [
+    "4385d4c5-7e68-4732-9f0b-7875b03c5581", "99388f74-a9e9-4461-8186-1cf6cd26deb2",
+    "005fabb3-8250-48a1-bee4-4eb241fe762d"
+]
 os.environ['PGHOSTNAME'] = "92.53.127.18"
 os.environ['PGPORT'] = "5432"
 os.environ['PGUSERNAME'] = "postgres"
@@ -28,7 +28,7 @@ def api_key_required(f):
     @wraps(f)
     def wrapped_view(**kwargs):
         api_key = request.headers.get('X-Api-Key')
-        if api_key not in os.environ['API_KEY']:
+        if api_key not in api_key_storage:
             return 'Unauthorized', 401
         return f(**kwargs)
 
@@ -70,26 +70,50 @@ def execute():
         dump_schema(parameter)
         return 'OK', 200
     if command == "restore":
+        if parameter is None:
+            parameter = get_last_dumps()['name']
         dump.restore_schema(parameter)
         return 'OK', 200
     if command == "restart":
         restart.restart_db()
         return 'OK', 200
-    return 'Nor found', 404
+    if command == "connection":
+        bd_utils.terminate_process(parameter)
+        return 'OK', 200
+    return 'Not found', 404
 
 
 @app.route('/get_metrics')
 @api_key_required
 def get_metrics():
     result = get_info.get_info()
-    json_data = json.dumps(result, default=float)
-    return json_data
+    result = json.dumps(result, default=float)
+    return Response(
+        response=result,
+        status=200,
+        content_type='application/json'
+    )
 
 
 @app.route('/dumps')
 @api_key_required
 def get_dumps():
-    return dump.get_dumps()
+    result = dump.get_dumps()
+    return jsonify(result)
+
+
+@app.route('/long_transactions')
+@api_key_required
+def get_current_longest_queries():
+    result = custom_metric.get_current_long_transaction()
+    return jsonify(result)
+
+
+@app.route('/top_transactions')
+@api_key_required
+def get_longest_queries():
+    result = custom_metric.get_longest_transaction()
+    return jsonify(result)
 
 
 if __name__ == '__main__':

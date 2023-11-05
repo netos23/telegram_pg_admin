@@ -1,12 +1,18 @@
-import os
+import re
+import string
 import time
-from datetime import date, datetime
 
-import psycopg2 as psycopg2
+from logic.bd_utils import get_connection
+from logic.hardware_utils import get_hardware_utils
 
 sql_item = {
     'Alive': "select 1;",  # monitor survival
     'Cache hit ratio': "SELECT sum(heap_blks_hit) / (sum(heap_blks_hit) + sum(heap_blks_read)) as ratio FROM pg_statio_user_tables;",
+    'Size': """
+    SELECT  pg_size_pretty(pg_tablespace_size(spcname)) as size
+    FROM pg_tablespace
+    WHERE spcname<>'pg_global';
+    """,
     'Active_connections': "select count (*) from pg_stat_activity where state = 'active';",
     'Server_connections': "select count (*) from pg_stat_activity where backend_type = 'client backend'",
     'Idle_connections': "select count (*) from pg_stat_activity where state = 'idle'",
@@ -31,32 +37,24 @@ sql_item = {
     # 'pg_stat_activity': "SELECT * FROM pg_stat_activity"
 }
 
-sql_items_from_file = {
-
-}
-
 
 def get_item(item_key):
     query = sql_item[item_key]
-    connection = None
-    cursor = None
+    connection = get_connection()
+    cursor = connection.cursor()
     try:
         result = {}
-        now = datetime.now()
-        formatted_date = now.strftime("%d.%m.%Y %H:%M:%S")
-        connection = psycopg2.connect(
-            user=os.environ['PGUSERNAME'],
-            password=os.environ['PGPASSWORD'],
-            host=os.environ['PGHOSTNAME'],
-            port=os.environ['PGPORT'],
-            database=os.environ['PGDATABASE']
-        )
-        cursor = connection.cursor()
+        now = int(time.time())
         cursor.execute(query)
         rows = cursor.fetchall()
-        result['timestamp'] = formatted_date
+        result['timestamp'] = now
         result['name'] = item_key
-        result['value'] = float(rows[0][0])
+        # да, костыль
+        if item_key == 'Size':
+            size = re.sub('\D', '', rows[0][0])
+            result['value'] = float(size) * 1024 * 1024
+        else:
+            result['value'] = float(rows[0][0])
         return result
     except Exception as e:
         print(e)
@@ -65,31 +63,11 @@ def get_item(item_key):
         connection.close()
 
 
-def get_from_file(file_path):
-    with open(file_path, 'r') as f:
-        return get_custom_query(f.read())
-
-
-def get_custom_query(query):
-    connection = None
-    cursor = None
+def _filter_value(value):
     try:
-        connection = psycopg2.connect(
-            user=os.environ['PGUSERNAME'],
-            password=os.environ['PGPASSWORD'],
-            host=os.environ['PGHOSTNAME'],
-            port=os.environ['PGPORT'],
-            database=os.environ['PGDATABASE']
-        )
-        cursor = connection.cursor()
-        cursor.execute(query)
-        rows = cursor.fetchall()
-        return rows[0][0]
-    except Exception as e:
-        print(e)
-    finally:
-        cursor.close()
-        connection.close()
+        return float("".join(filter(lambda c: c in "1234567890.", value)))
+    except:
+        return 0
 
 
 def get_info():
@@ -98,4 +76,14 @@ def get_info():
         item = get_item(key)
         if item is not None:
             result.append(get_item(key))
+    hardware_result = get_hardware_utils()
+    now = int(time.time())
+    value = float(hardware_result['CPUPerc'].strip('%'))
+    data = {'timestamp': now, 'name': 'CPUPerc', 'value': value}
+    result.append(data)
+
+    value = float(hardware_result['MemPerc'].strip('%'))
+    data = {'timestamp': now, 'name': 'MemPerc', 'value': value}
+    result.append(data)
+
     return result
