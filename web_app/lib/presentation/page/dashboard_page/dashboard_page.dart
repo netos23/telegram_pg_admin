@@ -45,9 +45,9 @@ class _DashboardPageState extends State<DashboardPage> {
   }
 
   void onDispose() {
-    AppComponents().mainButton.hide();
     AppComponents().backButton.hide();
     AppComponents().mainButton.offClick(tg.JsVoidCallback(() {
+      onReplace();
       context.router.popAndPush(CommandRoute(
         apiKey: widget.apiKey,
       ));
@@ -58,21 +58,24 @@ class _DashboardPageState extends State<DashboardPage> {
     }));
     AppComponents().mainButton.onClick(
       tg.JsVoidCallback(
-        () {
+            () {
           context.router.push(AddConnectionRoute());
         },
       ),
     );
     AppComponents().mainButton.text = 'Add connection';
-    AppComponents().mainButton.show();
   }
 
   void onReplace() {
-    AppComponents().mainButton.hide();
     AppComponents().mainButton.offClick(tg.JsVoidCallback(() {
+      onReplace();
       context.router.popAndPush(CommandRoute(
         apiKey: widget.apiKey,
       ));
+    }));
+    AppComponents().backButton.offClick(tg.JsVoidCallback(() {
+      onDispose();
+      context.router.pop();
     }));
   }
 
@@ -80,6 +83,7 @@ class _DashboardPageState extends State<DashboardPage> {
   @override
   void initState() {
     super.initState();
+    AppComponents().mainButton.show();
     AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
       onReplace();
       context.router.popAndPush(CommandRoute(
@@ -92,7 +96,6 @@ class _DashboardPageState extends State<DashboardPage> {
     }));
     AppComponents().mainButton.text = 'To commands < >';
     AppComponents().backButton.show();
-    AppComponents().mainButton.show();
   }
 
   @override

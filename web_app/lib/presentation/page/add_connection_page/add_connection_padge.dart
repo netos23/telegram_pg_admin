@@ -40,7 +40,7 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
   @override
   void initState() {
     super.initState();
-    AppComponents().backButton.isVisible = true;
+    AppComponents().backButton.show();
     AppComponents().mainButton.onClick(
           tg.JsVoidCallback(onAdd),
         );
@@ -51,7 +51,6 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
       }),
     );
     AppComponents().mainButton.text = 'Save';
-    AppComponents().mainButton.isVisible = true;
   }
 
   Future<void> onAdd() async {
@@ -78,15 +77,15 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
   void onDispose(){
     AppComponents().backButton.hide();
     AppComponents().mainButton.offClick(
-      tg.JsVoidCallback(
-        tg.JsVoidCallback(onAdd),
+      tg.JsVoidCallback(() {
+        onAdd();
+      },
       ),
     );
     AppComponents().backButton.offClick(
       tg.JsVoidCallback((){
         onDispose();
         context.router.pop();
-
       }
       ),
     );
@@ -98,7 +97,6 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
       ),
     );
     AppComponents().mainButton.text = 'Add connection';
-    AppComponents().mainButton.show();
 
   }
 

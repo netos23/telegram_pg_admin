@@ -47,7 +47,6 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
   }
 
   void onDispose(){
-    AppComponents().mainButton.hide();
     AppComponents().backButton.hide();
     AppComponents().mainButton.offClick(
       tg.JsVoidCallback(
@@ -58,7 +57,6 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
       tg.JsVoidCallback((){
         onDispose();
         context.router.pop();
-
       }
       ),
     );
@@ -70,8 +68,6 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
       ),
     );
     AppComponents().mainButton.text = 'Add connection';
-    AppComponents().mainButton.show();
-
   }
 
   Future<void> onEdit() async {

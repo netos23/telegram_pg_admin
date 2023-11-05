@@ -31,12 +31,38 @@ class _CommandPageState extends State<CommandPage> {
   final TextEditingController nameController = TextEditingController();
 
   void onReplace() {
-    AppComponents().mainButton.hide();
     AppComponents().mainButton.offClick(tg.JsVoidCallback(() {
+      onReplace();
       context.router.popAndPush(DashboardRoute(
         apiKey: widget.apiKey,
       ));
     }));
+    AppComponents().backButton.offClick(tg.JsVoidCallback(() {
+      onDispose();
+      context.router.pop();
+    }));
+  }
+
+  void onDispose(){
+    AppComponents().backButton.hide();
+    AppComponents().mainButton.offClick(tg.JsVoidCallback(() {
+      onReplace();
+      context.router.popAndPush(DashboardRoute(
+        apiKey: widget.apiKey,
+      ));
+    }));
+    AppComponents().backButton.offClick(tg.JsVoidCallback(() {
+      onDispose();
+      context.router.pop();
+    }));
+    AppComponents().mainButton.onClick(
+      tg.JsVoidCallback(
+            () {
+          context.router.push(AddConnectionRoute());
+        },
+      ),
+    );
+    AppComponents().mainButton.text = 'Add connection';
   }
 
   @override
@@ -49,8 +75,11 @@ class _CommandPageState extends State<CommandPage> {
         apiKey: widget.apiKey,
       ));
     }));
+    AppComponents().backButton.onClick(tg.JsVoidCallback(() {
+      onDispose();
+      context.router.pop();
+    }));
     AppComponents().mainButton.text = 'To dashboards';
-    AppComponents().mainButton.show();
   }
 
   @override
