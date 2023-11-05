@@ -105,26 +105,12 @@ class _CommandPageState extends State<CommandPage> {
                   onTap: () {
                     Clipboard.setData(
                       ClipboardData(
-                        text: tg.initDataUnsafe.toString() ?? '',
+                        text: tg.initDataUnsafe.user?.id.toString() ?? '',
                       ),
                     );
                     tg.HapticFeedback.selectionChanged();
                   },
-                  child: Text(tg.initDataUnsafe.toString() ?? ''),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: GestureDetector(
-                  onTap: () {
-                    Clipboard.setData(
-                      ClipboardData(
-                        text: tg.initData,
-                      ),
-                    );
-                    tg.HapticFeedback.selectionChanged();
-                  },
-                  child: Text(tg.initData),
+                  child: Text(tg.initDataUnsafe.user?.id.toString() ?? ''),
                 ),
               ),
             ],

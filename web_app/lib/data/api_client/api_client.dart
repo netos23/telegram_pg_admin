@@ -14,7 +14,7 @@ class ApiClient {
 
   Future<List<Connection>> getConnections() async {
     final tgId = tg.isSupported
-        ? tg.initData
+        ? tg.initDataUnsafe.user?.id.toString()
         : 'Non telegram user';
     try {
       return await profileService.getConnections(tgUserId: tgId);
@@ -29,7 +29,7 @@ class ApiClient {
     required Connection request,
   }) async {
     final tgId = tg.isSupported
-        ? tg.initData
+        ? tg.initDataUnsafe.user?.id.toString()
         : 'Non telegram user';
     final newRequest = request.copyWith(tgUserId: tgId);
     try {
@@ -69,7 +69,7 @@ class ApiClient {
     required Connection request,
   }) async {
     final tgId = tg.isSupported
-        ? tg.initData ?? ''
+        ? tg.initDataUnsafe.user?.id.toString() ?? ''
         : 'Non telegram user';
     final newRequest = request.copyWith(tgUserId: tgId, isActive: true);
     try {
