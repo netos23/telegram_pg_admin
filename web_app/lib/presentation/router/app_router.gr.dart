@@ -23,6 +23,22 @@ abstract class _$AppRouter extends RootStackRouter {
         child: AddConnectionPage(key: args.key),
       );
     },
+    BackupsRoute.name: (routeData) {
+      final queryParams = routeData.queryParams;
+      final args = routeData.argsAs<BackupsRouteArgs>(
+          orElse: () => BackupsRouteArgs(
+                  apikey: queryParams.getString(
+                'apikey',
+                '',
+              )));
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: BackupsPage(
+          key: args.key,
+          apikey: args.apikey,
+        ),
+      );
+    },
     CommandRoute.name: (routeData) {
       final queryParams = routeData.queryParams;
       final args = routeData.argsAs<CommandRouteArgs>(
@@ -106,6 +122,45 @@ class AddConnectionRouteArgs {
   @override
   String toString() {
     return 'AddConnectionRouteArgs{key: $key}';
+  }
+}
+
+/// generated route for
+/// [BackupsPage]
+class BackupsRoute extends PageRouteInfo<BackupsRouteArgs> {
+  BackupsRoute({
+    Key? key,
+    String apikey = '',
+    List<PageRouteInfo>? children,
+  }) : super(
+          BackupsRoute.name,
+          args: BackupsRouteArgs(
+            key: key,
+            apikey: apikey,
+          ),
+          rawQueryParams: {'apikey': apikey},
+          initialChildren: children,
+        );
+
+  static const String name = 'BackupsRoute';
+
+  static const PageInfo<BackupsRouteArgs> page =
+      PageInfo<BackupsRouteArgs>(name);
+}
+
+class BackupsRouteArgs {
+  const BackupsRouteArgs({
+    this.key,
+    this.apikey = '',
+  });
+
+  final Key? key;
+
+  final String apikey;
+
+  @override
+  String toString() {
+    return 'BackupsRouteArgs{key: $key, apikey: $apikey}';
   }
 }
 

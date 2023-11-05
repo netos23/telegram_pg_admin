@@ -12,7 +12,7 @@ _$LongTransactionImpl _$$LongTransactionImplFromJson(
       pid: json['pid'] as int,
       query: json['query'] as String,
       datname: json['datname'] as String,
-      duration: json['duration'] as String,
+      duration: (json['duration'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$$LongTransactionImplToJson(

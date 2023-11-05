@@ -79,7 +79,7 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
                 children: [
                   Card(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 16),

@@ -22,6 +22,7 @@ Dashboard _$DashboardFromJson(Map<String, dynamic> json) {
 mixin _$Dashboard {
   String get name => throw _privateConstructorUsedError;
   List<DashboardUnit> get units => throw _privateConstructorUsedError;
+  List<DashboardUnit> get predictions => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -34,7 +35,10 @@ abstract class $DashboardCopyWith<$Res> {
   factory $DashboardCopyWith(Dashboard value, $Res Function(Dashboard) then) =
       _$DashboardCopyWithImpl<$Res, Dashboard>;
   @useResult
-  $Res call({String name, List<DashboardUnit> units});
+  $Res call(
+      {String name,
+      List<DashboardUnit> units,
+      List<DashboardUnit> predictions});
 }
 
 /// @nodoc
@@ -52,6 +56,7 @@ class _$DashboardCopyWithImpl<$Res, $Val extends Dashboard>
   $Res call({
     Object? name = null,
     Object? units = null,
+    Object? predictions = null,
   }) {
     return _then(_value.copyWith(
       name: null == name
@@ -61,6 +66,10 @@ class _$DashboardCopyWithImpl<$Res, $Val extends Dashboard>
       units: null == units
           ? _value.units
           : units // ignore: cast_nullable_to_non_nullable
+              as List<DashboardUnit>,
+      predictions: null == predictions
+          ? _value.predictions
+          : predictions // ignore: cast_nullable_to_non_nullable
               as List<DashboardUnit>,
     ) as $Val);
   }
@@ -74,7 +83,10 @@ abstract class _$$DashboardImplCopyWith<$Res>
       __$$DashboardImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, List<DashboardUnit> units});
+  $Res call(
+      {String name,
+      List<DashboardUnit> units,
+      List<DashboardUnit> predictions});
 }
 
 /// @nodoc
@@ -90,6 +102,7 @@ class __$$DashboardImplCopyWithImpl<$Res>
   $Res call({
     Object? name = null,
     Object? units = null,
+    Object? predictions = null,
   }) {
     return _then(_$DashboardImpl(
       name: null == name
@@ -100,6 +113,10 @@ class __$$DashboardImplCopyWithImpl<$Res>
           ? _value._units
           : units // ignore: cast_nullable_to_non_nullable
               as List<DashboardUnit>,
+      predictions: null == predictions
+          ? _value._predictions
+          : predictions // ignore: cast_nullable_to_non_nullable
+              as List<DashboardUnit>,
     ));
   }
 }
@@ -108,8 +125,11 @@ class __$$DashboardImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$DashboardImpl implements _Dashboard {
   const _$DashboardImpl(
-      {required this.name, required final List<DashboardUnit> units})
-      : _units = units;
+      {required this.name,
+      required final List<DashboardUnit> units,
+      required final List<DashboardUnit> predictions})
+      : _units = units,
+        _predictions = predictions;
 
   factory _$DashboardImpl.fromJson(Map<String, dynamic> json) =>
       _$$DashboardImplFromJson(json);
@@ -124,9 +144,17 @@ class _$DashboardImpl implements _Dashboard {
     return EqualUnmodifiableListView(_units);
   }
 
+  final List<DashboardUnit> _predictions;
+  @override
+  List<DashboardUnit> get predictions {
+    if (_predictions is EqualUnmodifiableListView) return _predictions;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_predictions);
+  }
+
   @override
   String toString() {
-    return 'Dashboard(name: $name, units: $units)';
+    return 'Dashboard(name: $name, units: $units, predictions: $predictions)';
   }
 
   @override
@@ -135,13 +163,18 @@ class _$DashboardImpl implements _Dashboard {
         (other.runtimeType == runtimeType &&
             other is _$DashboardImpl &&
             (identical(other.name, name) || other.name == name) &&
-            const DeepCollectionEquality().equals(other._units, _units));
+            const DeepCollectionEquality().equals(other._units, _units) &&
+            const DeepCollectionEquality()
+                .equals(other._predictions, _predictions));
   }
 
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(
-      runtimeType, name, const DeepCollectionEquality().hash(_units));
+      runtimeType,
+      name,
+      const DeepCollectionEquality().hash(_units),
+      const DeepCollectionEquality().hash(_predictions));
 
   @JsonKey(ignore: true)
   @override
@@ -160,7 +193,8 @@ class _$DashboardImpl implements _Dashboard {
 abstract class _Dashboard implements Dashboard {
   const factory _Dashboard(
       {required final String name,
-      required final List<DashboardUnit> units}) = _$DashboardImpl;
+      required final List<DashboardUnit> units,
+      required final List<DashboardUnit> predictions}) = _$DashboardImpl;
 
   factory _Dashboard.fromJson(Map<String, dynamic> json) =
       _$DashboardImpl.fromJson;
@@ -169,6 +203,8 @@ abstract class _Dashboard implements Dashboard {
   String get name;
   @override
   List<DashboardUnit> get units;
+  @override
+  List<DashboardUnit> get predictions;
   @override
   @JsonKey(ignore: true)
   _$$DashboardImplCopyWith<_$DashboardImpl> get copyWith =>

@@ -16,7 +16,11 @@ class DashboardWidget extends StatefulWidget {
 
 class _DashboardWidgetState extends State<DashboardWidget> {
   List<Color> gradientColors = [
-    Colors.cyan,
+    Colors.deepPurple,
+    Colors.blue,
+  ];
+  List<Color> predictColors = [
+    Colors.orange,
     Colors.yellow,
   ];
 
@@ -85,6 +89,16 @@ class _DashboardWidgetState extends State<DashboardWidget> {
           );
         },
         getDrawingVerticalLine: (value) {
+          final dashBoard = widget.dashboard;
+          final l = dashBoard.units[dashBoard.units.length-1];
+          final r = dashBoard.predictions[0];
+          if(l.timestamp <= value && value <= r.timestamp){
+            return FlLine(
+              color: theme.error,
+              strokeWidth: 0.5,
+            );
+          }
+
           return FlLine(
             color: theme.onSurface,
             strokeWidth: 0.5,
@@ -130,7 +144,7 @@ class _DashboardWidgetState extends State<DashboardWidget> {
           gradient: LinearGradient(
             colors: gradientColors,
           ),
-          barWidth: 5,
+          barWidth: 1,
           isStrokeCapRound: true,
           dotData: const FlDotData(
             show: false,
@@ -139,6 +153,31 @@ class _DashboardWidgetState extends State<DashboardWidget> {
             show: true,
             gradient: LinearGradient(
               colors: gradientColors
+                  .map((color) => color.withOpacity(0.3))
+                  .toList(),
+            ),
+          ),
+        ),
+
+        LineChartBarData(
+          spots: widget.dashboard.predictions
+              .map(
+                (e) => FlSpot((e.timestamp), e.value ?? 0),
+          )
+              .toList(),
+          isCurved: true,
+          gradient: LinearGradient(
+            colors: gradientColors,
+          ),
+          barWidth: 1,
+          isStrokeCapRound: true,
+          dotData: const FlDotData(
+            show: false,
+          ),
+          belowBarData: BarAreaData(
+            show: true,
+            gradient: LinearGradient(
+              colors: predictColors
                   .map((color) => color.withOpacity(0.3))
                   .toList(),
             ),

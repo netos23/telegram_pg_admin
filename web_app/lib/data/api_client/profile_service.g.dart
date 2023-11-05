@@ -64,27 +64,24 @@ class _ProfileService implements ProfileService {
   }
 
   @override
-  Future<Connection> execCommand({required Command request}) async {
+  Future<void> execCommand({required Command request}) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
     final _data = <String, dynamic>{};
     _data.addAll(request.toJson());
-    final _result = await _dio
-        .fetch<Map<String, dynamic>>(_setStreamType<Connection>(Options(
+    await _dio.fetch<void>(_setStreamType<void>(Options(
       method: 'POST',
       headers: _headers,
       extra: _extra,
     )
-            .compose(
-              _dio.options,
-              '/exec/',
-              queryParameters: queryParameters,
-              data: _data,
-            )
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = Connection.fromJson(_result.data!);
-    return value;
+        .compose(
+          _dio.options,
+          '/exec/',
+          queryParameters: queryParameters,
+          data: _data,
+        )
+        .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
   }
 
   @override

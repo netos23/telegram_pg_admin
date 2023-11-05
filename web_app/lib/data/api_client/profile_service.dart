@@ -27,7 +27,7 @@ abstract class ProfileService {
   });
 
   @POST('/exec/')
-  Future<Connection> execCommand({
+  Future<void> execCommand({
     @Body() required Command request,
   });
 

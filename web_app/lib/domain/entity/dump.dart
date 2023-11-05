@@ -7,7 +7,8 @@ part 'dump.g.dart';
 class Dump with _$Dump {
     factory Dump({
       required String name,
-      required String datetime,
+      required int datetime,
+      required int size,
 }) = _Dump;
 
     factory Dump.fromJson(Map<String, dynamic> json) => _$DumpFromJson(json);

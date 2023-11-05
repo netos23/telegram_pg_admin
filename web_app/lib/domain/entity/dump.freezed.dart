@@ -21,7 +21,8 @@ Dump _$DumpFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$Dump {
   String get name => throw _privateConstructorUsedError;
-  String get datetime => throw _privateConstructorUsedError;
+  int get datetime => throw _privateConstructorUsedError;
+  int get size => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -33,7 +34,7 @@ abstract class $DumpCopyWith<$Res> {
   factory $DumpCopyWith(Dump value, $Res Function(Dump) then) =
       _$DumpCopyWithImpl<$Res, Dump>;
   @useResult
-  $Res call({String name, String datetime});
+  $Res call({String name, int datetime, int size});
 }
 
 /// @nodoc
@@ -51,6 +52,7 @@ class _$DumpCopyWithImpl<$Res, $Val extends Dump>
   $Res call({
     Object? name = null,
     Object? datetime = null,
+    Object? size = null,
   }) {
     return _then(_value.copyWith(
       name: null == name
@@ -60,7 +62,11 @@ class _$DumpCopyWithImpl<$Res, $Val extends Dump>
       datetime: null == datetime
           ? _value.datetime
           : datetime // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
+      size: null == size
+          ? _value.size
+          : size // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -72,7 +78,7 @@ abstract class _$$DumpImplCopyWith<$Res> implements $DumpCopyWith<$Res> {
       __$$DumpImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String name, String datetime});
+  $Res call({String name, int datetime, int size});
 }
 
 /// @nodoc
@@ -87,6 +93,7 @@ class __$$DumpImplCopyWithImpl<$Res>
   $Res call({
     Object? name = null,
     Object? datetime = null,
+    Object? size = null,
   }) {
     return _then(_$DumpImpl(
       name: null == name
@@ -96,7 +103,11 @@ class __$$DumpImplCopyWithImpl<$Res>
       datetime: null == datetime
           ? _value.datetime
           : datetime // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
+      size: null == size
+          ? _value.size
+          : size // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -104,7 +115,7 @@ class __$$DumpImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$DumpImpl implements _Dump {
-  _$DumpImpl({required this.name, required this.datetime});
+  _$DumpImpl({required this.name, required this.datetime, required this.size});
 
   factory _$DumpImpl.fromJson(Map<String, dynamic> json) =>
       _$$DumpImplFromJson(json);
@@ -112,11 +123,13 @@ class _$DumpImpl implements _Dump {
   @override
   final String name;
   @override
-  final String datetime;
+  final int datetime;
+  @override
+  final int size;
 
   @override
   String toString() {
-    return 'Dump(name: $name, datetime: $datetime)';
+    return 'Dump(name: $name, datetime: $datetime, size: $size)';
   }
 
   @override
@@ -126,12 +139,13 @@ class _$DumpImpl implements _Dump {
             other is _$DumpImpl &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.datetime, datetime) ||
-                other.datetime == datetime));
+                other.datetime == datetime) &&
+            (identical(other.size, size) || other.size == size));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, name, datetime);
+  int get hashCode => Object.hash(runtimeType, name, datetime, size);
 
   @JsonKey(ignore: true)
   @override
@@ -148,15 +162,19 @@ class _$DumpImpl implements _Dump {
 }
 
 abstract class _Dump implements Dump {
-  factory _Dump({required final String name, required final String datetime}) =
-      _$DumpImpl;
+  factory _Dump(
+      {required final String name,
+      required final int datetime,
+      required final int size}) = _$DumpImpl;
 
   factory _Dump.fromJson(Map<String, dynamic> json) = _$DumpImpl.fromJson;
 
   @override
   String get name;
   @override
-  String get datetime;
+  int get datetime;
+  @override
+  int get size;
   @override
   @JsonKey(ignore: true)
   _$$DumpImplCopyWith<_$DumpImpl> get copyWith =>
