@@ -39,7 +39,7 @@ class AppComponents {
       TelegramTokenInterceptor(),
     );
 
-    mainButton.text = ' ';
+    mainButton.text = '...';
     mainButton.show();
   }
 }
