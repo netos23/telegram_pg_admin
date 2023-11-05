@@ -154,7 +154,7 @@ class _ServerCommandMenuState extends State<ServerCommandMenu> {
     String? okText,
     String? cancelText,
   }) {
-    if (tg.isSupported) {
+    if (false) {
       tg.TelegramPopup(
         title: title,
         message: message,
