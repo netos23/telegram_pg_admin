@@ -1,0 +1,14 @@
+version: "3.9"
+services:
+  full_db:
+    container_name: full_db
+    image: postgres:13.4
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=farm_postgres
+      - POSTGRES_DB=farm
+    volumes:
+      - './target/postgres-data:/var/lib/postgresql/data'
+

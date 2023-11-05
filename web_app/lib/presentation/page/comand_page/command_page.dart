@@ -11,6 +11,7 @@ import 'package:web_app/domain/entity/dump.dart';
 import 'package:web_app/domain/entity/long_transaction.dart';
 import 'package:web_app/domain/entity/top_transaction.dart';
 import 'package:web_app/internal/app_components.dart';
+import 'package:web_app/presentation/page/dashboard_page/widgets/custom_transaction_detail_dialog.dart';
 import 'package:web_app/presentation/router/app_router.dart';
 import 'package:web_app/presentation/widgets/custom_dialog.dart';
 
@@ -384,9 +385,28 @@ class _TransactionsMenuState extends State<TransactionsMenu> {
                 return [
                   ListTile(
                     trailing: Text(
-                      transaction.duration,
+                      transaction.duration.toStringAsFixed(3),
                     ),
-                    title: Text(transaction.pid),
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (_) {
+                          return CustomDialog(
+                            title: 'Do you want to kill this transaction?',
+                            onOk: () {
+                              _apiManager.stopTransaction(
+                                  widget.apiKey, transaction.pid.toString());
+                              _updateTransactions();
+                              context.router.pop();
+                            },
+                            onCancel: () => context.router.pop(),
+                            okText: 'Kill',
+                            cancelText: 'Cancel',
+                          );
+                        },
+                      );
+                    },
+                    title: Text(transaction.pid.toString()),
                     subtitle: Text(transaction.query),
                   ),
                   if (index != transactions.length - 1)
@@ -447,7 +467,6 @@ class _TopTransactionsState extends State<TopTransactions> {
     return StreamBuilder(
       stream: _transactionController,
       builder: (context, snapshot) {
-        final theme = Theme.of(context);
         final transactions = snapshot.data;
         final error = snapshot.error;
 
@@ -481,6 +500,16 @@ class _TopTransactionsState extends State<TopTransactions> {
                 var query = transaction.query;
                 return [
                   ListTile(
+                    onTap: () => showDialog(
+                      context: context,
+                      builder: (_) {
+                        return CustomTransactionDetailDialog(
+                          transaction: transaction,
+                          title: 'Transaction detail',
+                          okText: 'Cancel',
+                        );
+                      },
+                    ),
                     trailing: Text(
                       transaction.count.toString(),
                     ),

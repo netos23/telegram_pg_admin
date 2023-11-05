@@ -7,3 +7,6 @@ python-dateutil
 Flask-APScheduler
 telebot
 flask-cors
+matplotlib
+scikit-learn
+psycopg2-binary
