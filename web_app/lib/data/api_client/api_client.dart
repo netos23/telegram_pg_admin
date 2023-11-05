@@ -16,7 +16,7 @@ class ApiClient {
 
   Future<List<Connection>> getConnections() async {
     final tgId = tg.isSupported
-        ? tg.initDataUnsafe.user?.id.toString()
+        ? tg.initDataUnsafe.user?.id.toString() ?? ''
         : 'Non telegram user';
     try {
       return await profileService.getConnections(tgUserId: tgId);
