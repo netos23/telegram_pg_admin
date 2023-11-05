@@ -47,7 +47,7 @@ abstract class ProfileService {
     @Body() required ApiKeyModel request,
   });
 
-  @GET('/dumps/')
+  @POST('/dumps/')
   Future<List<Dump>> postDumps({
     @Body() required DumpResponce request,
   });
