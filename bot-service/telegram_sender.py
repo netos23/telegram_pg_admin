@@ -1,5 +1,4 @@
 import telebot
-import message_handler
 
 
 class TelegramSender:
