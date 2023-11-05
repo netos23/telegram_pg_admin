@@ -65,6 +65,12 @@ abstract class _$AppRouter extends RootStackRouter {
         ),
       );
     },
+    HelloRoute.name: (routeData) {
+      return AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const HelloPage(),
+      );
+    },
     MainRoute.name: (routeData) {
       return AutoRoutePage<dynamic>(
         routeData: routeData,
@@ -217,6 +223,20 @@ class EditConnectionRouteArgs {
   String toString() {
     return 'EditConnectionRouteArgs{key: $key, connection: $connection}';
   }
+}
+
+/// generated route for
+/// [HelloPage]
+class HelloRoute extends PageRouteInfo<void> {
+  const HelloRoute({List<PageRouteInfo>? children})
+      : super(
+          HelloRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'HelloRoute';
+
+  static const PageInfo<void> page = PageInfo<void>(name);
 }
 
 /// generated route for

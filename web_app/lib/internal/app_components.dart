@@ -39,8 +39,7 @@ class AppComponents {
       TelegramTokenInterceptor(),
     );
 
-    mainButton.text = '';
-    mainButton.isActive = false;
+    mainButton.text = ' ';
     mainButton.show();
   }
 }
