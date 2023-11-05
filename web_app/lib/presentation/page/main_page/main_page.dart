@@ -108,16 +108,16 @@ class _MainPageState extends State<MainPage> {
                               overflow: TextOverflow.ellipsis,
                             ),
                             GestureDetector(
-                              onTap: () {
-                                Clipboard.setData(
+                              onTap: () async {
+                                await Clipboard.setData(
                                   ClipboardData(
-                                    text:  'copy key: ${connection.apikey ?? ''}',
+                                    text:  connection.apikey ?? '',
                                   ),
                                 );
                                 tg.HapticFeedback.selectionChanged();
                               },
                               child: Text(
-                                connection.apikey ?? '',
+                                'copy key: ${connection.apikey ?? ''}',
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),

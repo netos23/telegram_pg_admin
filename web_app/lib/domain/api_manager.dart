@@ -86,4 +86,14 @@ class ApiManager {
       ),
     );
   }
+
+  void stopTransaction(String apiKey, String pid) async {
+    await apiClient.execCommand(
+      request: Command(
+        command: 'connection',
+        apiKey: apiKey,
+        parameter: pid,
+      ),
+    );
+  }
 }

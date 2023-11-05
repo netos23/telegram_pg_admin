@@ -428,12 +428,29 @@ class _TransactionsMenuState extends State<TransactionsMenu> {
                 final index = e.$1;
                 final transaction = e.$2;
                 return [
-                  ListTile(
-                    trailing: Text(
-                      transaction.duration,
+                  InkWell(
+                    onTap: () => showDialog(
+                      context: context,
+                      builder: (_) {
+                        return CustomDialog(
+                          title: 'Do you want to kill this transaction?',
+                          onOk: () {
+                            _apiManager.stopTransaction(widget.apiKey, transaction.pid);
+                            context.router.pop();
+                          },
+                          onCancel: context.router.pop,
+                          okText: 'Kill',
+                          cancelText: 'Cancel',
+                        );
+                      },
                     ),
-                    title: Text(transaction.pid),
-                    subtitle: Text(transaction.query),
+                    child: ListTile(
+                      trailing: Text(
+                        transaction.duration,
+                      ),
+                      title: Text(transaction.pid),
+                      subtitle: Text(transaction.query),
+                    ),
                   ),
                   if (index != transactions.length - 1)
                     const Divider(
@@ -493,7 +510,6 @@ class _TopTransactionsState extends State<TopTransactions> {
     return StreamBuilder(
       stream: _transactionController,
       builder: (context, snapshot) {
-        final theme = Theme.of(context);
         final transactions = snapshot.data;
         final error = snapshot.error;
 
