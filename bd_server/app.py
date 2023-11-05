@@ -10,7 +10,8 @@ import restart
 from dump import dump_schema
 
 # костыль
-os.environ['API_KEY'] = "bc6eb18d-f242-4cb8-ad04-352fbb879616"
+os.environ['API_KEY'] = ["bc6eb18d-f242-4cb8-ad04-352fbb879616", "f02f9fb3-5ead-4e62-a978-e87c05529855",
+                         "4715299c-4bac-42f0-adb0-e8d3c475e200"]
 os.environ['PGHOSTNAME'] = "92.53.127.18"
 os.environ['PGPORT'] = "5432"
 os.environ['PGUSERNAME'] = "postgres"
@@ -27,7 +28,7 @@ def api_key_required(f):
     @wraps(f)
     def wrapped_view(**kwargs):
         api_key = request.headers.get('X-Api-Key')
-        if api_key != os.environ['API_KEY']:
+        if api_key not in os.environ['API_KEY']:
             return 'Unauthorized', 401
         return f(**kwargs)
 
