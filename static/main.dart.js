@@ -95877,7 +95877,7 @@ $2(a,b){var s,r,q=null,p=J.bb(this.b,b),o=this.a,n=A.ch(p.ge6(p),q,q,q,this.c.p3
 m=A.ch(m==null?"":m,q,B.aD,q,q,q,q)
 s=p.gAW()
 r=t.G
-return new A.cf(B.bW,new A.jj(B.zT,A.kc(A.aeU(!1,!0,new A.cf(B.bo,A.hQ(A.a([n,m,A.pq(q,A.ch(s==null?"":s,q,B.aD,q,q,q,q),B.a2,!1,q,q,q,q,q,q,q,q,q,q,q,q,q,q,new A.atI(p),q,q,q),B.Nz,A.FK(A.a([A.aBq(B.EQ,new A.atJ(o,a,p),q)],r),B.IY,B.at)],r),B.ik,B.aA,B.at),q),q,!0,q,q,q,q,q,q,q,q,q,new A.atK(o,a,p),q,q,q,q),q),q),q)},
+return new A.cf(B.bW,new A.jj(B.zT,A.kc(A.aeU(!1,!0,new A.cf(B.bo,A.hQ(A.a([n,m,A.pq(q,A.ch("copy key: "+(s==null?"":s),q,B.aD,q,q,q,q),B.a2,!1,q,q,q,q,q,q,q,q,q,q,q,q,q,q,new A.atI(p),q,q,q),B.Nz,A.FK(A.a([A.aBq(B.EQ,new A.atJ(o,a,p),q)],r),B.IY,B.at)],r),B.ik,B.aA,B.at),q),q,!0,q,q,q,q,q,q,q,q,q,new A.atK(o,a,p),q,q,q,q),q),q),q)},
 $S:565}
 A.atK.prototype={
 $0(){var s,r
@@ -95888,7 +95888,7 @@ s.o4(A.aFu(r==null?"":r),t.X)},
 $S:0}
 A.atI.prototype={
 $0(){var s=this.a.gAW()
-A.vJ(new A.p5("copy key: "+(s==null?"":s)))
+A.vJ(new A.p5(s==null?"":s))
 J.aEL(Telegram.WebApp.HapticFeedback)},
 $S:0}
 A.atJ.prototype={
