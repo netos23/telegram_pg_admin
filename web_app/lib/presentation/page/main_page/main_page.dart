@@ -111,7 +111,7 @@ class _MainPageState extends State<MainPage> {
                               onTap: () {
                                 Clipboard.setData(
                                   ClipboardData(
-                                    text:  connection.apikey ?? '',
+                                    text:  'copy key: ${connection.apikey ?? ''}',
                                   ),
                                 );
                                 tg.HapticFeedback.selectionChanged();
