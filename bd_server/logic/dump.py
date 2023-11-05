@@ -1,15 +1,18 @@
 import os
-import subprocess
 import time
-from datetime import datetime
-from email.utils import format_datetime
-from subprocess import Popen, PIPE
-
 import pexpect
 
+from logic.bd_utils import execute_command
 
-def format_datetime(timestamp):
-    return datetime.fromtimestamp(timestamp).strftime('%d.%m.%Y %H:%M:%S')
+
+def get_last_dumps():
+    dumps = get_dumps()
+    dumps.sort(key=get_datetime,reverse=True)
+    return dumps[0] if dumps else None
+
+
+def get_datetime(item):
+    return item["datetime"]
 
 
 def get_dumps():
@@ -19,9 +22,9 @@ def get_dumps():
     for filename in os.listdir(path):
         file_path = os.path.join(path, filename)
         file_stat = os.stat(file_path)
-        file_name = os.path.splitext(filename)[0]
-        file_datetime = format_datetime(file_stat.st_mtime)
-        file_info = {"name": file_name, "datetime": file_datetime}
+        file_size = file_stat.st_size
+        file_datetime = int(file_stat.st_ctime)
+        file_info = {"name": filename, "datetime": file_datetime, "size": file_size}
         result.append(file_info)
     return result
 
@@ -57,7 +60,7 @@ def _dump_schema(host, dbname, user, password, path, **kwargs):
     command = f'docker compose -f {bd_docker_compose} ' \
               f'exec {bd_docker_name} ' \
               f'pg_dump -U {user} ' \
-              f'-h {host}' \
+              f'-h {host} --clean ' \
               f' -Ft {dbname} ' \
               f' -f backups/{path}'
     print(command, "\n")
@@ -72,7 +75,6 @@ def _dump_schema(host, dbname, user, password, path, **kwargs):
     execute_command(command)
     # execute_command(f'docker compose -f {bd_docker_compose} exec {bd_docker_name}  backups/{path}')
     print('Бекап создан', f'backups/{path}')
-    return
 
 
 def _restore_schema(host, dbname, user, password, path, **kwargs):
@@ -86,7 +88,7 @@ def _restore_schema(host, dbname, user, password, path, **kwargs):
               f'exec {bd_docker_name} ' \
               f'pg_restore -U {user} ' \
               f'-h {host} ' \
-              f'-d {dbname}' \
+              f'-d {dbname} --clean ' \
               f' backups/{path}'
     print(command, "\n")
     child = pexpect.spawn(command)
@@ -95,16 +97,3 @@ def _restore_schema(host, dbname, user, password, path, **kwargs):
     child.sendline(password)
     child.wait()
     print(f'Бекап {path} восстановлен')
-
-
-def execute_command(command):
-    proc = Popen(command, shell=True)
-    res = proc.wait()
-    if res:
-        raise
-    return proc
-
-
-def execute_command_with_result(command):
-    proc = Popen(command, shell=True)
-    return proc

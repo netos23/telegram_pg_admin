@@ -11,6 +11,7 @@ import 'package:web_app/domain/entity/dump.dart';
 import 'package:web_app/domain/entity/long_transaction.dart';
 import 'package:web_app/domain/entity/top_transaction.dart';
 import 'package:web_app/internal/app_components.dart';
+import 'package:web_app/presentation/page/dashboard_page/widgets/custom_transaction_detail_dialog.dart';
 import 'package:web_app/presentation/router/app_router.dart';
 import 'package:web_app/presentation/widgets/custom_dialog.dart';
 
@@ -428,29 +429,30 @@ class _TransactionsMenuState extends State<TransactionsMenu> {
                 final index = e.$1;
                 final transaction = e.$2;
                 return [
-                  InkWell(
-                    onTap: () => showDialog(
-                      context: context,
-                      builder: (_) {
-                        return CustomDialog(
-                          title: 'Do you want to kill this transaction?',
-                          onOk: () {
-                            _apiManager.stopTransaction(widget.apiKey, transaction.pid);
-                            context.router.pop();
-                          },
-                          onCancel: context.router.pop,
-                          okText: 'Kill',
-                          cancelText: 'Cancel',
-                        );
-                      },
+                  ListTile(
+                    trailing: Text(
+                      transaction.duration,
                     ),
-                    child: ListTile(
-                      trailing: Text(
-                        transaction.duration,
-                      ),
-                      title: Text(transaction.pid),
-                      subtitle: Text(transaction.query),
-                    ),
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (_) {
+                          return CustomDialog(
+                            title: 'Do you want to kill this transaction?',
+                            onOk: () {
+                              _apiManager.stopTransaction(
+                                  widget.apiKey, transaction.pid.toString());
+                              context.router.pop();
+                            },
+                            onCancel: () => context.router.pop(),
+                            okText: 'Kill',
+                            cancelText: 'Cancel',
+                          );
+                        },
+                      );
+                    },
+                    title: Text(transaction.pid.toString()),
+                    subtitle: Text(transaction.query),
                   ),
                   if (index != transactions.length - 1)
                     const Divider(
@@ -543,6 +545,16 @@ class _TopTransactionsState extends State<TopTransactions> {
                 var query = transaction.query;
                 return [
                   ListTile(
+                    onTap: () => showDialog(
+                      context: context,
+                      builder: (_) {
+                        return CustomTransactionDetailDialog(
+                          transaction: transaction,
+                          title: 'Transaction detail',
+                          okText: 'Cancel',
+                        );
+                      },
+                    ),
                     trailing: Text(
                       transaction.count.toString(),
                     ),

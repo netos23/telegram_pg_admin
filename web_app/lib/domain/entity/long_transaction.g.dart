@@ -9,7 +9,7 @@ part of 'long_transaction.dart';
 _$LongTransactionImpl _$$LongTransactionImplFromJson(
         Map<String, dynamic> json) =>
     _$LongTransactionImpl(
-      pid: json['pid'] as String,
+      pid: json['pid'] as int,
       query: json['query'] as String,
       datname: json['datname'] as String,
       duration: json['duration'] as String,
