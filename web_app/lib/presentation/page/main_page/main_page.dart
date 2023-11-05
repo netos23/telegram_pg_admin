@@ -108,8 +108,8 @@ class _MainPageState extends State<MainPage> {
                               overflow: TextOverflow.ellipsis,
                             ),
                             GestureDetector(
-                              onTap: () {
-                                Clipboard.setData(
+                              onTap: () async {
+                                await Clipboard.setData(
                                   ClipboardData(
                                     text:  connection.apikey ?? '',
                                   ),
