@@ -26,6 +26,7 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
 
+
     apiManager.connectionController.listen((value) {
       connectionController.add(value);
     });

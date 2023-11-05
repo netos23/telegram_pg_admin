@@ -39,8 +39,8 @@ class AppComponents {
       TelegramTokenInterceptor(),
     );
 
-    backButton.onClick(tg.JsVoidCallback(() {
-      appRouter.pop();
-    }));
+    mainButton.text = '';
+    mainButton.isActive = false;
+    mainButton.show();
   }
 }
