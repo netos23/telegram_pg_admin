@@ -23,6 +23,7 @@ mixin _$Command {
   @JsonKey(name: 'api_key')
   String get apiKey => throw _privateConstructorUsedError;
   String get command => throw _privateConstructorUsedError;
+  String? get parameter => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -34,7 +35,10 @@ abstract class $CommandCopyWith<$Res> {
   factory $CommandCopyWith(Command value, $Res Function(Command) then) =
       _$CommandCopyWithImpl<$Res, Command>;
   @useResult
-  $Res call({@JsonKey(name: 'api_key') String apiKey, String command});
+  $Res call(
+      {@JsonKey(name: 'api_key') String apiKey,
+      String command,
+      String? parameter});
 }
 
 /// @nodoc
@@ -52,6 +56,7 @@ class _$CommandCopyWithImpl<$Res, $Val extends Command>
   $Res call({
     Object? apiKey = null,
     Object? command = null,
+    Object? parameter = freezed,
   }) {
     return _then(_value.copyWith(
       apiKey: null == apiKey
@@ -62,6 +67,10 @@ class _$CommandCopyWithImpl<$Res, $Val extends Command>
           ? _value.command
           : command // ignore: cast_nullable_to_non_nullable
               as String,
+      parameter: freezed == parameter
+          ? _value.parameter
+          : parameter // ignore: cast_nullable_to_non_nullable
+              as String?,
     ) as $Val);
   }
 }
@@ -73,7 +82,10 @@ abstract class _$$CommandImplCopyWith<$Res> implements $CommandCopyWith<$Res> {
       __$$CommandImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({@JsonKey(name: 'api_key') String apiKey, String command});
+  $Res call(
+      {@JsonKey(name: 'api_key') String apiKey,
+      String command,
+      String? parameter});
 }
 
 /// @nodoc
@@ -89,6 +101,7 @@ class __$$CommandImplCopyWithImpl<$Res>
   $Res call({
     Object? apiKey = null,
     Object? command = null,
+    Object? parameter = freezed,
   }) {
     return _then(_$CommandImpl(
       apiKey: null == apiKey
@@ -99,6 +112,10 @@ class __$$CommandImplCopyWithImpl<$Res>
           ? _value.command
           : command // ignore: cast_nullable_to_non_nullable
               as String,
+      parameter: freezed == parameter
+          ? _value.parameter
+          : parameter // ignore: cast_nullable_to_non_nullable
+              as String?,
     ));
   }
 }
@@ -108,7 +125,9 @@ class __$$CommandImplCopyWithImpl<$Res>
 @JsonSerializable(explicitToJson: true, includeIfNull: false)
 class _$CommandImpl implements _Command {
   _$CommandImpl(
-      {@JsonKey(name: 'api_key') required this.apiKey, required this.command});
+      {@JsonKey(name: 'api_key') required this.apiKey,
+      required this.command,
+      this.parameter});
 
   factory _$CommandImpl.fromJson(Map<String, dynamic> json) =>
       _$$CommandImplFromJson(json);
@@ -118,10 +137,12 @@ class _$CommandImpl implements _Command {
   final String apiKey;
   @override
   final String command;
+  @override
+  final String? parameter;
 
   @override
   String toString() {
-    return 'Command(apiKey: $apiKey, command: $command)';
+    return 'Command(apiKey: $apiKey, command: $command, parameter: $parameter)';
   }
 
   @override
@@ -130,12 +151,14 @@ class _$CommandImpl implements _Command {
         (other.runtimeType == runtimeType &&
             other is _$CommandImpl &&
             (identical(other.apiKey, apiKey) || other.apiKey == apiKey) &&
-            (identical(other.command, command) || other.command == command));
+            (identical(other.command, command) || other.command == command) &&
+            (identical(other.parameter, parameter) ||
+                other.parameter == parameter));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, apiKey, command);
+  int get hashCode => Object.hash(runtimeType, apiKey, command, parameter);
 
   @JsonKey(ignore: true)
   @override
@@ -154,7 +177,8 @@ class _$CommandImpl implements _Command {
 abstract class _Command implements Command {
   factory _Command(
       {@JsonKey(name: 'api_key') required final String apiKey,
-      required final String command}) = _$CommandImpl;
+      required final String command,
+      final String? parameter}) = _$CommandImpl;
 
   factory _Command.fromJson(Map<String, dynamic> json) = _$CommandImpl.fromJson;
 
@@ -163,6 +187,8 @@ abstract class _Command implements Command {
   String get apiKey;
   @override
   String get command;
+  @override
+  String? get parameter;
   @override
   @JsonKey(ignore: true)
   _$$CommandImplCopyWith<_$CommandImpl> get copyWith =>

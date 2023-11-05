@@ -1,12 +1,13 @@
 import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_telegram_web_app/flutter_telegram_web_app.dart' as tg;
 import 'package:rxdart/rxdart.dart';
 import 'package:web_app/domain/api_manager.dart';
+import 'package:web_app/domain/entity/dump.dart';
 import 'package:web_app/domain/entity/long_transaction.dart';
 import 'package:web_app/domain/entity/top_transaction.dart';
 import 'package:web_app/internal/app_components.dart';
@@ -29,7 +30,6 @@ class CommandPage extends StatefulWidget {
 class _CommandPageState extends State<CommandPage> {
   final TextEditingController urlController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
-
 
   @override
   void initState() {
@@ -59,7 +59,7 @@ class _CommandPageState extends State<CommandPage> {
                   vertical: 10,
                 ),
                 child: Text(
-                  'УПРАВЛЕНИЕ',
+                  'MANAGEMENT',
                   style: theme.textTheme.titleMedium?.copyWith(
                     color: theme.colorScheme.onSurface,
                   ),
@@ -75,7 +75,7 @@ class _CommandPageState extends State<CommandPage> {
                   vertical: 10,
                 ),
                 child: Text(
-                  'ДЛИННЫЕ ТРАНЗАКЦИИ',
+                  'LONG TRANSACTIONS',
                   style: theme.textTheme.titleMedium?.copyWith(
                     color: theme.colorScheme.onSurface,
                   ),
@@ -91,7 +91,7 @@ class _CommandPageState extends State<CommandPage> {
                   vertical: 10,
                 ),
                 child: Text(
-                  'ТОП ТРАНЗАКЦИЙ',
+                  'TOP TRANSACTIONS',
                   style: theme.textTheme.titleMedium?.copyWith(
                     color: theme.colorScheme.onSurface,
                   ),
@@ -100,18 +100,46 @@ class _CommandPageState extends State<CommandPage> {
               TopTransactions(
                 apiKey: widget.apiKey,
               ),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: GestureDetector(
+                  onTap: () {
+                    Clipboard.setData(
+                      ClipboardData(
+                        text: tg.initDataUnsafe.toString() ?? '',
+                      ),
+                    );
+                    tg.HapticFeedback.selectionChanged();
+                  },
+                  child: Text(tg.initDataUnsafe.toString() ?? ''),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: GestureDetector(
+                  onTap: () {
+                    Clipboard.setData(
+                      ClipboardData(
+                        text: tg.initData,
+                      ),
+                    );
+                    tg.HapticFeedback.selectionChanged();
+                  },
+                  child: Text(tg.initData),
+                ),
+              ),
             ],
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-              onPressed: (){
-                context.router.popAndPush(DashboardRoute(
-                  apiKey: widget.apiKey,
-                ));
-              },
-              child: const Icon(Icons.dashboard),
-            ),
+        onPressed: () {
+          context.router.popAndPush(DashboardRoute(
+            apiKey: widget.apiKey,
+          ));
+        },
+        child: const Icon(Icons.dashboard),
+      ),
     );
   }
 }
@@ -130,6 +158,7 @@ class ServerCommandMenu extends StatefulWidget {
 
 class _ServerCommandMenuState extends State<ServerCommandMenu> {
   final ApiManager apiManager = AppComponents().apiManager;
+  final _backupController = BehaviorSubject<List<Dump>>();
 
   void onShowButton({
     required String title,
@@ -177,6 +206,83 @@ class _ServerCommandMenuState extends State<ServerCommandMenu> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _updateBackup;
+  }
+
+  Future<void> _updateBackup() async {
+    try {
+      final backups = await apiManager.getDumps(widget.apiKey);
+      _backupController.add(backups);
+    } on Object catch (e, s) {
+      _backupController.addError(e, s);
+    }
+  }
+
+  @override
+  void dispose() {
+    _backupController.close();
+    super.dispose();
+  }
+
+  void onBackupButton(BuildContext context) {
+    showDialog(
+        context: context,
+        builder: (_) {
+          final backups = _backupController.valueOrNull ?? [];
+          return Center(
+            child: SizedBox(
+              width: 600,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Flexible(
+                    flex: 10,
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: ListView.separated(
+                          separatorBuilder: (_, __) {
+                            return const Divider();
+                          },
+                          itemBuilder: (context, index) {
+                            final item = backups[index];
+                            return GestureDetector(
+                              behavior: HitTestBehavior.opaque,
+                              onTap: () {
+                                apiManager.backup(widget.apiKey, item);
+                                context.router.pop();
+                              },
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(item.name),
+                                  Text(item.datetime),
+                                ],
+                              ),
+                            );
+                          },
+                          itemCount: backups.length,
+                          shrinkWrap: true,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Flexible(
+                      child: ElevatedButton(
+                          onPressed: context.router.pop,
+                          child: const Text('Cancel')))
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Card(
       shape: const RoundedRectangleBorder(
@@ -190,12 +296,7 @@ class _ServerCommandMenuState extends State<ServerCommandMenu> {
               color: Colors.green,
             ),
             onTap: () {
-              onShowButton(
-                title: 'Are you sure?',
-                onOk: () => apiManager.backup(widget.apiKey),
-                onCancel: () => context.router.pop(),
-                okText: 'Backup',
-              );
+              onBackupButton(context);
               context.router.pop();
             },
             title: const Text('Backup'),

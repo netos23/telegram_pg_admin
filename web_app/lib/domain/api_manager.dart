@@ -3,6 +3,8 @@ import 'package:web_app/data/api_client/api_client.dart';
 import 'package:web_app/domain/entity/api_key_model.dart';
 import 'package:web_app/domain/entity/command.dart';
 import 'package:web_app/domain/entity/connection.dart';
+import 'package:web_app/domain/entity/dump.dart';
+import 'package:web_app/domain/entity/dump_response.dart';
 import 'package:web_app/domain/entity/long_transaction.dart';
 import 'package:web_app/domain/entity/top_transaction.dart';
 
@@ -33,10 +35,11 @@ class ApiManager {
     connectionController.add(value);
   }
 
-  Future<void> backup(String apiKey) async {
+  Future<void> backup(String apiKey, Dump dump) async {
     await apiClient.execCommand(
       request: Command(
         command: 'backup',
+        parameter: dump.name,
         apiKey: apiKey,
       ),
     );
@@ -59,6 +62,7 @@ class ApiManager {
       ),
     );
   }
+
   Future<List<LongTransaction>> getLongTransactions(String apiKey) async {
     return await apiClient.getLongTransactions(
       request: ApiKeyModel(
@@ -66,9 +70,18 @@ class ApiManager {
       ),
     );
   }
+
   Future<List<TopTransaction>> getTopTransactions(String apiKey) async {
     return await apiClient.getTopTransactions(
       request: ApiKeyModel(
+        apiKey: apiKey,
+      ),
+    );
+  }
+
+  Future<List<Dump>> getDumps(String apiKey) async {
+    return await apiClient.getDumps(
+      request: DumpResponce(
         apiKey: apiKey,
       ),
     );
