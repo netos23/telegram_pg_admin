@@ -31,29 +31,19 @@ class _MainPageState extends State<MainPage> {
     });
 
     apiManager.updateConnections();
-
-    AppComponents().backButton.hide();
-    AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
-      context.router.push(AddConnectionRoute());
-    }));
-    AppComponents().mainButton.text = 'Add connection';
-    AppComponents().mainButton.show();
   }
 
   void onNavigate(){
-    AppComponents().mainButton.offClick(tg.JsVoidCallback(() {
-      context.router.push(AddConnectionRoute());
+    AppComponents().backButton.show();
+    AppComponents().backButton.onClick(tg.JsVoidCallback(() {
+      context.router.pop();
+      AppComponents().backButton.hide();
     }));
   }
 
   @override
   void dispose() {
     connectionController.close();
-    AppComponents().mainButton.offClick(tg.JsVoidCallback(() {
-      context.router.push(AddConnectionRoute());
-    }));
-    AppComponents().mainButton.hide();
-
     super.dispose();
   }
 
@@ -156,8 +146,7 @@ class _MainPageState extends State<MainPage> {
           );
         },
       ),
-      floatingActionButton: !tg.isSupported
-          ? FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
               onPressed: () async {
                 onNavigate();
                 await context.router.push(AddConnectionRoute());
@@ -165,7 +154,6 @@ class _MainPageState extends State<MainPage> {
               },
               child: const Icon(Icons.add),
             )
-          : null,
     );
   }
 }

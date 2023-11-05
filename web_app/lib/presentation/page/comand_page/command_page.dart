@@ -30,56 +30,10 @@ class _CommandPageState extends State<CommandPage> {
   final TextEditingController urlController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
 
-  void onReplace() {
-    AppComponents().mainButton.offClick(tg.JsVoidCallback(() {
-      onReplace();
-      context.router.popAndPush(DashboardRoute(
-        apiKey: widget.apiKey,
-      ));
-    }));
-    AppComponents().backButton.offClick(tg.JsVoidCallback(() {
-      onDispose();
-      context.router.pop();
-    }));
-  }
-
-  void onDispose(){
-    AppComponents().backButton.hide();
-    AppComponents().mainButton.offClick(tg.JsVoidCallback(() {
-      onReplace();
-      context.router.popAndPush(DashboardRoute(
-        apiKey: widget.apiKey,
-      ));
-    }));
-    AppComponents().backButton.offClick(tg.JsVoidCallback(() {
-      onDispose();
-      context.router.pop();
-    }));
-    AppComponents().mainButton.onClick(
-      tg.JsVoidCallback(
-            () {
-          context.router.push(AddConnectionRoute());
-        },
-      ),
-    );
-    AppComponents().mainButton.text = 'Add connection';
-  }
 
   @override
   void initState() {
     super.initState();
-    AppComponents().backButton.show();
-    AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
-      onReplace();
-      context.router.popAndPush(DashboardRoute(
-        apiKey: widget.apiKey,
-      ));
-    }));
-    AppComponents().backButton.onClick(tg.JsVoidCallback(() {
-      onDispose();
-      context.router.pop();
-    }));
-    AppComponents().mainButton.text = 'To dashboards';
   }
 
   @override
@@ -153,17 +107,14 @@ class _CommandPageState extends State<CommandPage> {
           ),
         ),
       ),
-      floatingActionButton: !tg.isSupported
-          ? FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
               onPressed: (){
-                onReplace();
                 context.router.popAndPush(DashboardRoute(
                   apiKey: widget.apiKey,
                 ));
               },
               child: const Icon(Icons.dashboard),
-            )
-          : null,
+            ),
     );
   }
 }
