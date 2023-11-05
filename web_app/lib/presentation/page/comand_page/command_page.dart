@@ -148,6 +148,7 @@ class _ServerCommandMenuState extends State<ServerCommandMenu> {
 
   void onShowButton({
     required String title,
+    required String message,
     required void Function() onOk,
     required void Function() onCancel,
     String? okText,
@@ -155,8 +156,8 @@ class _ServerCommandMenuState extends State<ServerCommandMenu> {
   }) {
     if (tg.isSupported) {
       tg.TelegramPopup(
-        title: "Are you sure?",
-        message: 'It seems dangerous!',
+        title: title,
+        message: message,
         buttons: [
           tg.PopupButton(
             id: okText ?? 'Ok',
@@ -245,7 +246,8 @@ class _ServerCommandMenuState extends State<ServerCommandMenu> {
                                 },
                                 child: Row(
                                   mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text(item.name),
                                     Text(item.datetime),
@@ -295,6 +297,8 @@ class _ServerCommandMenuState extends State<ServerCommandMenu> {
                   context.router.pop();
                 },
                 okText: 'Backup',
+                cancelText: 'Cancel',
+                message: 'It seems dangerous!',
               );
             },
             title: const Text('Backup'),
@@ -320,6 +324,8 @@ class _ServerCommandMenuState extends State<ServerCommandMenu> {
                   context.router.pop();
                 },
                 okText: 'Restart',
+                cancelText: 'Cancel',
+                message: 'It seems dangerous!',
               );
             },
             title: const Text('Restart'),
@@ -343,6 +349,8 @@ class _ServerCommandMenuState extends State<ServerCommandMenu> {
                 },
                 onCancel: context.router.pop,
                 okText: 'Restore',
+                cancelText: 'Cancel',
+                message: 'It seems dangerous!',
               );
             },
             title: const Text('Restore'),

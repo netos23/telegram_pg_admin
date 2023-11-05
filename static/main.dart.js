@@ -95569,11 +95569,11 @@ $S:0}
 A.G8.prototype={
 ar(){return new A.a2N($.jc().goS(),A.aAJ(t.du),B.i)}}
 A.a2N.prototype={
-LE(a,b,c,d){var s
-if(Telegram.WebApp.platform.toLowerCase()!=="unknown")new A.anL("Are you sure?","It seems dangerous!",A.a([new A.tJ(a,B.Ls,a),new A.tJ(a,B.Lr,null)],t.Nc),new A.awg(b,c)).oo(0)
+LE(a,b,c,d,e,f){var s
+if(Telegram.WebApp.platform.toLowerCase()!=="unknown")new A.anL(f,b,A.a([new A.tJ(c,B.Ls,c),new A.tJ(c,B.Lr,a)],t.Nc),new A.awg(d,e)).oo(0)
 else{s=this.c
 s.toString
-A.aA4(new A.awh(d,c,b,a,null),s,t.z)}},
+A.aA4(new A.awh(f,e,d,c,a),s,t.z)}},
 aK(){this.aW()},
 n(){this.e.aO(0)
 this.aU()},
@@ -95607,7 +95607,7 @@ A.fZ(this.c,!1).f.d1()},
 $S:0}
 A.aw9.prototype={
 $0(){var s=this.a,r=this.b
-s.LE("Backup",new A.aw7(r),new A.aw8(s,r),"Are you sure?")},
+s.LE("Cancel","It seems dangerous!","Backup",new A.aw7(r),new A.aw8(s,r),"Are you sure?")},
 $S:0}
 A.aw8.prototype={
 $0(){var s=this.a
@@ -95619,7 +95619,7 @@ $0(){A.fZ(this.a,!1).f.d1()},
 $S:0}
 A.awa.prototype={
 $0(){var s=this.a,r=this.b
-s.LE("Restart",new A.aw5(r),new A.aw6(s,r),"Are you sure?")},
+s.LE("Cancel","It seems dangerous!","Restart",new A.aw5(r),new A.aw6(s,r),"Are you sure?")},
 $S:0}
 A.aw6.prototype={
 $0(){var s=this.a
@@ -95631,7 +95631,7 @@ $0(){A.fZ(this.a,!1).f.d1()},
 $S:0}
 A.awb.prototype={
 $0(){var s=this.a,r=this.b
-s.LE("Restore",A.azL(A.fZ(r,!1).f.ga0P(),t.X),new A.aw4(s,r),"Are you sure?")},
+s.LE("Cancel","It seems dangerous!","Restore",A.azL(A.fZ(r,!1).f.ga0P(),t.X),new A.aw4(s,r),"Are you sure?")},
 $S:0}
 A.aw4.prototype={
 $0(){var s=0,r=A.S(t.H),q=this,p
@@ -96019,7 +96019,7 @@ return s},
 $S:0}
 A.w0.prototype={
 P(a){var s=this,r=null,q=A.ch(s.c,r,r,r,A.ai(a).p3.w,r,r),p=A.abL(A.ch(s.f,r,r,r,r,r,r),s.d),o=t.G
-return A.hN(A.kc(A.jk(r,A.hQ(A.a([q,B.Nr,A.FL(A.a([p,A.abL(A.ch("Cancel",r,r,r,r,r,r),s.e)],o),B.jB,B.at)],o),B.ap,B.aA,B.cr),B.v,r,r,r,r,r,B.bo,200),r),r,r)}}
+return A.hN(A.kc(A.jk(r,A.hQ(A.a([q,B.Nr,A.FL(A.a([p,A.abL(A.ch(s.r,r,r,r,r,r,r),s.e)],o),B.jB,B.at)],o),B.ap,B.aA,B.cr),B.v,r,r,r,r,r,B.bo,200),r),r,r)}}
 A.Ct.prototype={
 P(a){var s=null
 return A.hN(A.hQ(A.a([B.Ec,new A.lC(2,B.cQ,A.ch(this.c,s,s,s,s,s,s),s)],t.G),B.ap,B.jA,B.at),s,s)}}
