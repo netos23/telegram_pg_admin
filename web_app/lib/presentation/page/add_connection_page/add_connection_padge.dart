@@ -40,18 +40,6 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
   @override
   void initState() {
     super.initState();
-    AppComponents().backButton.isVisible = true;
-    AppComponents().mainButton.onClick(
-          tg.JsVoidCallback(onAdd),
-        );
-    AppComponents().backButton.onClick(
-      tg.JsVoidCallback(() {
-        onDispose();
-        context.router.pop();
-      }),
-    );
-    AppComponents().mainButton.text = 'Save';
-    AppComponents().mainButton.isVisible = true;
   }
 
   Future<void> onAdd() async {
@@ -64,7 +52,7 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
         );
       } else {
         await widget.onPressed(nameController.text, urlController.text);
-        onDispose();
+        AppComponents().backButton.hide();
         context.router.pop();
       }
     } else {
@@ -73,33 +61,6 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
         'Empty data',
       );
     }
-  }
-
-  void onDispose(){
-    AppComponents().backButton.hide();
-    AppComponents().mainButton.offClick(
-      tg.JsVoidCallback(
-        tg.JsVoidCallback(onAdd),
-      ),
-    );
-    AppComponents().backButton.offClick(
-      tg.JsVoidCallback((){
-        onDispose();
-        context.router.pop();
-
-      }
-      ),
-    );
-    AppComponents().mainButton.onClick(
-      tg.JsVoidCallback(
-            () {
-          context.router.push(AddConnectionRoute());
-        },
-      ),
-    );
-    AppComponents().mainButton.text = 'Add connection';
-    AppComponents().mainButton.show();
-
   }
 
   @override
@@ -155,12 +116,10 @@ class _AddConnectionPageState extends State<AddConnectionPage> {
           ),
         ),
       ),
-      floatingActionButton: !tg.isSupported
-          ? FloatingActionButton(
+      floatingActionButton:FloatingActionButton(
               onPressed: onAdd,
               child: const Icon(Icons.check),
-            )
-          : null,
+            ),
     );
   }
 

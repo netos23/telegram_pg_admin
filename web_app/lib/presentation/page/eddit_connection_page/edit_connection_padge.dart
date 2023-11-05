@@ -28,50 +28,6 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
     super.initState();
     urlController.text = widget.connection?.url ?? '';
     nameController.text = widget.connection?.name ?? '';
-    AppComponents().backButton.show();
-    AppComponents().mainButton.onClick(
-      tg.JsVoidCallback(
-          onEdit,
-      ),
-    );
-    AppComponents().backButton.onClick(
-      tg.JsVoidCallback((){
-        onDispose();
-        context.router.pop();
-
-      }
-      ),
-    );
-    AppComponents().mainButton.text = 'Edit';
-    AppComponents().mainButton.show();
-  }
-
-  void onDispose(){
-    AppComponents().mainButton.hide();
-    AppComponents().backButton.hide();
-    AppComponents().mainButton.offClick(
-      tg.JsVoidCallback(
-        onEdit,
-      ),
-    );
-    AppComponents().backButton.offClick(
-      tg.JsVoidCallback((){
-        onDispose();
-        context.router.pop();
-
-      }
-      ),
-    );
-    AppComponents().mainButton.onClick(
-      tg.JsVoidCallback(
-            () {
-          context.router.push(AddConnectionRoute());
-        },
-      ),
-    );
-    AppComponents().mainButton.text = 'Add connection';
-    AppComponents().mainButton.show();
-
   }
 
   Future<void> onEdit() async {
@@ -84,7 +40,7 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
         );
       } else {
         await onPatchConnection();
-        onDispose();
+        AppComponents().backButton.hide();
         context.router.pop();
       }
     } else {
@@ -186,12 +142,11 @@ class _EditConnectionPageState extends State<EditConnectionPage> {
             ),
           ),
         ),
-        floatingActionButton: !tg.isSupported
-            ? FloatingActionButton(
+        floatingActionButton: FloatingActionButton(
                 onPressed: onEdit,
                 child: const Icon(Icons.edit),
               )
-            : null);
+            );
   }
 
   void showCustomAlertDialog(String description, String title) {

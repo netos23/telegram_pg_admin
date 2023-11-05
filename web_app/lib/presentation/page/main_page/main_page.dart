@@ -26,28 +26,25 @@ class _MainPageState extends State<MainPage> {
   void initState() {
     super.initState();
 
+
     apiManager.connectionController.listen((value) {
       connectionController.add(value);
     });
 
     apiManager.updateConnections();
+  }
 
-    AppComponents().backButton.hide();
-    AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
-      context.router.push(AddConnectionRoute());
+  void onNavigate(){
+    AppComponents().backButton.show();
+    AppComponents().backButton.onClick(tg.JsVoidCallback(() {
+      context.router.pop();
+      AppComponents().backButton.hide();
     }));
-    AppComponents().mainButton.text = 'Add connection';
-    AppComponents().mainButton.show();
   }
 
   @override
   void dispose() {
     connectionController.close();
-    AppComponents().mainButton.offClick(tg.JsVoidCallback(() {
-      context.router.push(AddConnectionRoute());
-    }));
-    AppComponents().mainButton.hide();
-
     super.dispose();
   }
 
@@ -90,6 +87,7 @@ class _MainPageState extends State<MainPage> {
                   child: Card(
                     child: InkWell(
                       onTap: () {
+                        onNavigate();
                         context.router.push(
                           DashboardRoute(
                             apiKey: connection.apikey ?? '',
@@ -129,6 +127,7 @@ class _MainPageState extends State<MainPage> {
                               children: [
                                 IconButton(
                                     onPressed: () async {
+                                      onNavigate();
                                       await context.router.push(
                                           EditConnectionRoute(
                                               connection: connection));
@@ -148,15 +147,14 @@ class _MainPageState extends State<MainPage> {
           );
         },
       ),
-      floatingActionButton: !tg.isSupported
-          ? FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
               onPressed: () async {
+                onNavigate();
                 await context.router.push(AddConnectionRoute());
                 apiManager.updateConnections();
               },
               child: const Icon(Icons.add),
             )
-          : null,
     );
   }
 }

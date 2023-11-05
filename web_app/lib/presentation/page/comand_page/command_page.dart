@@ -30,27 +30,10 @@ class _CommandPageState extends State<CommandPage> {
   final TextEditingController urlController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
 
-  void onReplace() {
-    AppComponents().mainButton.hide();
-    AppComponents().mainButton.offClick(tg.JsVoidCallback(() {
-      context.router.popAndPush(DashboardRoute(
-        apiKey: widget.apiKey,
-      ));
-    }));
-  }
 
   @override
   void initState() {
     super.initState();
-    AppComponents().backButton.show();
-    AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
-      onReplace();
-      context.router.popAndPush(DashboardRoute(
-        apiKey: widget.apiKey,
-      ));
-    }));
-    AppComponents().mainButton.text = 'To dashboards';
-    AppComponents().mainButton.show();
   }
 
   @override
@@ -121,17 +104,14 @@ class _CommandPageState extends State<CommandPage> {
           ),
         ),
       ),
-      floatingActionButton: !tg.isSupported
-          ? FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
               onPressed: (){
-                onReplace();
                 context.router.popAndPush(DashboardRoute(
                   apiKey: widget.apiKey,
                 ));
               },
               child: const Icon(Icons.dashboard),
-            )
-          : null,
+            ),
     );
   }
 }

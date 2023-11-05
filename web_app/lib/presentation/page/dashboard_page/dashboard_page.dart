@@ -44,55 +44,9 @@ class _DashboardPageState extends State<DashboardPage> {
     );
   }
 
-  void onDispose() {
-    AppComponents().mainButton.hide();
-    AppComponents().backButton.hide();
-    AppComponents().mainButton.offClick(tg.JsVoidCallback(() {
-      context.router.popAndPush(CommandRoute(
-        apiKey: widget.apiKey,
-      ));
-    }));
-    AppComponents().backButton.offClick(tg.JsVoidCallback(() {
-      onDispose();
-      context.router.pop();
-    }));
-    AppComponents().mainButton.onClick(
-      tg.JsVoidCallback(
-        () {
-          context.router.push(AddConnectionRoute());
-        },
-      ),
-    );
-    AppComponents().mainButton.text = 'Add connection';
-    AppComponents().mainButton.show();
-  }
-
-  void onReplace() {
-    AppComponents().mainButton.hide();
-    AppComponents().mainButton.offClick(tg.JsVoidCallback(() {
-      context.router.popAndPush(CommandRoute(
-        apiKey: widget.apiKey,
-      ));
-    }));
-  }
-
-
   @override
   void initState() {
     super.initState();
-    AppComponents().mainButton.onClick(tg.JsVoidCallback(() {
-      onReplace();
-      context.router.popAndPush(CommandRoute(
-        apiKey: widget.apiKey,
-      ));
-    }));
-    AppComponents().backButton.onClick(tg.JsVoidCallback(() {
-      onDispose();
-      context.router.pop();
-    }));
-    AppComponents().mainButton.text = 'To commands < >';
-    AppComponents().backButton.show();
-    AppComponents().mainButton.show();
   }
 
   @override
@@ -139,17 +93,14 @@ class _DashboardPageState extends State<DashboardPage> {
           );
         },
       ),
-      floatingActionButton: !tg.isSupported
-          ? FloatingActionButton(
+      floatingActionButton:  FloatingActionButton(
               onPressed: () {
-                onReplace();
                 context.router.popAndPush(CommandRoute(
                   apiKey: widget.apiKey,
                 ));
               },
               child: const Icon(Icons.code),
-            )
-          : null,
+            ),
     );
   }
 }
