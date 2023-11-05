@@ -23,7 +23,7 @@ mixin _$LongTransaction {
   int get pid => throw _privateConstructorUsedError;
   String get query => throw _privateConstructorUsedError;
   String get datname => throw _privateConstructorUsedError;
-  String get duration => throw _privateConstructorUsedError;
+  double get duration => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -37,7 +37,7 @@ abstract class $LongTransactionCopyWith<$Res> {
           LongTransaction value, $Res Function(LongTransaction) then) =
       _$LongTransactionCopyWithImpl<$Res, LongTransaction>;
   @useResult
-  $Res call({int pid, String query, String datname, String duration});
+  $Res call({int pid, String query, String datname, double duration});
 }
 
 /// @nodoc
@@ -74,7 +74,7 @@ class _$LongTransactionCopyWithImpl<$Res, $Val extends LongTransaction>
       duration: null == duration
           ? _value.duration
           : duration // ignore: cast_nullable_to_non_nullable
-              as String,
+              as double,
     ) as $Val);
   }
 }
@@ -87,7 +87,7 @@ abstract class _$$LongTransactionImplCopyWith<$Res>
       __$$LongTransactionImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({int pid, String query, String datname, String duration});
+  $Res call({int pid, String query, String datname, double duration});
 }
 
 /// @nodoc
@@ -122,7 +122,7 @@ class __$$LongTransactionImplCopyWithImpl<$Res>
       duration: null == duration
           ? _value.duration
           : duration // ignore: cast_nullable_to_non_nullable
-              as String,
+              as double,
     ));
   }
 }
@@ -146,7 +146,7 @@ class _$LongTransactionImpl implements _LongTransaction {
   @override
   final String datname;
   @override
-  final String duration;
+  final double duration;
 
   @override
   String toString() {
@@ -189,7 +189,7 @@ abstract class _LongTransaction implements LongTransaction {
       {required final int pid,
       required final String query,
       required final String datname,
-      required final String duration}) = _$LongTransactionImpl;
+      required final double duration}) = _$LongTransactionImpl;
 
   factory _LongTransaction.fromJson(Map<String, dynamic> json) =
       _$LongTransactionImpl.fromJson;
@@ -201,7 +201,7 @@ abstract class _LongTransaction implements LongTransaction {
   @override
   String get datname;
   @override
-  String get duration;
+  double get duration;
   @override
   @JsonKey(ignore: true)
   _$$LongTransactionImplCopyWith<_$LongTransactionImpl> get copyWith =>

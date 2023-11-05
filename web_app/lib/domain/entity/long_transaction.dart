@@ -10,7 +10,7 @@ class LongTransaction with _$LongTransaction {
     required int pid,
     required String query,
     required String datname,
-    required String duration,
+    required double duration,
   }) = _LongTransaction;
 
   factory LongTransaction.fromJson(Map<String, dynamic> json) =>

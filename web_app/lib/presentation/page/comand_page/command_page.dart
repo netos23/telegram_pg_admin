@@ -431,7 +431,7 @@ class _TransactionsMenuState extends State<TransactionsMenu> {
                 return [
                   ListTile(
                     trailing: Text(
-                      transaction.duration,
+                      transaction.duration.toStringAsFixed(3),
                     ),
                     onTap: () {
                       showDialog(
