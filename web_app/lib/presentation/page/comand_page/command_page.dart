@@ -442,6 +442,7 @@ class _TransactionsMenuState extends State<TransactionsMenu> {
                             onOk: () {
                               _apiManager.stopTransaction(
                                   widget.apiKey, transaction.pid.toString());
+                              _updateTransactions();
                               context.router.pop();
                             },
                             onCancel: () => context.router.pop(),
