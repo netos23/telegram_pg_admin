@@ -1,9 +1,9 @@
 import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
-import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_telegram_web_app/flutter_telegram_web_app.dart' as tg;
 import 'package:rxdart/rxdart.dart';
 import 'package:web_app/domain/api_manager.dart';
@@ -29,7 +29,6 @@ class CommandPage extends StatefulWidget {
 class _CommandPageState extends State<CommandPage> {
   final TextEditingController urlController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
-
 
   @override
   void initState() {
@@ -100,18 +99,46 @@ class _CommandPageState extends State<CommandPage> {
               TopTransactions(
                 apiKey: widget.apiKey,
               ),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: GestureDetector(
+                  onTap: () {
+                    Clipboard.setData(
+                      ClipboardData(
+                        text: tg.initDataUnsafe.toString() ?? '',
+                      ),
+                    );
+                    tg.HapticFeedback.selectionChanged();
+                  },
+                  child: Text(tg.initDataUnsafe.toString() ?? ''),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: GestureDetector(
+                  onTap: () {
+                    Clipboard.setData(
+                      ClipboardData(
+                        text: tg.initData,
+                      ),
+                    );
+                    tg.HapticFeedback.selectionChanged();
+                  },
+                  child: Text(tg.initData),
+                ),
+              ),
             ],
           ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-              onPressed: (){
-                context.router.popAndPush(DashboardRoute(
-                  apiKey: widget.apiKey,
-                ));
-              },
-              child: const Icon(Icons.dashboard),
-            ),
+        onPressed: () {
+          context.router.popAndPush(DashboardRoute(
+            apiKey: widget.apiKey,
+          ));
+        },
+        child: const Icon(Icons.dashboard),
+      ),
     );
   }
 }
