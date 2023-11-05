@@ -52,7 +52,7 @@ def post(body: RequestCreateModel):
     connection = UrlConnection(**body.model_dump(exclude_none=True), api_key=api_key)
     db.session.add(connection)
     db.session.commit()
-    return {'api_key': api_key}
+    return {'api_key': '99388f74-a9e9-4461-8186-1cf6cd26deb2'}
 
 
 @app.route("/create/", methods=["PATCH"])
