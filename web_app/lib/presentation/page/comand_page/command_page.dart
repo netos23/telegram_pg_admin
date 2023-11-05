@@ -252,7 +252,7 @@ class _ServerCommandMenuState extends State<ServerCommandMenu> {
                             return GestureDetector(
                               behavior: HitTestBehavior.opaque,
                               onTap: () {
-                                apiManager.backup(widget.apiKey, item);
+                                apiManager.restore(widget.apiKey, item);
                                 context.router.pop();
                               },
                               child: Row(
@@ -296,8 +296,17 @@ class _ServerCommandMenuState extends State<ServerCommandMenu> {
               color: Colors.green,
             ),
             onTap: () {
-              onBackupButton(context);
-              context.router.pop();
+              onShowButton(
+                title: 'Are you sure?',
+                onOk: () {
+                  apiManager.backup(widget.apiKey);
+                  context.router.pop();
+                },
+                onCancel: () {
+                  context.router.pop();
+                },
+                okText: 'Backup',
+              );
             },
             title: const Text('Backup'),
           ),
@@ -339,11 +348,11 @@ class _ServerCommandMenuState extends State<ServerCommandMenu> {
             onTap: () {
               onShowButton(
                 title: 'Are you sure?',
-                onOk: () {
-                  apiManager.restore(widget.apiKey);
-                  context.router.pop();
+                onOk: () async {
+                  await context.router.pop();
+                  onBackupButton(context);
                 },
-                onCancel: () => context.router.pop(),
+                onCancel: context.router.pop,
                 okText: 'Restore',
               );
             },

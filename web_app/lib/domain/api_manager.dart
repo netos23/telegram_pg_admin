@@ -35,20 +35,20 @@ class ApiManager {
     connectionController.add(value);
   }
 
-  Future<void> backup(String apiKey, Dump dump) async {
+  Future<void> backup(String apiKey) async {
     await apiClient.execCommand(
       request: Command(
         command: 'backup',
-        parameter: dump.name,
         apiKey: apiKey,
       ),
     );
   }
 
-  Future<void> restore(String apiKey) async {
+  Future<void> restore(String apiKey, Dump dump) async {
     await apiClient.execCommand(
       request: Command(
         command: 'restore',
+        parameter: dump.name,
         apiKey: apiKey,
       ),
     );
