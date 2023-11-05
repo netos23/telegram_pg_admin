@@ -234,48 +234,51 @@ class _ServerCommandMenuState extends State<ServerCommandMenu> {
           return Center(
             child: SizedBox(
               width: 600,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Flexible(
-                    flex: 10,
-                    child: Card(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16),
-                        child: ListView.separated(
-                          separatorBuilder: (_, __) {
-                            return const Divider();
-                          },
-                          itemBuilder: (context, index) {
-                            final item = backups[index];
-                            return GestureDetector(
-                              behavior: HitTestBehavior.opaque,
-                              onTap: () {
-                                apiManager.restore(widget.apiKey, item);
-                                context.router.pop();
-                              },
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(item.name),
-                                  Text(item.datetime),
-                                ],
-                              ),
-                            );
-                          },
-                          itemCount: backups.length,
-                          shrinkWrap: true,
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Flexible(
+                      flex: 10,
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(16),
+                          child: ListView.separated(
+                            separatorBuilder: (_, __) {
+                              return const Divider();
+                            },
+                            itemBuilder: (context, index) {
+                              final item = backups[index];
+                              return GestureDetector(
+                                behavior: HitTestBehavior.opaque,
+                                onTap: () {
+                                  apiManager.restore(widget.apiKey, item);
+                                  context.router.pop();
+                                },
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(item.name),
+                                    Text(item.datetime),
+                                  ],
+                                ),
+                              );
+                            },
+                            itemCount: backups.length,
+                            shrinkWrap: true,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  Flexible(
-                      child: ElevatedButton(
-                          onPressed: context.router.pop,
-                          child: const Text('Cancel')))
-                ],
+                    Flexible(
+                        child: ElevatedButton(
+                            onPressed: context.router.pop,
+                            child: const Text('Cancel')))
+                  ],
+                ),
               ),
             ),
           );
