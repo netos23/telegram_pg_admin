@@ -441,7 +441,7 @@ class _TransactionsMenuState extends State<TransactionsMenu> {
                             title: 'Do you want to kill this transaction?',
                             onOk: () {
                               _apiManager.stopTransaction(
-                                  widget.apiKey, transaction.pid);
+                                  widget.apiKey, transaction.pid.toString());
                               context.router.pop();
                             },
                             onCancel: () => context.router.pop(),
@@ -451,7 +451,7 @@ class _TransactionsMenuState extends State<TransactionsMenu> {
                         },
                       );
                     },
-                    title: Text(transaction.pid),
+                    title: Text(transaction.pid.toString()),
                     subtitle: Text(transaction.query),
                   ),
                   if (index != transactions.length - 1)

@@ -18,7 +18,6 @@ class AppComponents {
   AppComponents._internal();
 
   final tg.TelegramBackButton backButton = tg.BackButton;
-  final tg.TelegramMainButton mainButton = tg.MainButton;
   final Dio dio = Dio();
 
   AppRouter appRouter = AppRouter();
@@ -38,8 +37,5 @@ class AppComponents {
     dio.interceptors.add(
       TelegramTokenInterceptor(),
     );
-
-    mainButton.text = '...';
-    mainButton.show();
   }
 }

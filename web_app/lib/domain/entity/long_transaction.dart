@@ -7,7 +7,7 @@ part 'long_transaction.g.dart';
 @freezed
 class LongTransaction with _$LongTransaction {
   factory LongTransaction({
-    required String pid,
+    required int pid,
     required String query,
     required String datname,
     required String duration,

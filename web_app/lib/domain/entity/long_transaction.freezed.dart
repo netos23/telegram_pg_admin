@@ -20,7 +20,7 @@ LongTransaction _$LongTransactionFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$LongTransaction {
-  String get pid => throw _privateConstructorUsedError;
+  int get pid => throw _privateConstructorUsedError;
   String get query => throw _privateConstructorUsedError;
   String get datname => throw _privateConstructorUsedError;
   String get duration => throw _privateConstructorUsedError;
@@ -37,7 +37,7 @@ abstract class $LongTransactionCopyWith<$Res> {
           LongTransaction value, $Res Function(LongTransaction) then) =
       _$LongTransactionCopyWithImpl<$Res, LongTransaction>;
   @useResult
-  $Res call({String pid, String query, String datname, String duration});
+  $Res call({int pid, String query, String datname, String duration});
 }
 
 /// @nodoc
@@ -62,7 +62,7 @@ class _$LongTransactionCopyWithImpl<$Res, $Val extends LongTransaction>
       pid: null == pid
           ? _value.pid
           : pid // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       query: null == query
           ? _value.query
           : query // ignore: cast_nullable_to_non_nullable
@@ -87,7 +87,7 @@ abstract class _$$LongTransactionImplCopyWith<$Res>
       __$$LongTransactionImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String pid, String query, String datname, String duration});
+  $Res call({int pid, String query, String datname, String duration});
 }
 
 /// @nodoc
@@ -110,7 +110,7 @@ class __$$LongTransactionImplCopyWithImpl<$Res>
       pid: null == pid
           ? _value.pid
           : pid // ignore: cast_nullable_to_non_nullable
-              as String,
+              as int,
       query: null == query
           ? _value.query
           : query // ignore: cast_nullable_to_non_nullable
@@ -140,7 +140,7 @@ class _$LongTransactionImpl implements _LongTransaction {
       _$$LongTransactionImplFromJson(json);
 
   @override
-  final String pid;
+  final int pid;
   @override
   final String query;
   @override
@@ -186,7 +186,7 @@ class _$LongTransactionImpl implements _LongTransaction {
 
 abstract class _LongTransaction implements LongTransaction {
   factory _LongTransaction(
-      {required final String pid,
+      {required final int pid,
       required final String query,
       required final String datname,
       required final String duration}) = _$LongTransactionImpl;
@@ -195,7 +195,7 @@ abstract class _LongTransaction implements LongTransaction {
       _$LongTransactionImpl.fromJson;
 
   @override
-  String get pid;
+  int get pid;
   @override
   String get query;
   @override
