@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 
 
 def predict_series(X, y):
+    Xlast = X
+    ylast = y
     X = np.array(X).reshape((-1, 1))
     y = np.array(y).astype(float)
     y[np.isnan(y)] = 0
@@ -20,4 +22,8 @@ def predict_series(X, y):
     # plt.figure()
     # plt.plot([X[-1], X[-1] + 60, X[-1] + 120, X[-1] + 180], [y[-1], *preds], 'b--', X, y, 'b')
     # plt.show()
-    return X_pred.tolist(), preds.tolist()
+    X_pred = X_pred.tolist()
+    preds = preds.tolist()
+    # X_pred.insert(0, Xlast[-1])
+    # preds.insert(0, ylast[-1])
+    return X_pred, preds

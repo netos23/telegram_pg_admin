@@ -171,7 +171,7 @@ def dashboard():
     for metric, values in grouped_metrics.items():
         timeseries, preds = predict_series([value['timestamp'] for value in values],
                                            [value['value'] for value in values])
-        predictions = [{"timestamp": t, "value": v} for t, v in zip(timeseries, preds)]
+        predictions = [{"timestamp": t[0], "value": v} for t, v in zip(timeseries, preds)]
         sumt = 0
         sumv = None
         curk = 0
