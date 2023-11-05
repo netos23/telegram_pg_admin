@@ -13,7 +13,6 @@ import 'package:web_app/domain/entity/top_transaction.dart';
 import 'package:web_app/internal/app_components.dart';
 import 'package:web_app/presentation/page/dashboard_page/widgets/custom_transaction_detail_dialog.dart';
 import 'package:web_app/presentation/router/app_router.dart';
-import 'package:web_app/presentation/widgets/custom_allert_dialog.dart';
 import 'package:web_app/presentation/widgets/custom_dialog.dart';
 
 @RoutePage()
@@ -434,21 +433,24 @@ class _TransactionsMenuState extends State<TransactionsMenu> {
                     trailing: Text(
                       transaction.duration,
                     ),
-                    onTap: () => showDialog(
+                    onTap: () {
+                      showDialog(
                         context: context,
                         builder: (_) {
                           return CustomDialog(
                             title: 'Do you want to kill this transaction?',
                             onOk: () {
-                              _apiManager.stopTransaction(widget.apiKey, transaction.pid);
+                              _apiManager.stopTransaction(
+                                  widget.apiKey, transaction.pid);
                               context.router.pop();
                             },
-                            onCancel: context.router.pop,
+                            onCancel: () => context.router.pop(),
                             okText: 'Kill',
                             cancelText: 'Cancel',
                           );
                         },
-                      ),
+                      );
+                    },
                     title: Text(transaction.pid),
                     subtitle: Text(transaction.query),
                   ),
