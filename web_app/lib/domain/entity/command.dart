@@ -13,6 +13,7 @@ class Command with _$Command {
   factory Command({
     @JsonKey(name: 'api_key') required String apiKey,
     required String command,
+    String? parameter,
   }) = _Command;
 
   factory Command.fromJson(Map<String, dynamic> json) =>

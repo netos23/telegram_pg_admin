@@ -4,6 +4,8 @@ import 'package:web_app/data/api_client/profile_service.dart';
 import 'package:web_app/domain/entity/api_key_model.dart';
 import 'package:web_app/domain/entity/command.dart';
 import 'package:web_app/domain/entity/connection.dart';
+import 'package:web_app/domain/entity/dump.dart';
+import 'package:web_app/domain/entity/dump_response.dart';
 import 'package:web_app/domain/entity/long_transaction.dart';
 import 'package:web_app/domain/entity/top_transaction.dart';
 
@@ -86,6 +88,18 @@ class ApiClient {
   }) async {
     try {
       return await profileService.execCommand(request: request);
+    } on DioException catch (error) {
+      throw Exception(
+        error.response?.data['message'],
+      );
+    }
+  }
+
+  Future<List<Dump>> getDumps({
+    required DumpResponce request,
+  }) async {
+    try {
+      return await profileService.postDumps(request: request);
     } on DioException catch (error) {
       throw Exception(
         error.response?.data['message'],

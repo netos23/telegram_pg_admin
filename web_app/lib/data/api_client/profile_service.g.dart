@@ -175,7 +175,7 @@ class _ProfileService implements ProfileService {
     _data.addAll(request.toJson());
     final _result =
         await _dio.fetch<List<dynamic>>(_setStreamType<List<Dump>>(Options(
-      method: 'GET',
+      method: 'POST',
       headers: _headers,
       extra: _extra,
     )
