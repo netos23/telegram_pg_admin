@@ -117,9 +117,6 @@ class _CommandPageState extends State<CommandPage> {
               TopTransactions(
                 apiKey: widget.apiKey,
               ),
-
-              ElevatedButton(onPressed: () {  },
-              child: Text(tg.initData)),
             ],
           ),
         ),
@@ -495,9 +492,9 @@ class AppInfo extends StatelessWidget {
       child: Column(
         children: [
           Text(tg.WebAppChat().title),
-          Text(tg.initDataUnsafe.chat?.id.toString()),
+          Text(tg.initDataUnsafe.user?.id.toString()),
           Text(tg.WebAppChat().photo_url.toString()),
-          Text(tg.initDataUnsafe.chat?.id.toString() ?? ''),
+          Text(tg.initDataUnsafe.user?.id.toString() ?? ''),
           Text(tg.initDataUnsafe.chat?.title.toString() ?? ''),
           Text(tg.initDataUnsafe.chat?..toString() ?? ''),
         ],
