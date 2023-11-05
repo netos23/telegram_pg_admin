@@ -117,7 +117,7 @@ class _MainPageState extends State<MainPage> {
                                         ),
                                         recognizer: TapGestureRecognizer()
                                           ..onTap = () async{
-                                            awaitClipboard.setData(
+                                            Clipboard.setData(
                                               ClipboardData(
                                                   text:
                                                       'Api key: ${connection.apikey ?? ''}'),
