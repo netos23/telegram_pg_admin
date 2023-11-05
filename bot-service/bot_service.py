@@ -15,7 +15,7 @@ from flask_cors import CORS, cross_origin
 from flask_pydantic import validate
 from pydantic import BaseModel, Field
 
-from ext_http_client import send_post, send_get
+from ext_http_client import send_get
 from models import UrlConnection
 from models import db
 from telegram_sender import TelegramSender
@@ -30,6 +30,7 @@ scheduler = APScheduler()
 class RequestCreateModel(BaseModel):
     name: str
     tg_user_id: str
+    tg_chat_id: Optional[str] = ""
     url: Optional[str]
     api_key: Optional[str] = None
     is_active: Optional[bool] = Field(default=True)
@@ -52,7 +53,7 @@ def post(body: RequestCreateModel):
     connection = UrlConnection(**body.model_dump(exclude_none=True), api_key=api_key)
     db.session.add(connection)
     db.session.commit()
-    return {'api_key': '99388f74-a9e9-4461-8186-1cf6cd26deb2'}
+    return {'api_key': api_key}
 
 
 @app.route("/create/", methods=["PATCH"])
