@@ -31434,7 +31434,7 @@ $1(a){var s=$.cH
 s=(s==null?$.cH=A.hf(self.window.flutterConfiguration):s).b
 if(s==null)s=null
 else{s=s.canvasKitBaseUrl
-if(s==null)s=null}return(s==null?"https://www.gstatic.com/flutter-canvaskit/0545f8705df301877d787107bac1a6e9fc9ee1ad/":s)+a},
+if(s==null)s=null}return(s==null?"https://www.gstatic.com/flutter-canvaskit/767d8c75e898091b925519803830fc2721658d07/":s)+a},
 $S:81}
 A.ay5.prototype={
 $1(a){this.a.remove()
@@ -95888,7 +95888,7 @@ s.o4(A.aFu(r==null?"":r),t.X)},
 $S:0}
 A.atI.prototype={
 $0(){var s=this.a.gAW()
-A.vJ(new A.p5(s==null?"":s))
+A.vJ(new A.p5("copy key: "+(s==null?"":s)))
 J.aEL(Telegram.WebApp.HapticFeedback)},
 $S:0}
 A.atJ.prototype={
@@ -99013,7 +99013,7 @@ B.At=function() {
     }
   }
   function getUnknownTagGenericBrowser(object, tag) {
-    if (object instanceof HTMLElement) return "HTMLElement";
+    if (self.HTMLElement && object instanceof HTMLElement) return "HTMLElement";
     return getUnknownTag(object, tag);
   }
   function prototypeForTag(tag) {
@@ -99024,7 +99024,7 @@ B.At=function() {
     return constructor.prototype;
   }
   function discriminator(tag) { return null; }
-  var isBrowser = typeof HTMLElement == "function";
+  var isBrowser = typeof navigator == "object";
   return {
     getTag: getTag,
     getUnknownTag: isBrowser ? getUnknownTagGenericBrowser : getUnknownTag,
@@ -99034,10 +99034,9 @@ B.At=function() {
 B.Ay=function(getTagFallback) {
   return function(hooks) {
     if (typeof navigator != "object") return hooks;
-    var userAgent = navigator.userAgent;
-    if (typeof userAgent != "string") return hooks;
-    if (userAgent.indexOf("DumpRenderTree") >= 0) return hooks;
-    if (userAgent.indexOf("Chrome") >= 0) {
+    var ua = navigator.userAgent;
+    if (ua.indexOf("DumpRenderTree") >= 0) return hooks;
+    if (ua.indexOf("Chrome") >= 0) {
       function confirm(p) {
         return typeof window == "object" && window[p] && window[p].name == p;
       }
@@ -99050,10 +99049,26 @@ B.Au=function(hooks) {
   if (typeof dartExperimentalFixupGetTag != "function") return hooks;
   hooks.getTag = dartExperimentalFixupGetTag(hooks.getTag);
 }
+B.Av=function(hooks) {
+  var getTag = hooks.getTag;
+  var prototypeForTag = hooks.prototypeForTag;
+  function getTagFixed(o) {
+    var tag = getTag(o);
+    if (tag == "Document") {
+      if (!!o.xmlVersion) return "!Document";
+      return "!HTMLDocument";
+    }
+    return tag;
+  }
+  function prototypeForTagFixed(tag) {
+    if (tag == "Document") return null;
+    return prototypeForTag(tag);
+  }
+  hooks.getTag = getTagFixed;
+  hooks.prototypeForTag = prototypeForTagFixed;
+}
 B.Ax=function(hooks) {
-  if (typeof navigator != "object") return hooks;
-  var userAgent = navigator.userAgent;
-  if (typeof userAgent != "string") return hooks;
+  var userAgent = typeof navigator == "object" ? navigator.userAgent : "";
   if (userAgent.indexOf("Firefox") == -1) return hooks;
   var getTag = hooks.getTag;
   var quickMap = {
@@ -99070,9 +99085,7 @@ B.Ax=function(hooks) {
   hooks.getTag = getTagFirefox;
 }
 B.Aw=function(hooks) {
-  if (typeof navigator != "object") return hooks;
-  var userAgent = navigator.userAgent;
-  if (typeof userAgent != "string") return hooks;
+  var userAgent = typeof navigator == "object" ? navigator.userAgent : "";
   if (userAgent.indexOf("Trident/") == -1) return hooks;
   var getTag = hooks.getTag;
   var quickMap = {
@@ -99099,24 +99112,6 @@ B.Aw=function(hooks) {
   }
   hooks.getTag = getTagIE;
   hooks.prototypeForTag = prototypeForTagIE;
-}
-B.Av=function(hooks) {
-  var getTag = hooks.getTag;
-  var prototypeForTag = hooks.prototypeForTag;
-  function getTagFixed(o) {
-    var tag = getTag(o);
-    if (tag == "Document") {
-      if (!!o.xmlVersion) return "!Document";
-      return "!HTMLDocument";
-    }
-    return tag;
-  }
-  function prototypeForTagFixed(tag) {
-    if (tag == "Document") return null;
-    return prototypeForTag(tag);
-  }
-  hooks.getTag = getTagFixed;
-  hooks.prototypeForTag = prototypeForTagFixed;
 }
 B.ly=function(hooks) { return hooks; }
 
