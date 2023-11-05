@@ -18,6 +18,7 @@ from pydantic import BaseModel, Field
 from ext_http_client import send_get
 from models import UrlConnection
 from models import db
+from predict_series import predict_series
 from telegram_sender import TelegramSender
 
 app = Flask(__name__)
@@ -168,6 +169,9 @@ def dashboard():
     delta = (maxt - mint) // 30
     ans = []
     for metric, values in grouped_metrics.items():
+        timeseries, preds = predict_series([value['timestamp'] for value in values],
+                                           [value['value'] for value in values])
+        predictions = [{"timestamp": t, "value": v} for t, v in zip(timeseries, preds)]
         sumt = 0
         sumv = None
         curk = 0
@@ -190,7 +194,7 @@ def dashboard():
                 sumt = value['timestamp']
         if curk != 0:
             agg_result.append({"value": sumv / curk if sumv else sumv, "timestamp": int(sumt / curk)})
-        ans.append({'name': metric, 'units': agg_result})
+        ans.append({'name': metric, 'units': agg_result, 'predictions': predictions})
     return ans, 200
 
 
