@@ -35,6 +35,7 @@ class CustomAlertDialog extends StatelessWidget {
                 child: Text(
                   description ?? '',
                   style: theme.textTheme.bodyMedium,
+                  maxLines: 3,
                 ),
               ),
               Row(

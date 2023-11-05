@@ -8,4 +8,5 @@ Flask-APScheduler
 telebot
 flask-cors
 matplotlib
-sklearn
+scikit-learn
+psycopg2-binary

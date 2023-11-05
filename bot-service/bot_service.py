@@ -23,7 +23,7 @@ from telegram_sender import TelegramSender
 
 app = Flask(__name__)
 db_path = os.path.join(os.path.dirname(__file__), 'app.db')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///{}'.format(db_path)
+app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:farm_postgres@85.193.85.188:5432/farm"
 app.config['CORS_HEADERS'] = 'Content-Type'
 scheduler = APScheduler()
 
