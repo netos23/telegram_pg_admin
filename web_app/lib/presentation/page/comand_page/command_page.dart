@@ -213,66 +213,6 @@ class _ServerCommandMenuState extends State<ServerCommandMenu> {
     super.dispose();
   }
 
-  void onBackupButton(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (_) {
-          final backups = _backupController.valueOrNull ?? [];
-          return Center(
-            child: SizedBox(
-              width: 600,
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Flexible(
-                      flex: 10,
-                      child: Card(
-                        child: Padding(
-                          padding: const EdgeInsets.all(16),
-                          child: ListView.separated(
-                            separatorBuilder: (_, __) {
-                              return const Divider();
-                            },
-                            itemBuilder: (context, index) {
-                              final item = backups[index];
-                              return GestureDetector(
-                                behavior: HitTestBehavior.opaque,
-                                onTap: () {
-                                  apiManager.restore(widget.apiKey, item);
-                                  context.router.pop();
-                                },
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(item.name),
-                                    Text(item.datetime),
-                                  ],
-                                ),
-                              );
-                            },
-                            itemCount: backups.length,
-                            shrinkWrap: true,
-                          ),
-                        ),
-                      ),
-                    ),
-                    Flexible(
-                        child: ElevatedButton(
-                            onPressed: context.router.pop,
-                            child: const Text('Cancel')))
-                  ],
-                ),
-              ),
-            ),
-          );
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -337,15 +277,29 @@ class _ServerCommandMenuState extends State<ServerCommandMenu> {
           ),
           ListTile(
             leading: const Icon(
-              Icons.restore,
+              Icons.restore_page_outlined,
               color: Colors.blue,
+            ),
+            onTap: () {
+               context.router.push(
+                BackupsRoute(
+                  apikey: widget.apiKey,
+                ),
+              );
+            },
+            title: const Text('Restore'),
+          ),
+          ListTile(
+            leading: const Icon(
+              Icons.restore_page,
+              color: Colors.deepPurple,
             ),
             onTap: () {
               onShowButton(
                 title: 'Are you sure?',
                 onOk: () async {
+                  apiManager.restore(widget.apiKey);
                   await context.router.pop();
-                  onBackupButton(context);
                 },
                 onCancel: context.router.pop,
                 okText: 'Restore',
@@ -353,7 +307,7 @@ class _ServerCommandMenuState extends State<ServerCommandMenu> {
                 message: 'It seems dangerous!',
               );
             },
-            title: const Text('Restore'),
+            title: const Text('Restore last'),
           ),
         ],
       ),

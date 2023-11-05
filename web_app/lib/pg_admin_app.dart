@@ -22,9 +22,9 @@ class PgAdminApp extends StatelessWidget {
           theme: tg.TelegramTheme.light,
           darkTheme: tg.TelegramTheme.dark,
           routerConfig: _appRouter.config(
-            deepLinkBuilder: (_) => const DeepLink(
-              [MainRoute()],
-            ),
+            // deepLinkBuilder: (_) => const DeepLink(
+            //   [MainRoute()],
+            // ),
           ),
         );
       },

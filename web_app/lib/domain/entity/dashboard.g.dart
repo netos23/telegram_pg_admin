@@ -12,10 +12,14 @@ _$DashboardImpl _$$DashboardImplFromJson(Map<String, dynamic> json) =>
       units: (json['units'] as List<dynamic>)
           .map((e) => DashboardUnit.fromJson(e as Map<String, dynamic>))
           .toList(),
+      predictions: (json['predictions'] as List<dynamic>)
+          .map((e) => DashboardUnit.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$DashboardImplToJson(_$DashboardImpl instance) =>
     <String, dynamic>{
       'name': instance.name,
       'units': instance.units,
+      'predictions': instance.predictions,
     };

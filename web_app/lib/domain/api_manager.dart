@@ -44,11 +44,11 @@ class ApiManager {
     );
   }
 
-  Future<void> restore(String apiKey, Dump dump) async {
+  Future<void> restore(String apiKey, [Dump? dump]) async {
     await apiClient.execCommand(
       request: Command(
         command: 'restore',
-        parameter: dump.name,
+        parameter: dump?.name,
         apiKey: apiKey,
       ),
     );

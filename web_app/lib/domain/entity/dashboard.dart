@@ -10,6 +10,7 @@ class Dashboard with _$Dashboard {
     const factory Dashboard({
       required String name,
       required List<DashboardUnit> units,
+      required List<DashboardUnit> predictions,
 }) = _Dashboard;
 
     factory Dashboard.fromJson(Map<String, dynamic> json) => _$DashboardFromJson(json);

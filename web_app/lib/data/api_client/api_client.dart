@@ -83,11 +83,11 @@ class ApiClient {
     }
   }
 
-  Future<Connection> execCommand({
+  Future<void> execCommand({
     required Command request,
   }) async {
     try {
-      return await profileService.execCommand(request: request);
+      await profileService.execCommand(request: request);
     } on DioException catch (error) {
       throw Exception(
         error.response?.data['message'],
